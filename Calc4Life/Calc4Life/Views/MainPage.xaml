@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Calc4Life"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Calc4Life.Views.MainPage" 
+             Title="{Binding Title}">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,40,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="FigureBack">#1976d2</Color>
+            <Color x:Key="OperatorBack">#0d47a1</Color>
+            <Color x:Key="MemoryBack">#43a047</Color>
+            <Color x:Key="ClearBack">#ff6f00</Color>
+            <Color x:Key="DiscountBack">#ff1744</Color>
+            <Color x:Key="ConstBack">#263238</Color>
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="BorderWidth" Value="0"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BorderRadius" Value="0"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <!--<ToolbarItem Text="Item" Clicked="ButtonConst_ClickAsync">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="edit.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>-->
+        <ToolbarItem Text="Item" Command="{Binding OptionsCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="settings.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+        <Grid BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text=" M: " FontSize="Medium" HorizontalOptions="End" HorizontalTextAlignment="End"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="12345" FontSize="Medium" HorizontalOptions="Start" HorizontalTextAlignment="Start"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="-0.123456789123456" FontSize="34" 
+               HorizontalTextAlignment="End" VerticalTextAlignment="Start"
+               TextColor="Black" />
+        </Grid>
+
+        <Button Text="77" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="8" Grid.Row="4" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="9" Grid.Row="4" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="4" Grid.Row="5" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="5" Grid.Row="5" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="6" Grid.Row="5" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="1" Grid.Row="6" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="2" Grid.Row="6" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="3" Grid.Row="6" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="0" Grid.Row="7" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}"/>
+        <Button Text="." Grid.Row="7" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}"/>
+
+        <Button Text="/" Grid.Row="3" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}"/>
+        <Button Text="*" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}"/>
+        <Button Text="-" Grid.Row="5" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}"/>
+        <Button Text="+" Grid.Row="6" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}"/>
+        <Button Text="% Off" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}"/>
+        <Button Text="+/-" Grid.Row="3" Grid.Column="2" BackgroundColor="{StaticResource OperatorBack}"/>
+        <Button Text="=" Grid.Row="7" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}"/>
+
+        <Button Text="M+" Grid.Row="2" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}"/>
+        <Button Text="MC" Grid.Row="2" Grid.Column="1" BackgroundColor="{StaticResource MemoryBack}"/>
+        <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}"/>
+
+        <Button Text="C" Grid.Row="2" Grid.Column="2" BackgroundColor="{StaticResource ClearBack}"/>
+        <Button Text="Back" Grid.Row="2" Grid.Column="3" BackgroundColor="{StaticResource ClearBack}"/>
+
+        <Button Text="Const" Grid.Row="7" Grid.Column="0" BackgroundColor="{StaticResource ConstBack}" FontSize="Medium" Command="{Binding ConstCommand}"/>
+    </Grid>
+</ContentPage>
