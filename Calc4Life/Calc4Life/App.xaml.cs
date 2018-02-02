@@ -24,8 +24,6 @@ namespace Calc4Life
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
-
             //var pageOne = new MainPage();
             //NavigationPage.SetHasNavigationBar(pageOne, true);
             //NavigationPage mypage = new NavigationPage(pageOne);
@@ -42,6 +40,8 @@ namespace Calc4Life
             //mypage.CurrentPage.BackgroundImage = "icon.png";
 
             //MainPage = mypage;
+
+            await NavigationService.NavigateAsync("NavigationPage/MainPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

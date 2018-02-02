@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Calc4Life.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase, INavigationAware
+    public class MainPageViewModel : ViewModelBase
     {
         private INavigationService _navigationService;
 
@@ -26,20 +26,20 @@ namespace Calc4Life.ViewModels
 
         #region Commands
 
-        public DelegateCommand ConstCommand { get; set; }
-        private void ConstCommandExecute()
+        public DelegateCommand ConstCommand { get; }
+        private async void ConstCommandExecute()
         {
-            _navigationService.NavigateAsync("ConstantsContentPage", null, true);
+            await _navigationService.NavigateAsync("NavigationPage/ConstantsContentPage", null, false, true);
         }
 
-        public DelegateCommand OptionsCommand
-        { get; set; }
+        public DelegateCommand OptionsCommand { get; }
 
         private void OptionsCommandExecute()
         {
-            _navigationService.NavigateAsync("OptionsTabbedPage", null, true);
+            _navigationService.NavigateAsync("OptionsTabbedPage", null, false, true);
         }
         #endregion
+
         //bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         //bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
 

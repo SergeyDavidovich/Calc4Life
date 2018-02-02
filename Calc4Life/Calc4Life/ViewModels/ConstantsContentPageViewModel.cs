@@ -7,26 +7,12 @@ using System.Linq;
 
 namespace Calc4Life.ViewModels
 {
-	public class ConstantsContentPageViewModel : BindableBase, INavigationAware
+    public class ConstantsContentPageViewModel : ViewModelBase
     {
-        public ConstantsContentPageViewModel()
+        public ConstantsContentPageViewModel(INavigationService navigationService)
+           : base(navigationService)
         {
-
-        }
-
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
-            throw new NotImplementedException();
+            Title = "Constants";
         }
     }
 }

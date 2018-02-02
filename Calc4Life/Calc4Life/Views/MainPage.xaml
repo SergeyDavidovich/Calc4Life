@@ -99,6 +99,7 @@
         <Button Text="C" Grid.Row="2" Grid.Column="2" BackgroundColor="{StaticResource ClearBack}"/>
         <Button Text="Back" Grid.Row="2" Grid.Column="3" BackgroundColor="{StaticResource ClearBack}"/>
 
-        <Button Text="Const" Grid.Row="7" Grid.Column="0" BackgroundColor="{StaticResource ConstBack}" FontSize="Medium" Command="{Binding ConstCommand}"/>
+        <Button Text="Const" Grid.Row="7" Grid.Column="0" BackgroundColor="{StaticResource ConstBack}" FontSize="Medium" 
+                Command="{Binding ConstCommand}"/>
     </Grid>
 </ContentPage>
