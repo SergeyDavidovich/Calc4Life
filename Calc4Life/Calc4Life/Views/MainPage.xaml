@@ -30,13 +30,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <!--<ToolbarItem Text="Item" Clicked="ButtonConst_ClickAsync">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="edit.png" />
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>-->
         <ToolbarItem Text="Item" Command="{Binding OptionsCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
