@@ -33,7 +33,7 @@
         <ToolbarItem Command="{Binding OptionsCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="settings.png" />
+                    <On Platform="Android" Value="options.png" />
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>

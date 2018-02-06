@@ -49,7 +49,7 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage>();
             containerRegistry.RegisterForNavigation<OptionsTabbedPage>();
-            containerRegistry.RegisterForNavigation<ConstantsContentPage>();
+            containerRegistry.RegisterForNavigation<ConstantsPage>();
             containerRegistry.RegisterForNavigation<OptonsPage>();
             containerRegistry.RegisterForNavigation<AboutPage>();
         }

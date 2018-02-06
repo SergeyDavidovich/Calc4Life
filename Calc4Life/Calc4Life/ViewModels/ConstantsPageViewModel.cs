@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Calc4Life.ViewModels
 {
-    public class ConstantsContentPageViewModel : ViewModelBase
+    public class ConstantsPageViewModel : ViewModelBase
     {
-        public ConstantsContentPageViewModel(INavigationService navigationService)
+        public ConstantsPageViewModel(INavigationService navigationService)
            : base(navigationService)
         {
             Title = "Constants";

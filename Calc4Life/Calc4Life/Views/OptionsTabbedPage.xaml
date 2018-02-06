@@ -12,7 +12,7 @@
             WidthRequest="60"
             >
     <local:MainPage/>
-    <local:ConstantsContentPage/>
+    <local:ConstantsPage/>
     <local:OptonsPage/>
-    <local:AboutPage/>
+    <!--<local:AboutPage/>-->
 </TabbedPage>

@@ -11,14 +11,18 @@ namespace Calc4Life.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        #region Declarations
+
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
+        #endregion
 
+        #region Constructors
 
         public MainPageViewModel(INavigationService navigationService)
             : base(navigationService)
         {
-            Title = "Калькулятор";
+            Title = "Calculator";
             Display = "0";
             isBackSpaceApplicable = true;
             mustClearDisplay = false;
@@ -31,6 +35,8 @@ namespace Calc4Life.ViewModels
             CalcCommand = new DelegateCommand(CalcExecute);
             SignCommand = new DelegateCommand(SignExecute);
         }
+
+        #endregion
 
         #region Properties
         string _Display;
@@ -49,7 +55,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand ConstCommand { get; }
         private async void ConstCommandExecute()
         {
-            await NavigationService.NavigateAsync("ConstantsContentPage", null, false, true);
+            await NavigationService.NavigateAsync("OptionsTabbedPage/ConstantsPage", null, false, true);
         }
 
         public DelegateCommand OptionsCommand { get; }
@@ -138,7 +144,6 @@ namespace Calc4Life.ViewModels
             }
         }
 
-
         public DelegateCommand CalcCommand { get; }
         private void CalcExecute()
         {
@@ -181,7 +186,7 @@ namespace Calc4Life.ViewModels
         }
         #endregion
 
-        #region private utilites
+        #region Private utilites
         /// <summary>
         /// Возвращает отредактированное значение для дисплея
         /// </summary>
@@ -226,6 +231,5 @@ namespace Calc4Life.ViewModels
             return Result;
         }
         #endregion
-
     }
 }

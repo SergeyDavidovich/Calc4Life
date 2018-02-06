@@ -13,9 +13,9 @@ namespace Calc4Life.Views
 		{
 			InitializeComponent();
 		}
-         async void ButtonConst_ClickAsync(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new ConstantsPage(),true);
-        }
+        // async void ButtonConst_ClickAsync(object sender, EventArgs e)
+        //{
+        //    await Navigation.PushAsync(new ConstantsPage(),true);
+        //}
 	}
 }
