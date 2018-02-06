@@ -5,7 +5,14 @@
             xmlns:local="clr-namespace:Calc4Life.Views"
             prism:ViewModelLocator.AutowireViewModel="True"
             x:Class="Calc4Life.Views.OptionsTabbedPage"
-            Title="Options">
-    <local:ConstantsContentPage/>
+            Title="Options"
+            BarTextColor="White"
+            BarBackgroundColor="Black"
+            MinimumWidthRequest="50"
+            WidthRequest="60"
+            >
     <local:MainPage/>
+    <local:ConstantsContentPage/>
+    <local:OptonsPage/>
+    <local:AboutPage/>
 </TabbedPage>

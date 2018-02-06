@@ -24,7 +24,7 @@ namespace Calc4Life
         {
             InitializeComponent();
 
-            //var pageOne = new MainPage();
+            var pageOne = new MainPage();
             //NavigationPage.SetHasNavigationBar(pageOne, true);
             //NavigationPage mypage = new NavigationPage(pageOne);
 
@@ -50,6 +50,8 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<MainPage>();
             containerRegistry.RegisterForNavigation<OptionsTabbedPage>();
             containerRegistry.RegisterForNavigation<ConstantsContentPage>();
+            containerRegistry.RegisterForNavigation<OptonsPage>();
+            containerRegistry.RegisterForNavigation<AboutPage>();
         }
     }
 }
