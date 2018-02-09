@@ -6,7 +6,7 @@
              x:Class="Calc4Life.Views.EditConstPage"
              Title="Add Constant">
     <ContentPage.ToolbarItems>
-        <ToolbarItem>
+        <ToolbarItem Command="{Binding SaveCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="Android" Value="save.png" />

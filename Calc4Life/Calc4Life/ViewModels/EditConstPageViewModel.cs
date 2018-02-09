@@ -14,6 +14,13 @@ namespace Calc4Life.ViewModels
         public EditConstPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _navigationService = navigationService;
+            SaveCommand = new DelegateCommand(SaveExecute);
+        }
+
+        public DelegateCommand SaveCommand { get; }
+        private async void SaveExecute()
+        {
+            await _navigationService.GoBackAsync();
         }
     }
 }
