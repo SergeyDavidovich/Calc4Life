@@ -23,7 +23,7 @@ namespace Calc4Life.ViewModels
         public CalcPageViewModel(INavigationService navigationService)
             : base(navigationService)
         {
-            Title = "Calculator for Life!";
+            Title = "Calculator for Life";
             Display = "0";
             isBackSpaceApplicable = true;
             mustClearDisplay = false;
