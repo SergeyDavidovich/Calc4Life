@@ -2190,7 +2190,10 @@ namespace Calc4Life.Droid
 			public const int abc_vector_test = 2130837586;
 			
 			// aapt resource value: 0x7f020053
-			public const int avd_hide_password = 2130837587;
+			public const int add = 2130837587;
+			
+			// aapt resource value: 0x7f020054
+			public const int avd_hide_password = 2130837588;
 			
 			// aapt resource value: 0x7f020112
 			public const int avd_hide_password_1 = 2130837778;
@@ -2201,8 +2204,8 @@ namespace Calc4Life.Droid
 			// aapt resource value: 0x7f020114
 			public const int avd_hide_password_3 = 2130837780;
 			
-			// aapt resource value: 0x7f020054
-			public const int avd_show_password = 2130837588;
+			// aapt resource value: 0x7f020055
+			public const int avd_show_password = 2130837589;
 			
 			// aapt resource value: 0x7f020115
 			public const int avd_show_password_1 = 2130837781;
@@ -2213,29 +2216,26 @@ namespace Calc4Life.Droid
 			// aapt resource value: 0x7f020117
 			public const int avd_show_password_3 = 2130837783;
 			
-			// aapt resource value: 0x7f020055
-			public const int calculator = 2130837589;
-			
 			// aapt resource value: 0x7f020056
-			public const int design_bottom_navigation_item_background = 2130837590;
+			public const int calculator = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int design_fab_background = 2130837591;
+			public const int design_bottom_navigation_item_background = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int design_ic_visibility = 2130837592;
+			public const int design_fab_background = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int design_ic_visibility_off = 2130837593;
+			public const int design_ic_visibility = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int design_password_eye = 2130837594;
+			public const int design_ic_visibility_off = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int design_snackbar_background = 2130837595;
+			public const int design_password_eye = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int edit = 2130837596;
+			public const int design_snackbar_background = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
 			public const int ic_audiotrack_dark = 2130837597;
@@ -2775,7 +2775,7 @@ namespace Calc4Life.Droid
 			public const int notify_panel_notification_icon_bg = 2130837773;
 			
 			// aapt resource value: 0x7f02010e
-			public const int options = 2130837774;
+			public const int save = 2130837774;
 			
 			// aapt resource value: 0x7f02010f
 			public const int settings = 2130837775;

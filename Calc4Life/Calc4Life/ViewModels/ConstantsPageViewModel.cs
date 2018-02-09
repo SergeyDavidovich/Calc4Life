@@ -13,6 +13,12 @@ namespace Calc4Life.ViewModels
            : base(navigationService)
         {
             Title = "Constants";
+            NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
+        }
+        public DelegateCommand NavigateToEditCommand { get; }
+        private async void NavigateToEditExecute()
+        {
+            await NavigationService.NavigateAsync("EditConstPage", null, false, true);
         }
     }
 }

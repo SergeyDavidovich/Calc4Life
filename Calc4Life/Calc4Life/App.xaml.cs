@@ -24,34 +24,31 @@ namespace Calc4Life
         {
             InitializeComponent();
 
-            var pageOne = new MainPage();
-            //NavigationPage.SetHasNavigationBar(pageOne, true);
-            //NavigationPage mypage = new NavigationPage(pageOne);
+            var pageOne = new CalcPage();
+            NavigationPage.SetHasNavigationBar(pageOne, true);
+            NavigationPage mypage = new NavigationPage(pageOne);
+            mypage.BarBackgroundColor = Color.FromHex("#0d47a1");
+            mypage.BarTextColor = Color.White;
 
-            //mypage.BackgroundColor = Color.Black;
-            //mypage.BarBackgroundColor = Color.FromHex("#1976d2");
             //mypage.Title = "Calculator";
-            //mypage.BarTextColor = Color.White;
             //mypage.BackgroundImage = "background.png";
             //mypage.Icon = "@drawable/icon";
 
-            ////mypage.CurrentPage.Title = "Calc4life";
-            //mypage.CurrentPage.IsBusy = true;
-            //mypage.CurrentPage.BackgroundImage = "icon.png";
+           this.MainPage = mypage;
 
-            //MainPage = mypage;
-
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            await NavigationService.NavigateAsync("CalcPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<CalcPage>();
             containerRegistry.RegisterForNavigation<MainPage>();
-            containerRegistry.RegisterForNavigation<OptionsTabbedPage>();
             containerRegistry.RegisterForNavigation<ConstantsPage>();
-            containerRegistry.RegisterForNavigation<OptonsPage>();
+            containerRegistry.RegisterForNavigation<OptionsPage>();
             containerRegistry.RegisterForNavigation<AboutPage>();
+            containerRegistry.RegisterForNavigation<SettingsPage>();
+            containerRegistry.RegisterForNavigation<EditConstPage>();
         }
     }
 }

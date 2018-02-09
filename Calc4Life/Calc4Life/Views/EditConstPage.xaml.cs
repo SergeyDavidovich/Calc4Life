@@ -2,9 +2,9 @@
 
 namespace Calc4Life.Views
 {
-    public partial class ConstantsContentPage : ContentPage
+    public partial class EditConstPage : ContentPage
     {
-        public ConstantsContentPage()
+        public EditConstPage()
         {
             InitializeComponent();
         }
