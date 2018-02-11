@@ -5,12 +5,16 @@ using Calc4Life.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Prism.Unity;
+using Calc4Life.Data;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
 {
+
     public partial class App : PrismApplication
     {
+        static ConstItemDatabase database;
+
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
          * This imposes a limitation in which the App class must have a default constructor. 
@@ -24,17 +28,18 @@ namespace Calc4Life
         {
             InitializeComponent();
 
+            Resources = new ResourceDictionary();
+            Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
+            Resources.Add("colorTitle", Color.WhiteSmoke);
+
             var pageOne = new CalcPage();
             NavigationPage.SetHasNavigationBar(pageOne, true);
-            NavigationPage mypage = new NavigationPage(pageOne);
-            mypage.BarBackgroundColor = Color.FromHex("#0d47a1");
-            mypage.BarTextColor = Color.White;
+            NavigationPage navPage = new NavigationPage(pageOne);
 
-            //mypage.Title = "Calculator";
-            //mypage.BackgroundImage = "background.png";
-            //mypage.Icon = "@drawable/icon";
+            navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
+            navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
 
-           this.MainPage = mypage;
+            this.MainPage = navPage;
 
             await NavigationService.NavigateAsync("CalcPage");
         }
@@ -49,6 +54,7 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<AboutPage>();
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
+
         }
     }
 }

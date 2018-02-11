@@ -16,7 +16,7 @@ namespace Calc4Life.Droid
     [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : Android.Support.V7.App.AppCompatActivity
     {
-        static readonly string TAG = "X:" + typeof(SplashActivity).Name;
+        //static readonly string TAG = "X:" + typeof(SplashActivity).Name;
 
         public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
         {

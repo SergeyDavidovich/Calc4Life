@@ -188,6 +188,26 @@ namespace Calc4Life.ViewModels
                 isBackSpaceApplicable = false;
                 mustClearDisplay = true;
             }
+            else
+            {
+                //1.
+                BinaryOperation.SetOperands(double.Parse(Display));
+                //2
+                double? result = BinaryOperation.Result;
+
+                //2. вывести результат на дисплей
+                Display = result.ToString();
+
+                //3. очистить операцию
+                BinaryOperation.Clear();
+
+                //4. устанавливаем первый операнд равный результату вычисления
+                BinaryOperation.SetOperands(Double.Parse(Display));
+
+                //5. устанавливаем флаги
+                isBackSpaceApplicable = false;
+                mustClearDisplay = true;
+            }
         }
 
         public DelegateCommand SignCommand { get; }

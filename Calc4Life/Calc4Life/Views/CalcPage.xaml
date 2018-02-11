@@ -90,7 +90,7 @@
         <Button Text="×" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Multiplication"/>
         <Button Text="-" Grid.Row="5" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Minus"/>
         <Button Text="+" Grid.Row="6" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Plus"/>
-        <Button Text="% Off" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}" Command="{Binding OperatorCommand}" CommandParameter="Discount" FontSize="22"/>
+        <Button Text="% OFF" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}" Command="{Binding OperatorCommand}" CommandParameter="Discount" FontSize="22"/>
 
         <Button Text="±" Grid.Row="3" Grid.Column="2" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding SignCommand}"/>
         <Button Text="=" Grid.Row="7" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding CalcCommand}"/>
@@ -100,9 +100,9 @@
         <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Read"/>
 
         <Button Text="C" Grid.Row="2" Grid.Column="2" BackgroundColor="{StaticResource ClearBack}" Command="{Binding EditDisplayCommand}" CommandParameter="Clear" FontSize="24"/>
-        <Button Text="Back" Grid.Row="2" Grid.Column="3" BackgroundColor="{StaticResource ClearBack}" Command="{Binding BackSpaceCommand}" FontSize="24"/>
+        <Button Text="BACK" Grid.Row="2" Grid.Column="3" BackgroundColor="{StaticResource ClearBack}" Command="{Binding BackSpaceCommand}" FontSize="24"/>
 
-        <Button Text="Const" Grid.Row="7" Grid.Column="0" BackgroundColor="{StaticResource ConstBack}" FontSize="20"
+        <Button Text="CONST" Grid.Row="7" Grid.Column="0" BackgroundColor="{StaticResource ConstBack}" FontSize="20"
                 Command="{Binding ConstCommand}"/>
     </Grid>
 </ContentPage>
