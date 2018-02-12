@@ -129,7 +129,7 @@ namespace Calc4Life.ViewModels
             mustClearDisplay = true;
 
             //1. форматируем дисплей
-            double operand = Double.Parse(Display);
+            double operand = Double.Parse(Display, CultureInfo.CurrentCulture);
             Display = operand.ToString();
 
             //2. определить оператор и сохраняем в currentOperator
@@ -157,7 +157,7 @@ namespace Calc4Life.ViewModels
                 BinaryOperation.Clear();
 
                 //4. первому операнду присвоить значение, равное результату операции
-                BinaryOperation.SetOperands(double.Parse(Display));
+                BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
 
                 isBackSpaceApplicable = false;
             }
@@ -187,7 +187,7 @@ namespace Calc4Life.ViewModels
                 BinaryOperation.Clear();
 
                 //4. устанавливаем первый операнд равный результату вычисления
-                BinaryOperation.SetOperands(Double.Parse(Display));
+                BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
 
                 //5. устанавливаем флаги
                 isBackSpaceApplicable = false;
@@ -196,7 +196,7 @@ namespace Calc4Life.ViewModels
             else
             {
                 //1.
-                BinaryOperation.SetOperands(double.Parse(Display));
+                BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
                 //2
                 double? result = BinaryOperation.Result;
 
@@ -207,7 +207,7 @@ namespace Calc4Life.ViewModels
                 BinaryOperation.Clear();
 
                 //4. устанавливаем первый операнд равный результату вычисления
-                BinaryOperation.SetOperands(Double.Parse(Display));
+                BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
 
                 //5. устанавливаем флаги
                 isBackSpaceApplicable = false;
@@ -229,7 +229,7 @@ namespace Calc4Life.ViewModels
                 str = "-" + str;
 
             Display = str;
-            BinaryOperation.SetOperands(Double.Parse(str));
+            BinaryOperation.SetOperands(Double.Parse(str, CultureInfo.CurrentCulture));
         }
 
         public DelegateCommand<string> MemoryCommand { get; }
@@ -239,7 +239,7 @@ namespace Calc4Life.ViewModels
             {
                 case "Add":
                     Memory = null;
-                    Memory = double.Parse(Display).ToString();
+                    Memory = double.Parse(Display, CultureInfo.CurrentCulture).ToString();
                     IsMemoryVisible = true;
                     break;
                 case "Clear":
@@ -249,7 +249,7 @@ namespace Calc4Life.ViewModels
                 case "Read":
                     if (Memory == null) return;
                     Display = Memory;
-                    BinaryOperation.SetOperands(Double.Parse(Display));
+                    BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
                     isBackSpaceApplicable = false;
                     mustClearDisplay = true;
                     break;
