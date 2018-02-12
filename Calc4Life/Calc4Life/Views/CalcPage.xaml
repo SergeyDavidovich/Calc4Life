@@ -84,7 +84,8 @@
         <Button Text="2" Grid.Row="6" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="2"/>
         <Button Text="3" Grid.Row="6" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="3"/>
         <Button Text="0" Grid.Row="7" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="0"/>
-        <Button Text="{Binding DecimalSeparator}" Grid.Row="7" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter=","/>
+        <Button Text="{Binding DecimalSeparator}" Grid.Row="7" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" 
+                Command="{Binding EditDisplayCommand}" CommandParameter="DecPoint"/>
 
         <Button Text="÷" Grid.Row="3" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Division"/>
         <Button Text="×" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Multiplication"/>

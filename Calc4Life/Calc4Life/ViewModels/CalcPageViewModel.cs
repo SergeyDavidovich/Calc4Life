@@ -16,6 +16,9 @@ namespace Calc4Life.ViewModels
 
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
+
+        string _DecimalSeparator;
+
         #endregion
 
         #region Constructors
@@ -28,7 +31,7 @@ namespace Calc4Life.ViewModels
             isBackSpaceApplicable = true;
             mustClearDisplay = false;
 
-            DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
+            DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
             ConstCommand = new DelegateCommand(ConstCommandExecute);
             OptionsCommand = new DelegateCommand(OptionsCommandExecute);
@@ -64,7 +67,6 @@ namespace Calc4Life.ViewModels
             set { SetProperty(ref _IsMemoryVisible, value); }
         }
 
-        string _DecimalSeparator;
         public string DecimalSeparator
         {
             get { return _DecimalSeparator; }
@@ -96,7 +98,7 @@ namespace Calc4Life.ViewModels
             Display = GetNewDisplayText(Display, par);
 
             //    //3. назначаем операнд в операцию
-            BinaryOperation.SetOperands(Double.Parse(Display));
+            BinaryOperation.SetOperands(Double.Parse(Display,CultureInfo.CurrentCulture));
 
             mustClearDisplay = false;
             isBackSpaceApplicable = true;
@@ -264,10 +266,10 @@ namespace Calc4Life.ViewModels
             string Result = currentDisplayText;
             switch (tag)
             {
-                case "," when !currentDisplayText.Contains("."):
+                case "DecPoint" when !currentDisplayText.Contains(DecimalSeparator):
                     {
-                        if (currentDisplayText == "") currentDisplayText = "0,";
-                        Result += tag;
+                        if (currentDisplayText == "") currentDisplayText = "0" + DecimalSeparator;
+                        Result += DecimalSeparator;
                         break;
                     }
                 case "0" when currentDisplayText != "0":
