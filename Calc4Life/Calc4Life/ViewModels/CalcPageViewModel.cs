@@ -114,7 +114,10 @@ namespace Calc4Life.ViewModels
             int i = currentDisplayText.Length - 1;
             currentDisplayText = currentDisplayText.Remove(i);
 
-            if (i == 0) currentDisplayText = "0";
+            if (i == 1 & currentDisplayText == "-")
+                currentDisplayText = "0";
+            if (i == 0)
+                currentDisplayText = "0";
 
             Display = currentDisplayText;
             BinaryOperation.SetOperands(double.Parse(Display));
@@ -288,7 +291,6 @@ namespace Calc4Life.ViewModels
                         Result += tag;
                         break;
                     }
-
                 case "Clear":
                     {
                         Result = "0";
