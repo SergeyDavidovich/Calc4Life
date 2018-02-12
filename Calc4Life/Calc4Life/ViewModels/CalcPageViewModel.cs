@@ -98,7 +98,7 @@ namespace Calc4Life.ViewModels
             Display = GetNewDisplayText(Display, par);
 
             //    //3. назначаем операнд в операцию
-            BinaryOperation.SetOperands(Double.Parse(Display,CultureInfo.CurrentCulture));
+            BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
 
             mustClearDisplay = false;
             isBackSpaceApplicable = true;
@@ -120,7 +120,7 @@ namespace Calc4Life.ViewModels
                 currentDisplayText = "0";
 
             Display = currentDisplayText;
-            BinaryOperation.SetOperands(double.Parse(Display));
+            BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
         }
 
         public DelegateCommand<string> OperatorCommand { get; }
