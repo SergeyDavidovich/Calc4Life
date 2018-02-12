@@ -24,7 +24,7 @@ namespace Calc4Life.Data
 
         public Task<List<Constant>> GetItemsNotDoneAsync()
         {
-            return database.QueryAsync<Constant>("SELECT * FROM [Constant] WHERE [Done] = 0");
+            return database.QueryAsync<Constant>("SELECT * FROM [Constant] WHERE [IsFavorite] = 0");
         }
 
         public Task<Constant> GetItemAsync(int id)

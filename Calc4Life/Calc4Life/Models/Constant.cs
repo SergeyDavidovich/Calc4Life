@@ -12,6 +12,6 @@ namespace Calc4Life.Models
         public string Name { get; set; }
         public double Value { get; set; }
         public string Note { get; set; }
-        public bool IsFavotite { get; set; }
+        public bool IsFavorite { get; set; }
     }
 }
