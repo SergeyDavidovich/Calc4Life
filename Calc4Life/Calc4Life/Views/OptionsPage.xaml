@@ -7,7 +7,7 @@
              x:Class="Calc4Life.Views.OptionsPage"
              Title="Options">
     <TabbedPage.Children >
-        <local:SettingsPage/>
-        <local:AboutPage/>
+        <local:SettingsPage Icon="settings.png"/>
+        <local:AboutPage Icon="about.png"/>
     </TabbedPage.Children>
 </TabbedPage>

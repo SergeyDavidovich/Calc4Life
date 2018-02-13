@@ -22,7 +22,13 @@
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontSize" Value="30"/>
-                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Margin" >
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS" Value="4" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="BorderWidth" Value="0"/>
                 <Setter Property="BorderColor" Value="Black"/>
                 <Setter Property="BorderRadius" Value="0"/>
@@ -30,12 +36,12 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding OptionsCommand}">
-            <ToolbarItem.Icon>
+        <ToolbarItem Command="{Binding OptionsCommand}" Icon="settings.png" Text="Settings" >
+            <!--<ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="Android" Value="settings.png" />
                 </OnPlatform>
-            </ToolbarItem.Icon>
+            </ToolbarItem.Icon>-->
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
