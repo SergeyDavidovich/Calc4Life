@@ -8,9 +8,7 @@ namespace Calc4Life.Views
         public OptionsPage()
         {
             InitializeComponent();
-
         }
-
         public void OnNavigatingTo(NavigationParameters parameters)
         {
             foreach (var child in this.Children)

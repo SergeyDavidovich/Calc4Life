@@ -6,6 +6,9 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Prism.Unity;
 using Calc4Life.Data;
+using System.Diagnostics;
+using Calc4Life.Services;
+using Calc4Life.Services.RepositoryServices;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -24,24 +27,28 @@ namespace Calc4Life
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-        protected override async void OnInitialized()
+        public static ConstItemDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new ConstItemDatabase(DependencyService.Get<IFileHelper>().GetLocalFilePath("CalculatorQLite.db3"));
+                }
+                return database;
+            }
+        }
+
+        protected override void OnInitialized()
         {
             InitializeComponent();
 
             Resources = new ResourceDictionary();
             Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
             Resources.Add("colorTitle", Color.WhiteSmoke);
-
-            var pageOne = new CalcPage();
-            NavigationPage.SetHasNavigationBar(pageOne, true);
-            NavigationPage navPage = new NavigationPage(pageOne);
-
-            navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
-            navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
-
-            this.MainPage = navPage;
-
-            await NavigationService.NavigateAsync("CalcPage");
+#if DEBUG
+            Debug.WriteLine("OnInitialized");
+#endif
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -55,6 +62,45 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
+            //containerRegistry.Register<IConstantsRepositoryService,"ConstantsRepositoryServiceFake" > ();
+
+#if DEBUG
+            Debug.WriteLine("RegisterTypes");
+#endif
+        }
+
+        protected async override void OnStart()
+        {
+            var pageOne = new CalcPage();
+            NavigationPage.SetHasNavigationBar(pageOne, true);
+            NavigationPage navPage = new NavigationPage(pageOne);
+
+            navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
+            navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
+
+            this.MainPage = navPage;
+
+            await NavigationService.NavigateAsync("CalcPage");
+
+#if DEBUG
+            Debug.WriteLine("OnStart");
+#endif
+        }
+
+        protected override void OnSleep()
+        {
+            base.OnSleep();
+#if DEBUG
+            Debug.WriteLine("OnSleep");
+#endif
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+#if DEBUG
+            Debug.WriteLine("OnResume");
+#endif
         }
     }
 }

@@ -20,5 +20,7 @@ namespace Calc4Life.ViewModels
         {
             await NavigationService.NavigateAsync("EditConstPage", null, false, true);
         }
+
+
     }
 }
