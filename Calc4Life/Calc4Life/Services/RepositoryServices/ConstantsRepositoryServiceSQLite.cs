@@ -18,6 +18,11 @@ namespace Calc4Life.Services.RepositoryServices
             throw new NotImplementedException();
         }
 
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<Constant>> GetAllAsync()
         {
             throw new NotImplementedException();

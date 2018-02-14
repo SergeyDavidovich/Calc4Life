@@ -36,12 +36,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding OptionsCommand}" Icon="settings.png" Text="Settings" >
-            <!--<ToolbarItem.Icon>
+        <ToolbarItem Command="{Binding OptionsCommand}">
+            <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="Android" Value="options.png" />
+                    <On Platform="iOS" Value="options.png" />
                 </OnPlatform>
-            </ToolbarItem.Icon>-->
+            </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
