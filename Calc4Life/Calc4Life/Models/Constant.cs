@@ -5,6 +5,7 @@ using SQLite;
 
 namespace Calc4Life.Models
 {
+    [Table("Constants")]
     public class Constant
     {
         [PrimaryKey, AutoIncrement]

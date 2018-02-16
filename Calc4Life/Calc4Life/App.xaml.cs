@@ -62,6 +62,8 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
+            containerRegistry.Register<IConstantsRepositoryService, ConstantsRepositoryServiceFake>();
+
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
 #endif

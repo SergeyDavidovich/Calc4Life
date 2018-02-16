@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:models="clr-namespace:Calc4Life.Models"
              x:Class="Calc4Life.Views.ConstantsPage"
              Title="Constants">
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding NavigateToEditCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -13,48 +14,61 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>
-    <StackLayout>
-        <!--<Grid RowSpacing="0" ColumnSpacing="0" Margin="4" BackgroundColor="WhiteSmoke" Padding="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-            <Entry Grid.Row="0" Grid.Column="0" Text="name" TextColor="Gray" Focused="EntryFocused"/>
-            <Entry Grid.Row="0" Grid.Column="1" Text="value" TextColor="Gray" Focused="EntryFocused"/>
-            <Button Grid.Row="0" Grid.Column="3" Text="ADD" VerticalOptions="Center" HorizontalOptions="Center"/>
-        </Grid>
-        <BoxView BackgroundColor="DarkGray" HeightRequest="1" Margin="4"/>-->
-        <ScrollView Margin="4" VerticalOptions="FillAndExpand">
-            <ListView x:Name="MyListView" 
-                ItemsSource="{Binding Items}"
-                ItemTapped="Handle_ItemTapped"
-                CachingStrategy="RecycleElement"  >
-                <!--Built in Cells-->
+    </ContentPage.ToolbarItems>-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Spacing="0" VerticalOptions="Fill">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+            <Image Source="add_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="EndAndExpand">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="edit_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="delete_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </StackLayout>
+        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
+            <ListView ItemsSource="{Binding Constants}" RowHeight="72" BackgroundColor="WhiteSmoke" SelectedItem="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding .}" TextColor="Black"/>
+                        <ViewCell>
+                            <!--<Grid>
+                                <Grid.Padding>
+                                    <OnPlatform x:TypeArguments="Thickness" iOS="10,5" Android="10,5" WinPhone="20,25"/>
+                                </Grid.Padding>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>-->
+                                <StackLayout Grid.Column="1"
+                                             Padding="8"
+                                             Spacing="4"
+                                             VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" TextColor="Brown" FontSize="Medium"/>
+                                    <Label Text="{Binding Value}" TextColor="Blue" FontSize="Small"/>
+                                </StackLayout>
+                            <!--</Grid>-->
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-
-                <!--Custom View Cells-->
-                <!--<ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>-->
             </ListView>
-        </ScrollView>
+        <Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
+                HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}"/>
     </StackLayout>
 </ContentPage>

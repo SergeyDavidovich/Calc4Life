@@ -4,14 +4,30 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Calc4Life.Views.EditConstPage"
-             Title="Add Constant">
+             Title="Add constant">
     <ContentPage.ToolbarItems>
-        
-        <ToolbarItem Command="{Binding SaveCommand}" Icon="save.png" Text="Save">
-        
+        <ToolbarItem Command="{Binding SaveCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="save.png" />
+                    <On Platform="iOS" Value="save.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Label Text="EditConstPage" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <TableView Intent="Form">
+            <TableRoot>
+                <TableSection Title="Enter constant name">
+                    <EntryCell Keyboard="Text" Placeholder="it can't be empty"/>
+                </TableSection>
+                <TableSection Title="Enter constant value">
+                    <EntryCell Keyboard="Numeric" Placeholder="it can't be empty"/>
+                </TableSection>
+                <TableSection Title="Enter constant notes">
+                    <EntryCell Keyboard="Text" Placeholder="optional"/>
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

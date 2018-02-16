@@ -55,7 +55,13 @@ namespace Calc4Life.Services.RepositoryServices
             return await Task.Run(() => _constants = new List<Constant>
             {
                 new Constant(){Id=1, Name="First Constant", Value=1234567890, Note="", IsFavorite=false},
-                new Constant(){Id=1, Name="Second Constant", Value=0.123456789 , Note="", IsFavorite=false}
+                new Constant(){Id=2, Name="Second Constant", Value=23456789 , Note="", IsFavorite=false},
+                new Constant(){Id=3, Name="Third Constant", Value=34567890, Note="", IsFavorite=false},
+                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
+                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
+                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
+                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
+                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false}
             });
         }
         private async Task WriteConstatsAsync()

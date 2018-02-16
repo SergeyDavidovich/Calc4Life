@@ -79,7 +79,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand ConstCommand { get; }
         private async void ConstCommandExecute()
         {
-            await NavigationService.NavigateAsync("ConstantsPage", null, false, true);
+            await NavigationService.NavigateAsync("ConstantsPage", null, false, false);
         }
 
         public DelegateCommand OptionsCommand { get; }
