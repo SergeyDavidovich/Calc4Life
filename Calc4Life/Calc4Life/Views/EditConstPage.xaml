@@ -22,7 +22,7 @@
                     <EntryCell Keyboard="Text" Placeholder="it can't be empty" />
                 </TableSection>
                 <TableSection Title="Enter constant value">
-                    <EntryCell Keyboard="Numeric" Placeholder="it can't be empty"/>
+                    <EntryCell Keyboard="Numeric" Placeholder="it can't be empty" Text="{Binding Value}"/>
                 </TableSection>
                 <TableSection Title="Enter constant notes">
                     <EntryCell Keyboard="Text" Placeholder="optional"/>

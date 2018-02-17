@@ -271,7 +271,7 @@ namespace Calc4Life.ViewModels
             {
                 var par = new NavigationParameters();
                 par.Add("value", Display);
-                await NavigationService.NavigateAsync("EditConstPage", null, false, true);
+                await NavigationService.NavigateAsync("EditConstPage", par, false, true);
             }
         }
         #endregion
