@@ -265,7 +265,8 @@ namespace Calc4Life.ViewModels
         public DelegateCommand AddConstantCommand { get; }
         private async void AddConstExecute()
         {
-          var answer= await _dialogService.DisplayAlertAsync("", "Do You want to add value from screen to constant?", "Yes", "No");
+            string message = $"Do you want to save {(double.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
+          var answer= await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
             if (answer == true)
             {
                 var par = new NavigationParameters();
