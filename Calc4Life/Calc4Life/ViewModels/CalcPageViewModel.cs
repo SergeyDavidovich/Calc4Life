@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using Calc4Life.Services;
 using System.Globalization;
+using Calc4Life.Models;
+using Prism.Services;
 
 namespace Calc4Life.ViewModels
 {
@@ -18,14 +20,17 @@ namespace Calc4Life.ViewModels
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
 
         string _DecimalSeparator;
+        IPageDialogService _dialogService;
 
         #endregion
 
         #region Constructors
 
-        public CalcPageViewModel(INavigationService navigationService)
+        public CalcPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
             : base(navigationService)
         {
+            _dialogService = dialogService;
+
             Title = "Calculator for Life";
             Display = "0";
             isBackSpaceApplicable = true;
@@ -41,11 +46,12 @@ namespace Calc4Life.ViewModels
             CalcCommand = new DelegateCommand(CalcExecute);
             SignCommand = new DelegateCommand(SignExecute);
             MemoryCommand = new DelegateCommand<string>(MemoryExecute);
+            AddConstantCommand = new DelegateCommand(AddConstExecute);
         }
 
         #endregion
 
-        #region Properties
+        #region Bindable Properties
         string _Display;
         public string Display
         {
@@ -255,6 +261,44 @@ namespace Calc4Life.ViewModels
                     break;
             }
         }
+
+        public DelegateCommand AddConstantCommand { get; }
+        private async void AddConstExecute()
+        {
+          var answer= await _dialogService.DisplayAlertAsync("", "Do You want to add value from screen to constant?", "Yes", "No");
+            if (answer == true)
+            {
+                var par = new NavigationParameters();
+                par.Add("value", Display);
+                await NavigationService.NavigateAsync("EditConstPage", null, false, true);
+            }
+        }
+        #endregion
+
+        #region Navigation
+
+        public override void OnNavigatedTo(NavigationParameters parameters)
+        {
+            if (parameters.Count != 0)
+            {
+                //1. получаем параметр
+                double curConst = ((Constant)parameters["const"]).Value;
+                //2. отражаем на дисплее
+                Display = curConst.ToString();
+                //3. назначаем операнд в операцию
+                BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
+            }
+        }
+
+        public override void OnNavigatingTo(NavigationParameters parameters)
+        {
+            base.OnNavigatingTo(parameters);
+        }
+        public override void OnNavigatedFrom(NavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+        }
+
         #endregion
 
         #region Private utilites

@@ -22,5 +22,11 @@ namespace Calc4Life.ViewModels
         {
             await _navigationService.GoBackAsync();
         }
+
+        public override void OnNavigatedTo(NavigationParameters parameters)
+        {
+            var par = parameters["value"];
+
+        }
     }
 }

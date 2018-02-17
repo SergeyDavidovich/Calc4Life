@@ -37,13 +37,15 @@
             </Image>
             <Image Source="delete_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
+                    <TapGestureRecognizer Command="{Binding DeleteCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
         </StackLayout>
         <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
-            <ListView ItemsSource="{Binding Constants}" RowHeight="72" BackgroundColor="WhiteSmoke" SelectedItem="1">
-                <ListView.ItemTemplate>
+        <ListView ItemsSource="{Binding Constants}" 
+                  RowHeight="72" BackgroundColor="WhiteSmoke" 
+                  SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
+            <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <!--<Grid>
@@ -67,7 +69,7 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+        </ListView>
         <Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
                 HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}"/>
     </StackLayout>

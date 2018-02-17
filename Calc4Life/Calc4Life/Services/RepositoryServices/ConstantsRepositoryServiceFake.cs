@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Calc4Life.Models;
 using Calc4Life.Services;
+using Xamarin.Forms;
+using Calc4Life.ViewModels;
 
 namespace Calc4Life.Services.RepositoryServices
 {
@@ -35,7 +37,8 @@ namespace Calc4Life.Services.RepositoryServices
         public async Task DeleteAsync(int id)
         {
             _constants.Remove(_constants.Find(x => x.Id == id));
-            await WriteConstatsAsync();
+            MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, id.ToString());
+             await WriteConstatsAsync();
         }
 
         public async Task<List<Constant>> GetAllFavoritesASync()

@@ -19,7 +19,7 @@
         <TableView Intent="Form">
             <TableRoot>
                 <TableSection Title="Enter constant name">
-                    <EntryCell Keyboard="Text" Placeholder="it can't be empty"/>
+                    <EntryCell Keyboard="Text" Placeholder="it can't be empty" />
                 </TableSection>
                 <TableSection Title="Enter constant value">
                     <EntryCell Keyboard="Numeric" Placeholder="it can't be empty"/>
