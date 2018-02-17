@@ -5,6 +5,7 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:models="clr-namespace:Calc4Life.Models"
              x:Class="Calc4Life.Views.ConstantsPage"
+             x:Name="constantsPage"
              Title="Constants">
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding NavigateToEditCommand}">
@@ -23,27 +24,22 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding NavigateToEditCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="add_const.png" />
+                    <On Platform="iOS" Value="add_const.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <StackLayout Spacing="0" VerticalOptions="Fill">
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
-            <Image Source="add_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="EndAndExpand">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-            <Image Source="edit_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-            <Image Source="delete_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding DeleteCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-        </StackLayout>
+      
         <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
         <ListView ItemsSource="{Binding Constants}" 
                   RowHeight="72" BackgroundColor="WhiteSmoke" 
+                
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
             <ListView.ItemTemplate>
                     <DataTemplate>
@@ -58,19 +54,47 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>-->
-                                <StackLayout Grid.Column="1"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0"
                                              Padding="8"
                                              Spacing="4"
                                              VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" TextColor="Brown" FontSize="Medium"/>
-                                    <Label Text="{Binding Value}" TextColor="Blue" FontSize="Small"/>
-                                </StackLayout>
-                            <!--</Grid>-->
+                                <Label Text="{Binding Name}" TextColor="Brown" FontSize="Medium"/>
+                                <Label Text="{Binding Value}" TextColor="Blue" FontSize="Small"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center">
+
+                                <Image Source="edit_const.png" WidthRequest="40" HeightRequest="40" Margin="0,0,10,0" HorizontalOptions="CenterAndExpand">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToEditCommand, Source={x:Reference constantsPage}}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <Image Source="delete_const.png" WidthRequest="40" HeightRequest="40" Margin="0,0,10,0" HorizontalOptions="CenterAndExpand">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference constantsPage}}" CommandParameter="{Binding}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.NavigateToCalcCommand, Source={x:Reference constantsPage}}" CommandParameter="{Binding}"></TapGestureRecognizer>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                        <!--</Grid>-->
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
         </ListView>
-        <Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
-                HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}"/>
+        <!--<Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
+                HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}">
+            <Button.Margin>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS" Value="5" />
+                </OnPlatform>
+            </Button.Margin>
+        </Button>-->
     </StackLayout>
 </ContentPage>

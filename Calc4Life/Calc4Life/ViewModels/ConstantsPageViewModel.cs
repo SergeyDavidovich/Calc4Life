@@ -36,8 +36,8 @@ namespace Calc4Life.ViewModels
             _dialogService = dialogService;
 
             NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
-            NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute);
-            DeleteCommand = new DelegateCommand(DeleteExecute);
+            NavigateToCalcCommand = new DelegateCommand<Constant>(NavigateToCalcExecute, (s) => s != null);
+            DeleteCommand = new DelegateCommand<Constant>(DeleteExecute, s => s != null);
         }
 
         #endregion
@@ -49,27 +49,27 @@ namespace Calc4Life.ViewModels
         {
             await NavigationService.NavigateAsync("EditConstPage", null, false, true);
         }
-        public DelegateCommand DeleteCommand { get; }
-        public async void DeleteExecute()
+        public DelegateCommand<Constant> DeleteCommand { get; }
+        public async void DeleteExecute(Constant selectedConstant)
         {
-            if (SelectedConstant == null) return;
+            if (selectedConstant == null) return;
 
             string title = "WARNING!";
-            string message = $"Your are about deleting \"{SelectedConstant.Name}\" \r\n\r\nDelete?";
+            string message = $"Your are about deleting \"{selectedConstant.Name}\" \r\n\r\nDelete?";
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
             Debug.WriteLine("Answer: " + answer);
 
             if (answer == true)
-                Constants.Remove(SelectedConstant);
+                Constants.Remove(selectedConstant);
             else return;
             //MessagingCenter.Subscribe<_constantRepository>()
         }
 
-        public DelegateCommand NavigateToCalcCommand { get; }
-        private async void NavigateToCalcExecute()
+        public DelegateCommand<Constant> NavigateToCalcCommand { get; }
+        private async void NavigateToCalcExecute(Constant selectedConstant)
         {
             var navigationParams = new NavigationParameters();
-            navigationParams.Add("const", SelectedConstant);
+            navigationParams.Add("const", selectedConstant);
             await NavigationService.GoBackAsync(navigationParams);
         }
 
