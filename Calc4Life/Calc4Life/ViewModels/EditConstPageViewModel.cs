@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Prism.Navigation;
+using Calc4Life.Services.RepositoryServices;
+using Calc4Life.Models;
+using System.Globalization;
+using Prism.Services;
 
 namespace Calc4Life.ViewModels
 {
@@ -11,15 +15,24 @@ namespace Calc4Life.ViewModels
     {
         #region declarations
 
-        private INavigationService _navigationService;
-        private string _value;
+        INavigationService _navigationService;
+        IConstantsRepositoryService _repositoryService;
+        IPageDialogService _dialogService;
+        string _value;
+        string _name;
+        string _note;
 
         #endregion
         #region Constructors
 
-        public EditConstPageViewModel(INavigationService navigationService) : base(navigationService)
+        public EditConstPageViewModel(INavigationService navigationService, 
+            IConstantsRepositoryService repositoryService, IPageDialogService dialogService) 
+            : base(navigationService)
         {
             _navigationService = navigationService;
+            _repositoryService = repositoryService;
+            _dialogService = dialogService;
+
             SaveCommand = new DelegateCommand(SaveExecute);
         }
 
@@ -29,8 +42,17 @@ namespace Calc4Life.ViewModels
         public DelegateCommand SaveCommand { get; }
         private async void SaveExecute()
         {
-            await _navigationService.GoBackAsync();
+            var answer = await _dialogService.DisplayAlertAsync("", "Do You want to save?", "Yes", "No");
+
+            if (answer==true)
+            {
+                await _repositoryService.AddAsync(new Constant { Name = Name, Value = Double.Parse(Value, CultureInfo.CurrentCulture), Note = Note });
+                await _navigationService.GoBackAsync();
+            }
+            
         }
+
+
 
         #endregion
         #region Navigation
@@ -49,7 +71,16 @@ namespace Calc4Life.ViewModels
             get { return _value; }
             set { SetProperty(ref _value, value); }
         }
-
+        public string Name
+        {
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
+        public string Note
+        {
+            get { return _note; }
+            set { SetProperty(ref _note, value); }
+        }
         #endregion
     }
 }

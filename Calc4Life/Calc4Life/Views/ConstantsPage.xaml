@@ -6,15 +6,29 @@
              xmlns:models="clr-namespace:Calc4Life.Models"
              x:Class="Calc4Life.Views.ConstantsPage"
              Title="Constants">
-    <!--<ContentPage.ToolbarItems>
+    <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding NavigateToEditCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="add.png" />
+                    <On Platform="Android" Value="add_const.png" />
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>-->
+        <ToolbarItem Command="{Binding NavigateToEditCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="edit_const.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding DeleteCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="delete_const.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
@@ -24,7 +38,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout Spacing="0" VerticalOptions="Fill">
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+        <!--<StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
             <Image Source="add_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="EndAndExpand">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
@@ -40,8 +54,8 @@
                     <TapGestureRecognizer Command="{Binding DeleteCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-        </StackLayout>
-        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
+        </StackLayout>-->
+        <!--<BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>-->
         <ListView ItemsSource="{Binding Constants}" 
                   RowHeight="72" BackgroundColor="WhiteSmoke" 
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
@@ -70,7 +84,12 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
         </ListView>
-        <Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
-                HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}"/>
+        <!--<Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
+                HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}"/>-->
+        <Image Source="insert_const.png" WidthRequest="66" HeightRequest="66" HorizontalOptions="End" Margin="0,-80,20,20">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateToCalcCommand}"/>
+            </Image.GestureRecognizers>
+        </Image>
     </StackLayout>
 </ContentPage>
