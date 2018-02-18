@@ -68,6 +68,8 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<Constant> NavigateToCalcCommand { get; }
         private async void NavigateToCalcExecute(Constant selectedConstant)
         {
+            if (SelectedConstant == null) return;
+
             var navigationParams = new NavigationParameters();
             navigationParams.Add("const", selectedConstant);
             await NavigationService.GoBackAsync(navigationParams);

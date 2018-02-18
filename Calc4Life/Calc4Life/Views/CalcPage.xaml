@@ -39,7 +39,7 @@
         <ToolbarItem Command="{Binding AddConstantCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="add.png" />
+                    <On Platform="Android" Value="add_const.png" />
                     <On Platform="iOS" Value="add.png" />
                 </OnPlatform>
             </ToolbarItem.Icon>

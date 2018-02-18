@@ -7,15 +7,29 @@
              x:Class="Calc4Life.Views.ConstantsPage"
              x:Name="constantsPage"
              Title="Constants">
-    <!--<ContentPage.ToolbarItems>
+    <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding NavigateToEditCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="add.png" />
+                    <On Platform="Android" Value="add_const.png" />
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>-->
+        <ToolbarItem Command="{Binding NavigateToEditCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="edit_const.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding DeleteCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="delete_const.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
@@ -35,11 +49,9 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout Spacing="0" VerticalOptions="Fill">
-      
         <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
         <ListView ItemsSource="{Binding Constants}" 
-                  RowHeight="72" BackgroundColor="WhiteSmoke" 
-                
+                  RowHeight="72" BackgroundColor="WhiteSmoke"          
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
             <ListView.ItemTemplate>
                     <DataTemplate>
@@ -87,14 +99,11 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-        </ListView>
-        <!--<Button BackgroundColor="Black" Text="Insert" TextColor="White" FontSize="Medium"
-                HorizontalOptions="Fill" HeightRequest="76" IsEnabled="True" Command="{Binding NavigateToCalcCommand}">
-            <Button.Margin>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="iOS" Value="5" />
-                </OnPlatform>
-            </Button.Margin>
-        </Button>-->
+        </ListView>      
+        <Image Source="insert_const.png" WidthRequest="66" HeightRequest="66" HorizontalOptions="End" Margin="0,-80,20,20">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateToCalcCommand}"/>
+            </Image.GestureRecognizers>
+        </Image>
     </StackLayout>
 </ContentPage>

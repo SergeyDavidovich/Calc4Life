@@ -19,13 +19,13 @@
         <TableView Intent="Form">
             <TableRoot>
                 <TableSection Title="Enter constant name">
-                    <EntryCell Keyboard="Text" Placeholder="it can't be empty" />
+                    <EntryCell Keyboard="Text" Placeholder="it can't be empty" Text="{Binding Name}" />
                 </TableSection>
                 <TableSection Title="Enter constant value">
                     <EntryCell Keyboard="Numeric" Placeholder="it can't be empty" Text="{Binding Value}"/>
                 </TableSection>
                 <TableSection Title="Enter constant notes">
-                    <EntryCell Keyboard="Text" Placeholder="optional"/>
+                    <EntryCell Keyboard="Text" Placeholder="optional" Text="{Binding Note}"/>
                 </TableSection>
             </TableRoot>
         </TableView>
