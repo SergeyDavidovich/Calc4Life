@@ -7,12 +7,18 @@ using Calc4Life.Models;
 using Calc4Life.Services;
 using Xamarin.Forms;
 using Calc4Life.ViewModels;
+using System.Diagnostics;
 
 namespace Calc4Life.Services.RepositoryServices
 {
     public class ConstantsRepositoryServiceFake : IConstantsRepositoryService
     {
         private List<Constant> _constants;
+
+        public ConstantsRepositoryServiceFake()
+        {
+            Debug.WriteLine($"ConstantsRepositoryServiceFake { DateTime.Now}");
+        }
 
         public async Task<List<Constant>> GetAllAsync()
         {
@@ -37,8 +43,10 @@ namespace Calc4Life.Services.RepositoryServices
         public async Task DeleteAsync(int id)
         {
             _constants.Remove(_constants.Find(x => x.Id == id));
-            MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, id.ToString());
-             await WriteConstatsAsync();
+
+            MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, "deleted");
+
+            await WriteConstatsAsync();
         }
 
         public async Task<List<Constant>> GetAllFavoritesASync()

@@ -9,6 +9,7 @@ using Calc4Life.Data;
 using System.Diagnostics;
 using Calc4Life.Services;
 using Calc4Life.Services.RepositoryServices;
+using Unity.Lifetime;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -62,7 +63,8 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
-            containerRegistry.Register<IConstantsRepositoryService, ConstantsRepositoryServiceFake>();
+            //containerRegistry.Register<IConstantsRepositoryService, ConstantsRepositoryServiceFake>();
+            containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");

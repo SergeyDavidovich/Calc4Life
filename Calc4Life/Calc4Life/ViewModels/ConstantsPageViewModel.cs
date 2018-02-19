@@ -38,6 +38,8 @@ namespace Calc4Life.ViewModels
             NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
             NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute);
             DeleteCommand = new DelegateCommand(DeleteExecute);
+
+            MessagingCenter.Subscribe<ConstantsRepositoryServiceFake>(this, "deleted", ConstantDeleted);
         }
 
         #endregion
@@ -59,9 +61,7 @@ namespace Calc4Life.ViewModels
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
 
             if (answer == true)
-                Constants.Remove(SelectedConstant);
-            else return;
-            //MessagingCenter.Subscribe<_constantRepository>()
+                await _constantRepository.DeleteAsync(SelectedConstant.Id);
         }
 
         public DelegateCommand NavigateToCalcCommand { get; }
@@ -79,8 +79,11 @@ namespace Calc4Life.ViewModels
         #region Navigation
         public async override void OnNavigatedTo(NavigationParameters parameters)
         {
-            var list = await _constantRepository.GetAllAsync();
-            Constants = new ObservableCollection<Constant>(list);
+            if (Constants == null)
+            {
+                var list = await _constantRepository.GetAllAsync();
+                Constants = new ObservableCollection<Constant>(list);
+            }
         }
         #endregion
 
@@ -97,6 +100,20 @@ namespace Calc4Life.ViewModels
             get { return _selectedConstant; }
             set { SetProperty(ref _selectedConstant, value); }
         }
+        #endregion
+
+        #region Messages actions
+        /// <summary>
+        /// message "deleted" from IConstRepositoryService
+        /// </summary>
+        private void ConstantDeleted(ConstantsRepositoryServiceFake sender)
+        {
+            Constants.Remove(SelectedConstant);
+            SelectedConstant = null;
+
+            //_dialogService.DisplayAlertAsync("SUCCESS!", "Constant deleted", "Close");
+        }
+
         #endregion
 
     }
