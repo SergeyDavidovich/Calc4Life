@@ -35,6 +35,8 @@ namespace Calc4Life.Services.RepositoryServices
         {
             if (_constants == null) _constants = await ReadConstantsAsync();
 
+            entity.Id = GetId();
+
             _constants.Add(entity);
 
             await WriteConstatsAsync();
@@ -63,6 +65,7 @@ namespace Calc4Life.Services.RepositoryServices
         #region read/write
         private async Task<List<Constant>> ReadConstantsAsync()
         {
+            
             return await Task.Run(() => _constants = new List<Constant>
             {
                 new Constant(){Id=1, Name="First Constant", Value=1234567890, Note="", IsFavorite=false},
@@ -76,6 +79,13 @@ namespace Calc4Life.Services.RepositoryServices
             await Task.CompletedTask;
         }
         #endregion
+        private int GetId()
+        {
 
+            int result = _constants.Max(n => n.Id); //максимальный Id
+            result++;
+
+            return result;
+        }
     }
 }

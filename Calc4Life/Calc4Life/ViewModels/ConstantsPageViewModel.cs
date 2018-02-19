@@ -79,11 +79,8 @@ namespace Calc4Life.ViewModels
         #region Navigation
         public async override void OnNavigatedTo(NavigationParameters parameters)
         {
-            if (Constants == null)
-            {
                 var list = await _constantRepository.GetAllAsync();
                 Constants = new ObservableCollection<Constant>(list);
-            }
         }
         #endregion
 

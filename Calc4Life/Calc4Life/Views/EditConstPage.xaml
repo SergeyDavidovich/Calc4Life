@@ -35,7 +35,7 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="Save" BackgroundColor="Green" TextColor="White" WidthRequest="180" HorizontalOptions="Center"/>
+            <Button Text="Save" BackgroundColor="Green" TextColor="White" WidthRequest="180" HorizontalOptions="Center" Command="{Binding SaveCommand}"/>
             <!--<Button Text="Save" HorizontalOptions="Center" IsEnabled="True" BackgroundColor="Green">
                 <Button.Triggers>
                     <MultiTrigger TargetType="Button">
