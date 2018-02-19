@@ -36,7 +36,7 @@ namespace Calc4Life.ViewModels
             _dialogService = dialogService;
 
             NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
-            NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute);
+            NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute, NavigateToCalcCanExecute);
             DeleteCommand = new DelegateCommand(DeleteExecute);
 
             MessagingCenter.Subscribe<ConstantsRepositoryServiceFake>(this, "deleted", ConstantDeleted);
@@ -67,11 +67,14 @@ namespace Calc4Life.ViewModels
         public DelegateCommand NavigateToCalcCommand { get; }
         private async void NavigateToCalcExecute()
         {
-            if (SelectedConstant == null) return;
-
             var navigationParams = new NavigationParameters();
             navigationParams.Add("const", SelectedConstant);
             await NavigationService.GoBackAsync(navigationParams);
+        }
+        private bool NavigateToCalcCanExecute()
+        {
+            if (SelectedConstant != null) return true;
+            else return false;
         }
 
         #endregion
@@ -79,8 +82,8 @@ namespace Calc4Life.ViewModels
         #region Navigation
         public async override void OnNavigatedTo(NavigationParameters parameters)
         {
-                var list = await _constantRepository.GetAllAsync();
-                Constants = new ObservableCollection<Constant>(list);
+            var list = await _constantRepository.GetAllAsync();
+            Constants = new ObservableCollection<Constant>(list);
         }
         #endregion
 
@@ -97,6 +100,7 @@ namespace Calc4Life.ViewModels
             get { return _selectedConstant; }
             set { SetProperty(ref _selectedConstant, value); }
         }
+
         #endregion
 
         #region Messages actions
