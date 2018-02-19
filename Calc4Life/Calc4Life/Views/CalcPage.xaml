@@ -26,6 +26,7 @@
                     <Setter.Value>
                         <OnPlatform x:TypeArguments="Thickness">
                             <On Platform="iOS" Value="4" />
+                            <On Platform="Android" Value="0"/>
                         </OnPlatform>
                     </Setter.Value>
                 </Setter>

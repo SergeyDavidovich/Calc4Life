@@ -57,7 +57,6 @@ namespace Calc4Life.ViewModels
             string title = "WARNING!";
             string message = $"Your are about deleting \"{SelectedConstant.Name}\" \r\n\r\nDelete?";
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
-            Debug.WriteLine("Answer: " + answer);
 
             if (answer == true)
                 Constants.Remove(SelectedConstant);

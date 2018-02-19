@@ -61,10 +61,6 @@ namespace Calc4Life.Services.RepositoryServices
                 new Constant(){Id=2, Name="Second Constant", Value=23456789 , Note="", IsFavorite=false},
                 new Constant(){Id=3, Name="Third Constant", Value=34567890, Note="", IsFavorite=false},
                 new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false}
             });
         }
         private async Task WriteConstatsAsync()
