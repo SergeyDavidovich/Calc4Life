@@ -317,7 +317,9 @@ namespace Calc4Life.ViewModels
                 case "DecPoint" when !currentDisplayText.Contains(DecimalSeparator):
                     {
                         if (currentDisplayText == "") currentDisplayText = "0" + DecimalSeparator;
-                        Result += DecimalSeparator;
+                        else currentDisplayText += DecimalSeparator;
+
+                        Result = currentDisplayText;
                         break;
                     }
                 case "0" when currentDisplayText != "0":
