@@ -7,10 +7,11 @@
              x:Class="Calc4Life.Views.OptionsPage"
              Title="Options">
     <TabbedPage.Children >
-        <local:SettingsPage Icon="settings.png">
+        <local:SettingsPage>
             <local:SettingsPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="options.png"/>
+                    <On Platform="Android" Value="settings.png"/>
                 </OnPlatform>
             </local:SettingsPage.Icon>
         </local:SettingsPage>
@@ -18,6 +19,7 @@
             <local:AboutPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="about.png"/>
+                    <On Platform="Android" Value="about.png"/>
                 </OnPlatform>
             </local:AboutPage.Icon>
         </local:AboutPage>
