@@ -137,11 +137,11 @@ namespace Calc4Life.ViewModels
         {
             //1. поднимаем флаг
             mustClearDisplay = true;
-            
+
             //2. форматируем дисплей
             double operand = Double.Parse(Display, CultureInfo.CurrentCulture);
             Display = operand.ToString();
-            
+
             //3. 
             _lastOperator = par;
 
@@ -157,7 +157,7 @@ namespace Calc4Life.ViewModels
 
                 //2. вывести результат на дисплей
                 Display = result.ToString();
-                
+
                 //3. очистить операцию
                 _binaryOperation.Clear();
 
@@ -286,8 +286,18 @@ namespace Calc4Life.ViewModels
             switch (par)
             {
                 case "Add":
-                    Memory = null;
-                    Memory = double.Parse(Display, CultureInfo.CurrentCulture).ToString();
+                    double memoryValue;
+                    if (Memory != null)
+                    {
+                        memoryValue = Double.Parse(Memory, CultureInfo.CurrentCulture);
+                        memoryValue += double.Parse(Display, CultureInfo.CurrentCulture);
+                    }
+                    else
+                    {
+                        memoryValue = double.Parse(Display, CultureInfo.CurrentCulture);
+                    }
+                    Memory = memoryValue.ToString();
+
                     IsMemoryVisible = true;
                     break;
                 case "Clear":
@@ -308,7 +318,7 @@ namespace Calc4Life.ViewModels
         private async void AddConstExecute()
         {
             string message = $"Do you want to save {(double.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
-          var answer= await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
+            var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
             if (answer == true)
             {
                 var par = new NavigationParameters();
@@ -330,6 +340,9 @@ namespace Calc4Life.ViewModels
                 Display = curConst.ToString();
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+                //4. Устанавливаем флаги
+                isBackSpaceApplicable = false;
+                mustClearDisplay = true;
             }
         }
 
