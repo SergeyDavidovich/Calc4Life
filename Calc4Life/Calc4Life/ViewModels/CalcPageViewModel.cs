@@ -244,18 +244,18 @@ namespace Calc4Life.ViewModels
             //else
             //{
             //    //1.
-            //    BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
+            //    _binaryOperation.SetOperand(double.Parse(Display, CultureInfo.CurrentCulture));
             //    //2
-            //    double? result = BinaryOperation.Result;
+            //    double? result = _binaryOperation.Result();
 
             //    //2. вывести результат на дисплей
             //    Display = result.ToString();
 
             //    //3. очистить операцию
-            //    BinaryOperation.Clear();
+            //    _binaryOperation.Clear();
 
             //    //4. устанавливаем первый операнд равный результату вычисления
-            //    BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
+            //    _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
 
             //    //5. устанавливаем флаги
             //    isBackSpaceApplicable = false;
