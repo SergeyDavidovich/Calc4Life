@@ -38,36 +38,19 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout Spacing="0" VerticalOptions="Fill">
-        <!--<StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
-            <Image Source="add_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="EndAndExpand">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-            <Image Source="edit_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NavigateToEditCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-            <Image Source="delete_const.png" WidthRequest="36" HeightRequest="36" Margin="10" HorizontalOptions="End">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding DeleteCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-        </StackLayout>-->
         <ListView ItemsSource="{Binding Constants}" 
-                  RowHeight="80" BackgroundColor="WhiteSmoke" 
+                  RowHeight="70" BackgroundColor="WhiteSmoke" 
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Grid.Column="1"
-                                             Padding="8"
-                                             Spacing="4"
-                                             VerticalOptions="Center">
-                            <Label Text="{Binding Name}" TextColor="Brown" FontSize="Medium"/>
-                            <Label Text="{Binding Value}" TextColor="Blue" FontSize="Small"/>
-                            <Label Text="{Binding Id}" TextColor="Blue" FontSize="Small"/>
+                        <StackLayout
+                                Padding="18,0,0,0"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                            <Label Text="{Binding Name}" TextColor="Crimson" FontSize="Medium"/>
+                            <Label Text="{Binding Value}" TextColor="DarkBlue" FontSize="Medium"/>
+                            <!--<Label Text="{Binding Id}" TextColor="Blue" FontSize="Small"/>-->
                         </StackLayout>
                         <!--</Grid>-->
                     </ViewCell>

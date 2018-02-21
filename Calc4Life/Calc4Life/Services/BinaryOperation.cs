@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calc4Life.Services.OperationServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,12 @@ namespace Calc4Life.Services
     /// <summary>
     /// Абстракция бинарной операций
     /// </summary>
-    public static class BinaryOperation
+    public static class BinaryOperation1
     {
         private static double? operand1; //Первый опернад
         private static double? operand2; //Второй операнд
         private static double? result; //Результат последней операций 
-        private static Operations? operation; //Последняя введёная операция
+        private static BinaryOperators? operation; //Последняя введёная операция
         private static bool _IsOperationFormed; //готова ли операция к выполнению
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace Calc4Life.Services
         /// <summary>
         /// Представляет оператор операции
         /// </summary>
-        public static Operations? Operation
+        public static BinaryOperators? Operation
         {
             get { return operation; }
             set
@@ -70,7 +71,7 @@ namespace Calc4Life.Services
         /// <param name="operand1"></param>
         /// <param name="operand2"></param>
         /// <param name="operation"></param>
-        private static void SetIsOperationFormed(double? operand1, double? operand2, Operations? operation)
+        private static void SetIsOperationFormed(double? operand1, double? operand2, BinaryOperators? operation)
         {
             if (operand1 != null & operand2 != null & operation != null)
                 _IsOperationFormed = true;
@@ -97,19 +98,19 @@ namespace Calc4Life.Services
         {
             switch (Operation)
             {
-                case Operations.Plus:
+                case BinaryOperators.Plus:
                     result = operand1 + operand2;
                     break;
-                case Operations.Multiplication:
+                case BinaryOperators.Multiplication:
                     result = operand1 * operand2;
                     break;
-                case Operations.Division:
+                case BinaryOperators.Division:
                     result = operand1 / operand2;
                     break;
-                case Operations.Minus:
+                case BinaryOperators.Minus:
                     result = operand1 - operand2;
                     break;
-                case Operations.Discount:
+                case BinaryOperators.Discount:
                     result = (operand1 * operand2) / 100;
                     break;
             }

@@ -4,7 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <ApplicationIcon />
     <Win32Resource />
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModels\CalcPageViewModel — копия.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="tool.png" />
