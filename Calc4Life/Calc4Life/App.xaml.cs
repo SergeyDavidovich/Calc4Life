@@ -29,6 +29,8 @@ namespace Calc4Life
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
+        
+
         public static ConstItemDatabase Database
         {
             get
@@ -64,10 +66,8 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
-            //containerRegistry.Register<IConstantsRepositoryService, ConstantsRepositoryServiceFake>();
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
-
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");

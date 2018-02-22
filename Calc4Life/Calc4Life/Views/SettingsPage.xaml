@@ -6,6 +6,31 @@
              x:Class="Calc4Life.Views.SettingsPage"
              Title="Settings">
     <ContentPage.Content>
-            <Label Text="SettingsPage" FontSize="Large" VerticalOptions="Center" HorizontalOptions="Center"/>
+        <TableView Intent="Settings" Margin="10">
+            <TableRoot>
+                <TableSection Title="Defaults">
+                    <SwitchCell Text="Set defaults" On="True"/>
+                </TableSection>
+                <TableSection Title="Formatting">
+                    <SwitchCell Text="Show thousands" On="False" />
+                </TableSection>
+                <TableSection Title="Result">
+                    <SwitchCell Text="Round result" On="False"/>
+                    <ViewCell IsEnabled="True">
+                        <!--<StackLayout>-->
+                            <Slider x:Name="sl" Value="2" Maximum="6" Minimum="0"/>
+                        <!--</StackLayout>-->
+                    </ViewCell>
+                </TableSection>
+                <TableSection>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="20,0,0,0">
+                            <Label Text="Sample:" FontSize="Large"/>
+                            <Label Text="1 234 567.56" TextColor="DarkBlue" FontSize="Large" Margin="10,0,0,0"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

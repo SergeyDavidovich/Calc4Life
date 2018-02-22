@@ -11,7 +11,7 @@
             <local:SettingsPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="options.png"/>
-                    <On Platform="Android" Value="settings.png"/>
+                    <!--<On Platform="Android" Value="settings.png"/>-->
                 </OnPlatform>
             </local:SettingsPage.Icon>
         </local:SettingsPage>
@@ -19,7 +19,7 @@
             <local:AboutPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="about.png"/>
-                    <On Platform="Android" Value="about.png"/>
+                    <!--<On Platform="Android" Value="about.png"/>-->
                 </OnPlatform>
             </local:AboutPage.Icon>
         </local:AboutPage>

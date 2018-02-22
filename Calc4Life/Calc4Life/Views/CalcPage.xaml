@@ -86,7 +86,7 @@
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" FontSize="Medium" HorizontalOptions="Start" HorizontalTextAlignment="Start"
                    IsVisible="{Binding IsMemoryVisible}"/>
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="38" FontAttributes="None" TranslationY="1.5"
-               HorizontalTextAlignment="End" VerticalTextAlignment="Start" 
+               HorizontalTextAlignment="End" VerticalTextAlignment="Start"
                TextColor="Black"/>
         </Grid>
 

@@ -94,7 +94,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand OptionsCommand { get; }
         private async void OptionsCommandExecute()
         {
-            await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage");
+            await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
         }
 
         public DelegateCommand<string> EditDisplayCommand { get; }
