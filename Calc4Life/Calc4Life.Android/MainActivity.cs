@@ -8,8 +8,8 @@ namespace Calc4Life.Droid
 {
     [Activity(Label = "Calc4Life", 
         Icon = "@drawable/icon", 
-        Theme = "@style/MainTheme", 
-        //MainLauncher = true,
+        Theme = "@style/MainTheme",
+        MainLauncher = false,
         ScreenOrientation = ScreenOrientation.Portrait,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity

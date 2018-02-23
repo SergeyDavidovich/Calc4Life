@@ -22,7 +22,7 @@
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontSize" Value="30"/>
-                <Setter Property="Margin" >
+                <Setter Property="Margin">
                     <Setter.Value>
                         <OnPlatform x:TypeArguments="Thickness">
                             <On Platform="iOS" Value="4" />
@@ -30,9 +30,6 @@
                         </OnPlatform>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="BorderWidth" Value="0"/>
-                <Setter Property="BorderColor" Value="Black"/>
-                <Setter Property="BorderRadius" Value="0"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -55,7 +52,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-        <Grid BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
+    <Grid BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
             <RowDefinition Height="80"/>
@@ -71,7 +68,6 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
