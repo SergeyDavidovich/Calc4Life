@@ -64,6 +64,10 @@ namespace Calc4Life.ViewModels
             get { return _value; }
             set { SetProperty(ref _value, value); }
         }
+
+        /// <summary>
+        /// Имя константы
+        /// </summary>
         public string Name
         {
             get { return _name; }
