@@ -42,17 +42,10 @@ namespace Calc4Life.ViewModels
         public DelegateCommand SaveCommand { get; }
         private async void SaveExecute()
         {
-            var answer = await _dialogService.DisplayAlertAsync("", "Do You want to save?", "Yes", "No");
-
-            if (answer==true)
-            {
-                await _repositoryService.AddAsync(new Constant { Name = Name, Value = Double.Parse(Value, CultureInfo.CurrentCulture), Note = Note });
+                await _repositoryService.AddAsync(
+                    new Constant { Name = Name, Value = Double.Parse(Value, CultureInfo.CurrentCulture), Note = Note });
                 await _navigationService.GoBackAsync();
-            }
-            
         }
-
-
 
         #endregion
         #region Navigation

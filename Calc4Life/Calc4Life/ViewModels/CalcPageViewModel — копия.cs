@@ -19,20 +19,18 @@ namespace Calc4Life.ViewModels
 
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
-        string _lastOperator; // последний введенный оператор
-        string _DecimalSeparator;
 
+        string _DecimalSeparator;
         IPageDialogService _dialogService;
-        IBinaryOperationService _binaryOperation;
+
         #endregion
 
         #region Constructors
 
-        public CalcPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IBinaryOperationService binaryOperationService)
+        public CalcPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
             : base(navigationService)
         {
             _dialogService = dialogService;
-            _binaryOperation = binaryOperationService;
 
             Title = "Calculator for Life";
             Display = "0";
@@ -94,7 +92,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand OptionsCommand { get; }
         private async void OptionsCommandExecute()
         {
-            await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
+            await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage");
         }
 
         public DelegateCommand<string> EditDisplayCommand { get; }
@@ -107,7 +105,7 @@ namespace Calc4Life.ViewModels
             Display = GetNewDisplayText(Display, par);
 
             //    //3. назначаем операнд в операцию
-            _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+            BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
 
             mustClearDisplay = false;
             isBackSpaceApplicable = true;
@@ -129,113 +127,74 @@ namespace Calc4Life.ViewModels
                 currentDisplayText = "0";
 
             Display = currentDisplayText;
-            _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+            BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
         }
 
         public DelegateCommand<string> OperatorCommand { get; }
-        private void OperatorExecute(string par) // Plus Minus Multiplication Division Discount
+        private void OperatorExecute(string par)
         {
-            //1. поднимаем флаг
             mustClearDisplay = true;
 
-            //2. форматируем дисплей
+            //1. форматируем дисплей
             double operand = Double.Parse(Display, CultureInfo.CurrentCulture);
             Display = operand.ToString();
 
-            //3. 
-            _lastOperator = par;
+            //2. определить оператор и сохраняем в currentOperator
+            BinaryOperators? currentOperator = null;
 
-
-            if (_binaryOperation.IsReadyForCalc() == false)
+            switch (par)
             {
-                _binaryOperation.SetOperator(par);
+                case "Plus": { currentOperator = BinaryOperators.Plus; break; }
+                case "Minus": { currentOperator = BinaryOperators.Minus; break; }
+                case "Multiplication": { currentOperator = BinaryOperators.Multiplication; break; }
+                case "Division": { currentOperator = BinaryOperators.Division; break; }
+                case "Discount": { currentOperator = BinaryOperators.Discount; break; }
             }
-            else if (_binaryOperation.IsReadyForCalc() == true)
+
+            //3. Сохранить оператор ИЛИ выполнить вычисление операции
+            if (BinaryOperation.IsOperationFormed == true) //операция готова к вычислению
             {
                 //1. произвести вычисление
-                double? result = _binaryOperation.Result();
+                double? result = BinaryOperation.Result;
 
                 //2. вывести результат на дисплей
                 Display = result.ToString();
 
                 //3. очистить операцию
-                _binaryOperation.Clear();
+                BinaryOperation.Clear();
 
                 //4. первому операнду присвоить значение, равное результату операции
-                _binaryOperation.SetOperand(double.Parse(Display, CultureInfo.CurrentCulture));
+                BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
 
-                //5.
-                _binaryOperation.SetOperator(par);
-
-                //6.
                 isBackSpaceApplicable = false;
             }
+            else //операция не готова к вычислению
+            {
+                //1. изменить оператор
+                BinaryOperation.Operation = currentOperator;
+
+                //2. выйди из процедуры
+                return;
+            }
         }
-
-        //private void OperatorExecute1(string par) // Plus Minus Multiplication Division Discount
-        //{
-        //    mustClearDisplay = true;
-
-        //    //1. форматируем дисплей
-        //    double operand = Double.Parse(Display, CultureInfo.CurrentCulture);
-        //    Display = operand.ToString();
-
-        //    ////2. определить оператор и сохраняем в currentOperator
-        //    //BinaryOperators? currentOperator = null;
-
-        //    //switch (par)
-        //    //{
-        //    //    case "Plus": { currentOperator = BinaryOperators.Plus; break; }
-        //    //    case "Minus": { currentOperator = BinaryOperators.Minus; break; }
-        //    //    case "Multiplication": { currentOperator = BinaryOperators.Multiplication; break; }
-        //    //    case "Division": { currentOperator = BinaryOperators.Division; break; }
-        //    //    case "Discount": { currentOperator = BinaryOperators.Discount; break; }
-        //    //}
-
-        //    //3. Сохранить оператор ИЛИ выполнить вычисление операции
-        //    if (BinaryOperation.IsOperationFormed == true) //операция готова к вычислению
-        //    {
-        //        //1. произвести вычисление
-        //        double? result = BinaryOperation.Result;
-
-        //        //2. вывести результат на дисплей
-        //        Display = result.ToString();
-
-        //        //3. очистить операцию
-        //        BinaryOperation.Clear();
-
-        //        //4. первому операнду присвоить значение, равное результату операции
-        //        BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
-
-        //        isBackSpaceApplicable = false;
-        //    }
-        //    else //операция не готова к вычислению
-        //    {
-        //        //1. изменить оператор
-        //        BinaryOperation.Operation = currentOperator;
-
-        //        //2. выйди из процедуры
-        //        return;
-        //    }
-        //}
 
         public DelegateCommand CalcCommand { get; }
         private void CalcExecute()
         {
             //1. производим вычисление ИЛИ выходим
-            if (_binaryOperation.IsReadyForCalc()) //операция готова к вычислению
+            if (BinaryOperation.IsOperationFormed) //операция готова к вычислению
             {
                 //1. произвести вычисление
-                double? result = _binaryOperation.Result();
+                double? result = BinaryOperation.Result;
 
                 //2. вывести результат на дисплей
                 Display = result.ToString();
 
                 //3. очистить операцию
-                _binaryOperation.Clear();
+                BinaryOperation.Clear();
 
                 //4. устанавливаем первый операнд равный результату вычисления
-                _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+                BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
 
                 //5. устанавливаем флаги
                 isBackSpaceApplicable = false;
@@ -244,18 +203,18 @@ namespace Calc4Life.ViewModels
             //else
             //{
             //    //1.
-            //    _binaryOperation.SetOperand(double.Parse(Display, CultureInfo.CurrentCulture));
+            //    BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
             //    //2
-            //    double? result = _binaryOperation.Result();
+            //    double? result = BinaryOperation.Result;
 
             //    //2. вывести результат на дисплей
             //    Display = result.ToString();
 
             //    //3. очистить операцию
-            //    _binaryOperation.Clear();
+            //    BinaryOperation.Clear();
 
             //    //4. устанавливаем первый операнд равный результату вычисления
-            //    _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+            //    BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
 
             //    //5. устанавливаем флаги
             //    isBackSpaceApplicable = false;
@@ -277,7 +236,7 @@ namespace Calc4Life.ViewModels
                 str = "-" + str;
 
             Display = str;
-            _binaryOperation.SetOperand(Double.Parse(str, CultureInfo.CurrentCulture));
+            BinaryOperation.SetOperands(Double.Parse(str, CultureInfo.CurrentCulture));
         }
 
         public DelegateCommand<string> MemoryCommand { get; }
@@ -286,18 +245,8 @@ namespace Calc4Life.ViewModels
             switch (par)
             {
                 case "Add":
-                    double memoryValue;
-                    if (Memory != null)
-                    {
-                        memoryValue = Double.Parse(Memory, CultureInfo.CurrentCulture);
-                        memoryValue += double.Parse(Display, CultureInfo.CurrentCulture);
-                    }
-                    else
-                    {
-                        memoryValue = double.Parse(Display, CultureInfo.CurrentCulture);
-                    }
-                    Memory = memoryValue.ToString();
-
+                    Memory = null;
+                    Memory = double.Parse(Display, CultureInfo.CurrentCulture).ToString();
                     IsMemoryVisible = true;
                     break;
                 case "Clear":
@@ -307,7 +256,7 @@ namespace Calc4Life.ViewModels
                 case "Read":
                     if (Memory == null) return;
                     Display = Memory;
-                    _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+                    BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
                     isBackSpaceApplicable = false;
                     mustClearDisplay = true;
                     break;
@@ -318,7 +267,7 @@ namespace Calc4Life.ViewModels
         private async void AddConstExecute()
         {
             string message = $"Do you want to save {(double.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
-            var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
+          var answer= await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
             if (answer == true)
             {
                 var par = new NavigationParameters();
@@ -339,10 +288,7 @@ namespace Calc4Life.ViewModels
                 //2. отражаем на дисплее
                 Display = curConst.ToString();
                 //3. назначаем операнд в операцию
-                _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
-                //4. Устанавливаем флаги
-                isBackSpaceApplicable = false;
-                mustClearDisplay = true;
+                BinaryOperation.SetOperands(Double.Parse(Display, CultureInfo.CurrentCulture));
             }
         }
 
@@ -396,7 +342,7 @@ namespace Calc4Life.ViewModels
                 case "Clear":
                     {
                         Result = "0";
-                        _binaryOperation.Clear();
+                        BinaryOperation.Clear();
                         break;
                     }
             }

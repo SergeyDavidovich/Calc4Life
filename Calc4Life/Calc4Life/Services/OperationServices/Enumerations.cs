@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calc4Life.Services
+namespace Calc4Life.Services.OperationServices
 {
     /// <summary>
-    /// Перечесление символов операций 
+    /// Перечесление бинарных операций 
     /// </summary>
-    public enum Operations
+    public enum BinaryOperators
     {
         Plus,
         Multiplication,

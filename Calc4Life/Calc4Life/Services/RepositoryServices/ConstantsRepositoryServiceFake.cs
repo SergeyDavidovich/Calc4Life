@@ -7,12 +7,18 @@ using Calc4Life.Models;
 using Calc4Life.Services;
 using Xamarin.Forms;
 using Calc4Life.ViewModels;
+using System.Diagnostics;
 
 namespace Calc4Life.Services.RepositoryServices
 {
     public class ConstantsRepositoryServiceFake : IConstantsRepositoryService
     {
         private List<Constant> _constants;
+
+        public ConstantsRepositoryServiceFake()
+        {
+            Debug.WriteLine($"ConstantsRepositoryServiceFake { DateTime.Now}");
+        }
 
         public async Task<List<Constant>> GetAllAsync()
         {
@@ -29,6 +35,8 @@ namespace Calc4Life.Services.RepositoryServices
         {
             if (_constants == null) _constants = await ReadConstantsAsync();
 
+            entity.Id = GetId();
+
             _constants.Add(entity);
 
             await WriteConstatsAsync();
@@ -37,8 +45,10 @@ namespace Calc4Life.Services.RepositoryServices
         public async Task DeleteAsync(int id)
         {
             _constants.Remove(_constants.Find(x => x.Id == id));
-            MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, id.ToString());
-             await WriteConstatsAsync();
+
+            MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, "deleted");
+
+            await WriteConstatsAsync();
         }
 
         public async Task<List<Constant>> GetAllFavoritesASync()
@@ -55,16 +65,13 @@ namespace Calc4Life.Services.RepositoryServices
         #region read/write
         private async Task<List<Constant>> ReadConstantsAsync()
         {
+            
             return await Task.Run(() => _constants = new List<Constant>
             {
-                new Constant(){Id=1, Name="First Constant", Value=1234567890, Note="", IsFavorite=false},
+                new Constant(){Id=1, Name="First Constant", Value=10, Note="", IsFavorite=false},
                 new Constant(){Id=2, Name="Second Constant", Value=23456789 , Note="", IsFavorite=false},
                 new Constant(){Id=3, Name="Third Constant", Value=34567890, Note="", IsFavorite=false},
                 new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false},
-                new Constant(){Id=4, Name="Forth Constant", Value=456789 , Note="", IsFavorite=false}
             });
         }
         private async Task WriteConstatsAsync()
@@ -72,6 +79,13 @@ namespace Calc4Life.Services.RepositoryServices
             await Task.CompletedTask;
         }
         #endregion
+        private int GetId()
+        {
 
+            int result = _constants.Max(n => n.Id); //максимальный Id
+            result++;
+
+            return result;
+        }
     }
 }

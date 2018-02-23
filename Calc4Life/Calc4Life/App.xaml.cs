@@ -9,6 +9,8 @@ using Calc4Life.Data;
 using System.Diagnostics;
 using Calc4Life.Services;
 using Calc4Life.Services.RepositoryServices;
+using Unity.Lifetime;
+using Calc4Life.Services.OperationServices;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -26,6 +28,8 @@ namespace Calc4Life
         public App() : this(null) { }
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
+
+        
 
         public static ConstItemDatabase Database
         {
@@ -62,7 +66,8 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
-            containerRegistry.Register<IConstantsRepositoryService, ConstantsRepositoryServiceFake>();
+            containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
+            containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");

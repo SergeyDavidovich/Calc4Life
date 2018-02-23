@@ -36,8 +36,15 @@ namespace Calc4Life.ViewModels
             _dialogService = dialogService;
 
             NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
+<<<<<<< HEAD
             NavigateToCalcCommand = new DelegateCommand<Constant>(NavigateToCalcExecute, (s) => s != null);
             DeleteCommand = new DelegateCommand<Constant>(DeleteExecute, s => s != null);
+=======
+            NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute, NavigateToCalcCanExecute);
+            DeleteCommand = new DelegateCommand(DeleteExecute);
+
+            MessagingCenter.Subscribe<ConstantsRepositoryServiceFake>(this, "deleted", ConstantDeleted);
+>>>>>>> upstream/master
         }
 
         #endregion
@@ -57,22 +64,28 @@ namespace Calc4Life.ViewModels
             string title = "WARNING!";
             string message = $"Your are about deleting \"{selectedConstant.Name}\" \r\n\r\nDelete?";
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
-            Debug.WriteLine("Answer: " + answer);
 
             if (answer == true)
+<<<<<<< HEAD
                 Constants.Remove(selectedConstant);
             else return;
             //MessagingCenter.Subscribe<_constantRepository>()
+=======
+                await _constantRepository.DeleteAsync(SelectedConstant.Id);
+>>>>>>> upstream/master
         }
 
         public DelegateCommand<Constant> NavigateToCalcCommand { get; }
         private async void NavigateToCalcExecute(Constant selectedConstant)
         {
-            if (SelectedConstant == null) return;
-
             var navigationParams = new NavigationParameters();
             navigationParams.Add("const", selectedConstant);
             await NavigationService.GoBackAsync(navigationParams);
+        }
+        private bool NavigateToCalcCanExecute()
+        {
+            if (SelectedConstant != null) return true;
+            else return false;
         }
 
         #endregion
@@ -98,6 +111,21 @@ namespace Calc4Life.ViewModels
             get { return _selectedConstant; }
             set { SetProperty(ref _selectedConstant, value); }
         }
+
+        #endregion
+
+        #region Messages actions
+        /// <summary>
+        /// message "deleted" from IConstRepositoryService
+        /// </summary>
+        private void ConstantDeleted(ConstantsRepositoryServiceFake sender)
+        {
+            Constants.Remove(SelectedConstant);
+            SelectedConstant = null;
+
+            //_dialogService.DisplayAlertAsync("SUCCESS!", "Constant deleted", "Close");
+        }
+
         #endregion
 
     }
