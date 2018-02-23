@@ -5,36 +5,32 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Calc4Life.Views.SettingsPage"
              Title="Settings">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Start">
-            <TableView Intent="Settings" Margin="10">
-                <TableRoot>
-                    <TableSection>
-                        <SwitchCell x:Name="SwithToDefaults" Text="Set to defaults" On="True" OnChanged="SwithToDefaults_OnChanged"/>
-                    </TableSection>
-                    <TableSection>
-                        <SwitchCell x:Name="SwithchToShowThousands" Text="Show thousands" On="True" IsEnabled="False" />
-                    </TableSection>
-                    <TableSection>
-                        <SwitchCell x:Name="SwitchToRoundResult" Text="Round up result" On="False"/>
-                        <ViewCell IsEnabled="True">
-                            <StackLayout>
-                                <Slider x:Name="SliderSelectChars" Value="2" Maximum="6" Minimum="0"/>
-                                <Label x:Name="LabelShowChars" Text="to 2 characters" Margin="14,0,0,0"/>
-                            </StackLayout>
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
-            <StackLayout Orientation="Horizontal" Margin="20,20,0,0" VerticalOptions="StartAndExpand" HorizontalOptions="Center">
-                <Label Text="Sample:" FontSize="Large" VerticalOptions="Center"/>
-                <Label x:Name="LabelSample" Text="1 234 567.56" TextColor="Crimson" FontSize="30" Margin="10,0,0,0" VerticalOptions="Center"/>
-            </StackLayout>
-        </StackLayout>
+        <TableView Intent="Settings" Margin="10">
+            <TableRoot>
+                <TableSection Title="Defaults">
+                    <SwitchCell Text="Set defaults" On="True"/>
+                </TableSection>
+                <TableSection Title="Formatting">
+                    <SwitchCell Text="Show thousands" On="False" />
+                </TableSection>
+                <TableSection Title="Result">
+                    <SwitchCell Text="Round result" On="False"/>
+                    <ViewCell IsEnabled="True">
+                        <!--<StackLayout>-->
+                            <Slider x:Name="sl" Value="2" Maximum="6" Minimum="0"/>
+                        <!--</StackLayout>-->
+                    </ViewCell>
+                </TableSection>
+                <TableSection>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="20,0,0,0">
+                            <Label Text="Sample:" FontSize="Large"/>
+                            <Label Text="1 234 567.56" TextColor="DarkBlue" FontSize="Large" Margin="10,0,0,0"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

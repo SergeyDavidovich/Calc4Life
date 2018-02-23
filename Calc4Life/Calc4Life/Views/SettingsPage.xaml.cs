@@ -16,9 +16,5 @@ namespace Calc4Life.Views
 		{
 			InitializeComponent ();
 		}
-        public void SwithToDefaults_OnChanged(object sender, ToggledEventArgs e)
-        {
-
-        }
-    }
+	}
 }

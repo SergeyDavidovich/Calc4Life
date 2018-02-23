@@ -9,16 +9,12 @@ namespace Calc4Life.Views
         {
             InitializeComponent();
         }
-
-
         public void OnNavigatingTo(NavigationParameters parameters)
         {
             foreach (var child in this.Children)
             {
                 Prism.Common.PageUtilities.OnNavigatingTo(child, parameters);
             }
-
         }
-       
     }
 }
