@@ -24,6 +24,7 @@ namespace Calc4Life.ViewModels
 
         IPageDialogService _dialogService;
         IBinaryOperationService _binaryOperation;
+
         #endregion
 
         #region Constructors
@@ -60,6 +61,13 @@ namespace Calc4Life.ViewModels
         {
             get { return _Display; }
             set { SetProperty(ref _Display, value); }
+        }
+
+        string _Expression;
+        public string Expression
+        {
+            get { return _Expression; }
+            set { SetProperty(ref _Expression, value); }
         }
 
         string _Memory;
@@ -335,9 +343,11 @@ namespace Calc4Life.ViewModels
             if (parameters.Count != 0)
             {
                 //1. получаем параметр
-                double curConst = ((Constant)parameters["const"]).Value;
+                double curConstValue = ((Constant)parameters["const"]).Value;
+                string curConstName = ((Constant)parameters["const"]).Name;
                 //2. отражаем на дисплее
-                Display = curConst.ToString();
+                Display = curConstValue.ToString();
+                Expression = curConstName;
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
                 //4. Устанавливаем флаги
