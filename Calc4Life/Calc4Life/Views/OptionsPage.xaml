@@ -10,12 +10,8 @@
         <local:SettingsPage>
             <local:SettingsPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-<<<<<<< HEAD
-                    <On Platform="iOS" Value="settings.png"/>
-=======
                     <On Platform="iOS" Value="options.png"/>
                     <!--<On Platform="Android" Value="settings.png"/>-->
->>>>>>> upstream/master
                 </OnPlatform>
             </local:SettingsPage.Icon>
         </local:SettingsPage>

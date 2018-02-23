@@ -36,15 +36,10 @@ namespace Calc4Life.ViewModels
             _dialogService = dialogService;
 
             NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
-<<<<<<< HEAD
-            NavigateToCalcCommand = new DelegateCommand<Constant>(NavigateToCalcExecute, (s) => s != null);
-            DeleteCommand = new DelegateCommand<Constant>(DeleteExecute, s => s != null);
-=======
             NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute, NavigateToCalcCanExecute);
             DeleteCommand = new DelegateCommand(DeleteExecute);
 
             MessagingCenter.Subscribe<ConstantsRepositoryServiceFake>(this, "deleted", ConstantDeleted);
->>>>>>> upstream/master
         }
 
         #endregion
@@ -56,30 +51,24 @@ namespace Calc4Life.ViewModels
         {
             await NavigationService.NavigateAsync("EditConstPage", null, false, true);
         }
-        public DelegateCommand<Constant> DeleteCommand { get; }
-        public async void DeleteExecute(Constant selectedConstant)
+        public DelegateCommand DeleteCommand { get; }
+        public async void DeleteExecute()
         {
-            if (selectedConstant == null) return;
+            if (SelectedConstant == null) return;
 
             string title = "WARNING!";
-            string message = $"Your are about deleting \"{selectedConstant.Name}\" \r\n\r\nDelete?";
+            string message = $"Your are about deleting \"{SelectedConstant.Name}\" \r\n\r\nDelete?";
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
 
             if (answer == true)
-<<<<<<< HEAD
-                Constants.Remove(selectedConstant);
-            else return;
-            //MessagingCenter.Subscribe<_constantRepository>()
-=======
                 await _constantRepository.DeleteAsync(SelectedConstant.Id);
->>>>>>> upstream/master
         }
 
-        public DelegateCommand<Constant> NavigateToCalcCommand { get; }
-        private async void NavigateToCalcExecute(Constant selectedConstant)
+        public DelegateCommand NavigateToCalcCommand { get; }
+        private async void NavigateToCalcExecute()
         {
             var navigationParams = new NavigationParameters();
-            navigationParams.Add("const", selectedConstant);
+            navigationParams.Add("const", SelectedConstant);
             await NavigationService.GoBackAsync(navigationParams);
         }
         private bool NavigateToCalcCanExecute()
@@ -94,6 +83,7 @@ namespace Calc4Life.ViewModels
         public async override void OnNavigatedTo(NavigationParameters parameters)
         {
             var list = await _constantRepository.GetAllAsync();
+           
             Constants = new ObservableCollection<Constant>(list);
         }
         #endregion

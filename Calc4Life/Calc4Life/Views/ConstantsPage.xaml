@@ -49,59 +49,6 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout Spacing="0" VerticalOptions="Fill">
-<<<<<<< HEAD
-        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="Red"/>
-        <ListView ItemsSource="{Binding Constants}" 
-                  RowHeight="72" BackgroundColor="WhiteSmoke"          
-                  SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
-            <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <!--<Grid>
-                                <Grid.Padding>
-                                    <OnPlatform x:TypeArguments="Thickness" iOS="10,5" Android="10,5" WinPhone="20,25"/>
-                                </Grid.Padding>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>-->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackLayout Grid.Column="0"
-                                             Padding="8"
-                                             Spacing="4"
-                                             VerticalOptions="Center">
-                                <Label Text="{Binding Name}" TextColor="Brown" FontSize="Medium"/>
-                                <Label Text="{Binding Value}" TextColor="Blue" FontSize="Small"/>
-                            </StackLayout>
-                            <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center">
-
-                                <Image Source="edit_const.png" WidthRequest="40" HeightRequest="40" Margin="0,0,10,0" HorizontalOptions="CenterAndExpand">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToEditCommand, Source={x:Reference constantsPage}}"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
-                                <Image Source="delete_const.png" WidthRequest="40" HeightRequest="40" Margin="0,0,10,0" HorizontalOptions="CenterAndExpand">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand, Source={x:Reference constantsPage}}" CommandParameter="{Binding}"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
-                            </StackLayout>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.NavigateToCalcCommand, Source={x:Reference constantsPage}}" CommandParameter="{Binding}"></TapGestureRecognizer>
-                            </Grid.GestureRecognizers>
-                        </Grid>
-                        <!--</Grid>-->
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-        </ListView>      
-=======
         <ListView ItemsSource="{Binding Constants}" 
                   RowHeight="70" BackgroundColor="WhiteSmoke" 
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
@@ -121,7 +68,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
->>>>>>> upstream/master
         <Image Source="insert_const.png" WidthRequest="66" HeightRequest="66" HorizontalOptions="End" Margin="0,-80,20,20">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding NavigateToCalcCommand}"/>
