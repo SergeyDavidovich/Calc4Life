@@ -5,6 +5,7 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:models="clr-namespace:Calc4Life.Models"
              x:Class="Calc4Life.Views.ConstantsPage"
+             x:Name="constantsPage"
              Title="Constants">
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding NavigateToEditCommand}">
@@ -37,6 +38,16 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding NavigateToEditCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="add_const.png" />
+                    <On Platform="iOS" Value="add_const.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <StackLayout Spacing="0" VerticalOptions="Fill">
         <ListView ItemsSource="{Binding Constants}" 
                   RowHeight="70" BackgroundColor="WhiteSmoke" 
