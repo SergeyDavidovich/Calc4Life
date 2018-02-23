@@ -55,7 +55,7 @@
     <Grid BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -72,6 +72,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -84,6 +85,7 @@
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="38" FontAttributes="None" TranslationY="1.5"
                HorizontalTextAlignment="End" VerticalTextAlignment="Start"
                TextColor="Black"/>
+            <Label Grid.Row="2" Text="{Binding Expression}" Grid.ColumnSpan="2" FontSize="18" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
         </Grid>
 
         <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>
