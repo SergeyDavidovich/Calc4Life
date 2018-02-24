@@ -115,9 +115,13 @@ namespace Calc4Life.ViewModels
             //2. выводим на дисплей, значения вводимые с кнопок
             Display = GetNewDisplayText(Display, par);
 
-            //    //3. назначаем операнд в операцию
+            //3 очищаем строку выражения
+            Expression = "";
+
+            //4. назначаем операнд в операцию
             _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
 
+            //устанавливаем флаги
             mustClearDisplay = false;
             isBackSpaceApplicable = true;
         }
@@ -158,7 +162,7 @@ namespace Calc4Life.ViewModels
             if (_binaryOperation.IsReadyForCalc() == false)
             {
                 _binaryOperation.SetOperator(par);
-                Expression=$"{Display} {par}";
+                //Expression=$"{Display} {par}";
             }
             else if (_binaryOperation.IsReadyForCalc() == true)
             {
@@ -169,7 +173,7 @@ namespace Calc4Life.ViewModels
 
                 //2. вывести результат на дисплей
                 Display = result.ToString();
-                Expression = $" {Display} {par}";
+                //Expression = $" {Display} {par}";
 
 
                 //3. очистить операцию
@@ -314,7 +318,7 @@ namespace Calc4Life.ViewModels
                 string curConstName = ((Constant)parameters["const"]).Name;
                 //2. отражаем на дисплее
                 Display = curConstValue.ToString();
-                Expression += curConstName;
+                Expression = curConstName;
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
                 //4. Устанавливаем флаги

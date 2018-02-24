@@ -71,7 +71,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.2*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="1.4*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -85,9 +85,10 @@
                    IsVisible="{Binding IsMemoryVisible}" Margin="1"/>
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" TextColor="Green" FontSize="16" HorizontalOptions="Start" HorizontalTextAlignment="Start" 
                    VerticalOptions="Center" IsVisible="{Binding IsMemoryVisible}"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="50"
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="48"
                 TextColor="Black" HorizontalOptions="End"/>
-            <Label Grid.Row="2" Text="{Binding Expression}" Grid.ColumnSpan="2" FontSize="18" HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="0,0,2,2"/>
+            <Label Grid.Row="2" Text="{Binding Expression}" Grid.ColumnSpan="2" FontSize="18"
+                   HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="0,0,2,4"/>
         </Grid>
 
         <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>
