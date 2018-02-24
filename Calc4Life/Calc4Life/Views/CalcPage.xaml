@@ -51,11 +51,10 @@
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-
     <Grid BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -68,24 +67,27 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" ColumnSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1.2*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Text=" M: " FontSize="Medium" HorizontalOptions="End" HorizontalTextAlignment="End"
-                   IsVisible="{Binding IsMemoryVisible}"/>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" FontSize="Medium" HorizontalOptions="Start" HorizontalTextAlignment="Start"
-                   IsVisible="{Binding IsMemoryVisible}"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="38" FontAttributes="None" TranslationY="1.5"
-               HorizontalTextAlignment="End" VerticalTextAlignment="Start"
-               TextColor="Black"/>
-            <Label Grid.Row="2" Text="{Binding Expression}" Grid.ColumnSpan="2" FontSize="18" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+            <BoxView Grid.Row="0" Grid.Column="0" 
+                     BackgroundColor="{StaticResource MemoryBack}" IsVisible="{Binding IsMemoryVisible}" 
+                     Margin="2" VerticalOptions="CenterAndExpand" HorizontalOptions="End"/>
+            <Label Grid.Row="0" Grid.Column="0" 
+                   Text="M:" TextColor="White" FontSize="16" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"
+                   IsVisible="{Binding IsMemoryVisible}" Margin="1"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" TextColor="Green" FontSize="16" HorizontalOptions="Start" HorizontalTextAlignment="Start" 
+                   VerticalOptions="Center" IsVisible="{Binding IsMemoryVisible}"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="50"
+                TextColor="Black" HorizontalOptions="End"/>
+            <Label Grid.Row="2" Text="{Binding Expression}" Grid.ColumnSpan="2" FontSize="18" HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="0,0,2,2"/>
         </Grid>
 
         <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>
@@ -101,11 +103,11 @@
         <Button Text="{Binding DecimalSeparator}" Grid.Row="7" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" 
                 Command="{Binding EditDisplayCommand}" CommandParameter="DecPoint"/>
 
-        <Button Text="÷" Grid.Row="3" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Division"/>
-        <Button Text="×" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Multiplication"/>
-        <Button Text="-" Grid.Row="5" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Minus"/>
-        <Button Text="+" Grid.Row="6" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="Plus"/>
-        <Button Text="% OFF" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}" Command="{Binding OperatorCommand}" CommandParameter="Discount" FontSize="22"/>
+        <Button Text="÷" Grid.Row="3" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="/"/>
+        <Button Text="×" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="*"/>
+        <Button Text="-" Grid.Row="5" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="-"/>
+        <Button Text="+" Grid.Row="6" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="+"/>
+        <Button Text="% OFF" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}" Command="{Binding OperatorCommand}" CommandParameter="%" FontSize="22"/>
 
         <Button Text="±" Grid.Row="3" Grid.Column="2" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding SignCommand}"/>
         <Button Text="=" Grid.Row="7" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding CalcCommand}"/>
@@ -114,7 +116,7 @@
         <Button Text="MC" Grid.Row="2" Grid.Column="1" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Clear"/>
         <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Read"/>
 
-        <Button Text="C" Grid.Row="2" Grid.Column="2" BackgroundColor="{StaticResource ClearBack}" Command="{Binding EditDisplayCommand}" CommandParameter="Clear" FontSize="24"/>
+        <Button Text="C" Grid.Row="2" Grid.Column="2" BackgroundColor="{StaticResource ClearBack}" Command="{Binding ClearCommand}" FontSize="24"/>
         <Button Text="BACK" Grid.Row="2" Grid.Column="3" BackgroundColor="{StaticResource ClearBack}" Command="{Binding BackSpaceCommand}" FontSize="24"/>
 
         <Button Text="CONST" Grid.Row="7" Grid.Column="0" BackgroundColor="{StaticResource ConstBack}" FontSize="20"

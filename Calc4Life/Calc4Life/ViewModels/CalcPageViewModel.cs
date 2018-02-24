@@ -51,6 +51,7 @@ namespace Calc4Life.ViewModels
             SignCommand = new DelegateCommand(SignExecute);
             MemoryCommand = new DelegateCommand<string>(MemoryExecute);
             AddConstantCommand = new DelegateCommand(AddConstExecute);
+            ClearCommand = new DelegateCommand(ClearExecute);
         }
 
         #endregion
@@ -157,14 +158,19 @@ namespace Calc4Life.ViewModels
             if (_binaryOperation.IsReadyForCalc() == false)
             {
                 _binaryOperation.SetOperator(par);
+                Expression=$"{Display} {par}";
             }
             else if (_binaryOperation.IsReadyForCalc() == true)
             {
+                Expression +=$" {Display}";
+
                 //1. произвести вычисление
                 double? result = _binaryOperation.Result();
 
                 //2. вывести результат на дисплей
                 Display = result.ToString();
+                Expression = $" {Display} {par}";
+
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
@@ -179,53 +185,6 @@ namespace Calc4Life.ViewModels
                 isBackSpaceApplicable = false;
             }
         }
-
-        //private void OperatorExecute1(string par) // Plus Minus Multiplication Division Discount
-        //{
-        //    mustClearDisplay = true;
-
-        //    //1. форматируем дисплей
-        //    double operand = Double.Parse(Display, CultureInfo.CurrentCulture);
-        //    Display = operand.ToString();
-
-        //    ////2. определить оператор и сохраняем в currentOperator
-        //    //BinaryOperators? currentOperator = null;
-
-        //    //switch (par)
-        //    //{
-        //    //    case "Plus": { currentOperator = BinaryOperators.Plus; break; }
-        //    //    case "Minus": { currentOperator = BinaryOperators.Minus; break; }
-        //    //    case "Multiplication": { currentOperator = BinaryOperators.Multiplication; break; }
-        //    //    case "Division": { currentOperator = BinaryOperators.Division; break; }
-        //    //    case "Discount": { currentOperator = BinaryOperators.Discount; break; }
-        //    //}
-
-        //    //3. Сохранить оператор ИЛИ выполнить вычисление операции
-        //    if (BinaryOperation.IsOperationFormed == true) //операция готова к вычислению
-        //    {
-        //        //1. произвести вычисление
-        //        double? result = BinaryOperation.Result;
-
-        //        //2. вывести результат на дисплей
-        //        Display = result.ToString();
-
-        //        //3. очистить операцию
-        //        BinaryOperation.Clear();
-
-        //        //4. первому операнду присвоить значение, равное результату операции
-        //        BinaryOperation.SetOperands(double.Parse(Display, CultureInfo.CurrentCulture));
-
-        //        isBackSpaceApplicable = false;
-        //    }
-        //    else //операция не готова к вычислению
-        //    {
-        //        //1. изменить оператор
-        //        BinaryOperation.Operation = currentOperator;
-
-        //        //2. выйди из процедуры
-        //        return;
-        //    }
-        //}
 
         public DelegateCommand CalcCommand { get; }
         private void CalcExecute()
@@ -334,7 +293,15 @@ namespace Calc4Life.ViewModels
                 await NavigationService.NavigateAsync("EditConstPage", par, false, true);
             }
         }
-        #endregion
+
+        public DelegateCommand ClearCommand { get; }
+        private void ClearExecute()
+        {
+            Display = "0";
+            Expression = "";
+            _binaryOperation.Clear();
+        }
+            #endregion
 
         #region Navigation
 
@@ -347,7 +314,7 @@ namespace Calc4Life.ViewModels
                 string curConstName = ((Constant)parameters["const"]).Name;
                 //2. отражаем на дисплее
                 Display = curConstValue.ToString();
-                Expression = curConstName;
+                Expression += curConstName;
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
                 //4. Устанавливаем флаги
@@ -398,7 +365,7 @@ namespace Calc4Life.ViewModels
                 case "8":
                 case "9":
                     {
-                        if (currentDisplayText.Length == 16) break;
+                        if (currentDisplayText.Length == 12) break;
                         if (currentDisplayText == "0") Result = "";
                         Result += tag;
                         break;

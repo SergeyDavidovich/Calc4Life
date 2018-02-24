@@ -61,19 +61,19 @@ namespace Calc4Life.Services.OperationServices
         {
             switch (@operator)
             {
-                case "Plus":
+                case "+":
                     Operator = BinaryOperators.Plus;
                     break;
-                case "Minus":
+                case "-":
                     Operator = BinaryOperators.Minus;
                     break;
-                case "Multiplication":
+                case "*":
                     Operator = BinaryOperators.Multiplication;
                     break;
-                case "Division":
+                case "/":
                     Operator = BinaryOperators.Division;
                     break;
-                case "Discount":
+                case "%":
                     Operator = BinaryOperators.Discount;
                     break;
 
