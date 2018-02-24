@@ -69,7 +69,7 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" ColumnSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="1.4*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="1.4*"/>
             </Grid.RowDefinitions>
@@ -87,8 +87,9 @@
                    VerticalOptions="Center" IsVisible="{Binding IsMemoryVisible}"/>
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="48"
                 TextColor="Black" HorizontalOptions="End"/>
-            <Label Grid.Row="2" Text="{Binding Expression}" Grid.ColumnSpan="2" FontSize="18"
-                   HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="0,0,2,4"/>
+            <!--<BoxView Grid.Row="2" Grid.ColumnSpan="2" BackgroundColor="Black" HorizontalOptions="Fill" Margin="2" Opacity="0.8"/>-->
+            <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Expression}" FontSize="18"
+                   HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="0,0,6,4"/>
         </Grid>
 
         <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>

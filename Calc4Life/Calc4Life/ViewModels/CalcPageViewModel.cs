@@ -166,7 +166,7 @@ namespace Calc4Life.ViewModels
             }
             else if (_binaryOperation.IsReadyForCalc() == true)
             {
-                Expression +=$" {Display}";
+                //Expression +=$" {Display}";
 
                 //1. произвести вычисление
                 double? result = _binaryOperation.Result();
@@ -201,6 +201,7 @@ namespace Calc4Life.ViewModels
 
                 //2. вывести результат на дисплей
                 Display = result.ToString();
+                Expression = "";
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
