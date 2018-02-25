@@ -8,6 +8,7 @@ using Calc4Life.Services.RepositoryServices;
 using Calc4Life.Models;
 using System.Globalization;
 using Prism.Services;
+using Calc4Life.Validations;
 
 namespace Calc4Life.ViewModels
 {
@@ -18,15 +19,17 @@ namespace Calc4Life.ViewModels
         INavigationService _navigationService;
         IConstantsRepositoryService _repositoryService;
         IPageDialogService _dialogService;
-        string _value;
-        string _name;
+
+        //валидационные свойства(свойства, подверженные валидации)
+        ValidatableObject<string> _value;
+        ValidatableObject<string> _name;
         string _note;
 
         #endregion
         #region Constructors
 
-        public EditConstPageViewModel(INavigationService navigationService, 
-            IConstantsRepositoryService repositoryService, IPageDialogService dialogService) 
+        public EditConstPageViewModel(INavigationService navigationService,
+            IConstantsRepositoryService repositoryService, IPageDialogService dialogService)
             : base(navigationService)
         {
             _navigationService = navigationService;
@@ -34,17 +37,29 @@ namespace Calc4Life.ViewModels
             _dialogService = dialogService;
 
             SaveCommand = new DelegateCommand(SaveExecute);
+            //Команды, которые будут валидировать свойства каждый раз, когда пользователь вводит текст
+            ValidateNameCommand = new DelegateCommand(() => ValidateName());
+            ValidateValueCommand = new DelegateCommand(() => ValidateValue());
+
+            //создаем экземпляры валидационных свойств
+            _value = new ValidatableObject<string>();
+            _name = new ValidatableObject<string>();
+            //добавляем валидационные правила
+            AddValidations();
+
         }
 
         #endregion
         #region Commands
-
+        public DelegateCommand ValidateNameCommand { get; }
+        public DelegateCommand ValidateValueCommand { get; }
         public DelegateCommand SaveCommand { get; }
         private async void SaveExecute()
         {
-                await _repositoryService.AddAsync(
-                    new Constant { Name = Name, Value = Double.Parse(Value, CultureInfo.CurrentCulture), Note = Note });
-                await _navigationService.GoBackAsync();
+            if (!Validate()) return;
+            await _repositoryService.AddAsync(
+                new Constant { Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note });
+            await _navigationService.GoBackAsync();
         }
 
         #endregion
@@ -52,31 +67,68 @@ namespace Calc4Life.ViewModels
 
         public override void OnNavigatedTo(NavigationParameters parameters)
         {
-            string par =(string)parameters["value"];
-            Value = par;
+            string par = (string)parameters["value"];
+            Value.Value = par;
         }
 
         #endregion
         #region Bindable properties
 
-        public string Value
+        public ValidatableObject<string> Value
         {
             get { return _value; }
-            set { SetProperty(ref _value, value); }
+            set
+            {
+                SetProperty(ref _value, value);
+            }
         }
 
         /// <summary>
         /// Имя константы
         /// </summary>
-        public string Name
+        public ValidatableObject<string> Name
         {
             get { return _name; }
-            set { SetProperty(ref _name, value); }
+            set
+            {
+                SetProperty(ref _name, value);
+            }
         }
         public string Note
         {
             get { return _note; }
             set { SetProperty(ref _note, value); }
+        }
+        #endregion
+        #region Validation
+        /// <summary>
+        /// Создает и добавляет валидационные правила 
+        /// </summary>
+        private void AddValidations()
+        {
+            _name.Validations.Add(new NotNullOrEmtyValidationRule<string> { ValidationMessage = "Enter the constant's name!" });
+            _value.Validations.Add(new NotNullOrEmtyValidationRule<string> { ValidationMessage = "Enter the constant's value!" });
+        }
+        /// <summary>
+        /// Проверяет на валидность каждое свойство
+        /// используем данный метод перед сохранением константы
+        /// </summary>
+        /// <returns>True - если все свойства валидны</returns>
+        private bool Validate()
+        {
+            bool isValidName = ValidateName();
+            bool isValidValue = ValidateValue();
+            return isValidName && isValidValue;
+        }
+        //Валидирует имя константы
+        private bool ValidateName()
+        {
+            return _name.Validate();
+        }
+        //Валидирует значение константы
+        private bool ValidateValue()
+        {
+            return _value.Validate();
         }
         #endregion
     }

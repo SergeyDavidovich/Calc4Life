@@ -1,42 +1,127 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-             xmlns:conv="clr-namespace:Calc4Life.Converters"
-             prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="Calc4Life.Views.EditConstPage"
-             Title="Add constant">
+<ContentPage
+    x:Class="Calc4Life.Views.EditConstPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Calc4Life.Behaviors"
+    xmlns:conv="clr-namespace:Calc4Life.Converters"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:prismBehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    Title="Add constant"
+    prism:ViewModelLocator.AutowireViewModel="True">
     <ContentPage.Resources>
         <!--<ResourceDictionary>
             <converters:TriggerConverter x:Key="dataHasBeenEntered"/>
         </ResourceDictionary>-->
+        <ResourceDictionary>
+            <!--  Конвертер, который будет возвращать первую ошибку из коллекции ошибок при вводе  -->
+            <conv:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+
+            <Color x:Key="ErrorColor">#ff5252</Color>
+            <!--  Размер шрифта для заголовка элемента Label и ошибок  -->
+            <OnPlatform x:Key="LittleSize" x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="11" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="12" />
+            </OnPlatform>
+
+            <!--  Стиль для элемента Entry, в котором присутсвует валидация  -->
+            <Style x:Key="ValidatableEntryStyle" TargetType="{x:Type Entry}">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="Opacity" Value="0.6" />
+                <!--  Меняем-ли цвет линии  -->
+                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor" Value="True" />
+                <!--  Стандартный цвет линии(в данном случае чёрный)  -->
+                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="#000000" />
+                <!--  Повышаем прозрачность контрола, если наводится на него фокус  -->
+                <Style.Triggers>
+                    <Trigger TargetType="Entry" Property="IsFocused" Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="HeaderLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="FontSize" Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor" Value="#00A69C" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+            </Style>
+            <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
+                <Setter Property="FontSize" Value="{StaticResource LittleSize}" />
+            </Style>
+        </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <!--<ToolbarItem Command="{Binding SaveCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="save.png" />
-                    <On Platform="iOS" Value="save.png" />
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>-->
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <TableView Intent="Form" VerticalOptions="Center" Margin="0,40,0,0">
-                <TableRoot>
-                    <TableSection Title="Enter constant name">
-                        <EntryCell x:Name="name" Keyboard="Text" Placeholder="it can't be empty" Text="{Binding Name}"/>
-                    </TableSection>
-                    <TableSection Title="Enter constant value">
-                        <EntryCell x:Name="value" Keyboard="Numeric" Placeholder="it can't be empty" Text="{Binding Value}"/>
-                    </TableSection>
-                    <TableSection Title="Enter constant notes">
-                        <EntryCell Keyboard="Text" Placeholder="optional" Text="{Binding Note}"/>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
-            <Button Text="Save" BackgroundColor="Green" TextColor="White" WidthRequest="180" HorizontalOptions="Center" Command="{Binding SaveCommand}"/>
+        <StackLayout Padding="5,40,5,5">
+            <Label Style="{StaticResource HeaderLabelStyle}" Text="Constant name" />
+            <Entry
+                x:Name="nameEntry"
+                Keyboard="Text"
+                Placeholder="It can't be empty"
+                Text="{Binding Name.Value}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource ValidatableEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+                <!--Перекрашиваем цвет линии, если свойство(Name.IsValid) невалидно--> 
+                <Entry.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Name.IsValid}"
+                       
+                        TargetType="Entry"
+                        Value="False">
+                        <Setter Property="behaviors:LineColorBehavior.LineColor" Value="#ff5252" />
+                    </DataTrigger>
+                </Entry.Triggers>
+                <Entry.Behaviors>
+                    <!--При изменении текста, выполняем команду ValidateNameCommand, для валидации свойства-->
+                    <prismBehaviors:EventToCommandBehavior Command="{Binding ValidateNameCommand}" EventName="TextChanged" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Style="{StaticResource ValidationErrorLabelStyle}" Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}" />
+            <Label
+                Margin="0,10,0,0"
+                Style="{StaticResource HeaderLabelStyle}"
+                Text="Constant value" />
+            <Entry
+                x:Name="valueEntry"
+                Keyboard="Numeric"
+                Placeholder="It can't be empty"
+                Text="{Binding Value.Value}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource ValidatableEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <prismBehaviors:EventToCommandBehavior Command="{Binding ValidateValueCommand}" EventName="TextChanged" />
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger
+                        Binding="{Binding Value.IsValid}"
+                        TargetType="Entry"
+                        Value="False">
+                        <Setter Property="behaviors:LineColorBehavior.LineColor" Value="#ff5252" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+            <Label Style="{StaticResource ValidationErrorLabelStyle}" Text="{Binding Value.Errors, Converter={StaticResource FirstValidationErrorConverter}" />
+            <Label
+                Margin="0,10,0,0"
+                Style="{StaticResource HeaderLabelStyle}"
+                Text="Note" />
+            <Entry
+                Keyboard="Text"
+                Placeholder="optional"
+                Text="{Binding Note}" />
+            <Button
+                BackgroundColor="Green"
+                Command="{Binding SaveCommand}"
+                HorizontalOptions="Center"
+                Text="Save"
+                TextColor="White"
+                WidthRequest="180" />
             <!--<Button Text="Save" HorizontalOptions="Center" IsEnabled="True" BackgroundColor="Green">
                 <Button.Triggers>
                     <MultiTrigger TargetType="Button">
