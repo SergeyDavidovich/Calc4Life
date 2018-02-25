@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calc4Life.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,15 +7,17 @@ namespace Calc4Life.Services.OperationServices
 {
     public class BinaryOperationService : IBinaryOperationService
     {
-        public double? Operand1 { private get; set; }
-        public double? Operand2 { private get; set; }
-        public BinaryOperators? Operator {private get; set; }
+        public Operand? Operand1 { get; set; }
+        public Operand? Operand2 { get; set; }
+        public BinaryOperators? Operator { get; set; }
+        public double? Result { get; private set; }
 
         public void Clear()
         {
             Operand1 = null;
             Operand2 = null;
             Operator = null;
+            Result = null;
         }
 
         public bool IsReadyForCalc()
@@ -25,31 +28,39 @@ namespace Calc4Life.Services.OperationServices
                 return false;
         }
 
-        public double? Result()
+        public double? GetResult()
         {
             double? result = null;
+
+            if (Operand1 == null || Operand2 == null)
+            {
+                Result = result;
+                return result;
+            }
+
             switch (Operator)
             {
                 case BinaryOperators.Plus:
-                    result = Operand1.Value + Operand2.Value;
+                    result = Operand1.Value.OperandValue + Operand2.Value.OperandValue;
                     break;
                 case BinaryOperators.Minus:
-                    result = Operand1.Value - Operand2.Value;
+                    result = Operand1.Value.OperandValue - Operand2.Value.OperandValue;
                     break;
                 case BinaryOperators.Multiplication:
-                    result = Operand1.Value * Operand2.Value;
+                    result = Operand1.Value.OperandValue * Operand2.Value.OperandValue;
                     break;
                 case BinaryOperators.Division:
-                    result = Operand1.Value / Operand2.Value;
+                    result = Operand1.Value.OperandValue / Operand2.Value.OperandValue;
                     break;
                 case BinaryOperators.Discount:
-                    result = (Operand1.Value * Operand2.Value) / 100;
+                    result = (Operand1.Value.OperandValue * Operand2.Value.OperandValue) / 100;
                     break;
             }
+            Result = result;
             return result;
         }
 
-        public void SetOperand(double operand)
+        public void SetOperand(Operand operand)
         {
             if (Operator == null)
                 Operand1 = operand;

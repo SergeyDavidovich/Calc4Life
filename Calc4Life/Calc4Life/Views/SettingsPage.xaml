@@ -11,7 +11,31 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Start">
+            <!--<StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="Set defaults" Margin="12" VerticalOptions="Center" FontSize="18" TextColor="Crimson"/>
+                <Switch  IsToggled="True" VerticalOptions="Center"/>
+            </StackLayout>-->
+            <StackLayout Orientation="Vertical" WidthRequest="120">
+                <Label Text="round digits" FontSize="18"/>
+                <Picker Title="2" WidthRequest="20">
+                    <Picker.Items>
+                        <x:String>1</x:String>
+                        <x:String>2</x:String>
+                        <x:String>3</x:String>
+                        <x:String>4</x:String>
+                        <x:String>5</x:String>
+                        <x:String>6</x:String>
+                        <x:String>7</x:String>
+                    </Picker.Items>
+                </Picker>
+                <!--<StackLayout Orientation="Horizontal">
+                    <Label Text="You chose:" />
+                <Label x:Name="label" />-->
+                <!--</StackLayout>-->
+            </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+<!--<StackLayout VerticalOptions="Start">
             <TableView Intent="Settings" Margin="10">
                 <TableRoot>
                     <TableSection>
@@ -21,20 +45,22 @@
                         <SwitchCell x:Name="SwithchToShowThousands" Text="Show thousands" On="True" IsEnabled="False" />
                     </TableSection>
                     <TableSection>
-                        <SwitchCell x:Name="SwitchToRoundResult" Text="Round up result" On="False"/>
-                        <ViewCell IsEnabled="True">
+                        <SwitchCell x:Name="SwitchToRoundResult" Text="Round up result" On="True" IsEnabled="False"/>
+                        <ViewCell IsEnabled="True" Height="300">
                             <StackLayout>
-                                <Slider x:Name="SliderSelectChars" Value="2" Maximum="6" Minimum="0"/>
                                 <Label x:Name="LabelShowChars" Text="to 2 characters" Margin="14,0,0,0"/>
+                                <Slider x:Name="SliderSelectChars" Value="2" Maximum="6" Minimum="0"/>
                             </StackLayout>
                         </ViewCell>
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <StackLayout Orientation="Horizontal" Margin="20,20,0,0" VerticalOptions="StartAndExpand" HorizontalOptions="Center">
+            -->
+<!--<StackLayout Orientation="Horizontal" Margin="20,20,0,0" VerticalOptions="StartAndExpand" HorizontalOptions="Center">
                 <Label Text="Sample:" FontSize="Large" VerticalOptions="Center"/>
                 <Label x:Name="LabelSample" Text="1 234 567.56" TextColor="Crimson" FontSize="30" Margin="10,0,0,0" VerticalOptions="Center"/>
-            </StackLayout>
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+            </StackLayout>-->
+<!--
+                                <Switch WidthRequest="30" HeightRequest="30"/>
+                                <Picker />
+        </StackLayout>-->

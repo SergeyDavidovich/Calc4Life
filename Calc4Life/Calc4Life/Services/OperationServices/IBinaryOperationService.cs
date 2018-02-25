@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Calc4Life.Models;
 
 namespace Calc4Life.Services.OperationServices
 {
@@ -8,15 +9,16 @@ namespace Calc4Life.Services.OperationServices
     {
         #region Structure
 
-        double? Operand1 { set; }
-        double? Operand2 { set; }
-        BinaryOperators? @Operator { set; }
+        Operand? Operand1 { get; set; }
+        Operand? Operand2 { get; set; }
+        BinaryOperators? @Operator { get; set; }
+        double? Result { get; }
 
         #endregion
 
         #region Input actions
 
-        void SetOperand(double operand);
+        void SetOperand(Operand operand);
         void SetOperator(string @operator);
         void Clear();
 
@@ -25,7 +27,7 @@ namespace Calc4Life.Services.OperationServices
         #region Output actions
 
         bool IsReadyForCalc();
-        double? Result();
+        double? GetResult();
 
         #endregion
     }
