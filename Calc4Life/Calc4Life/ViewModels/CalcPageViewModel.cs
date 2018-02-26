@@ -321,12 +321,14 @@ namespace Calc4Life.ViewModels
                 double curConstValue = ((Constant)parameters["const"]).Value;
                 string curConstName = ((Constant)parameters["const"]).Name;
 
+
                 //2. отражаем на дисплее
                 Display = curConstValue.ToString();
-                Expression = curConstName;
+                Expression = GetNewExpression();
 
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), curConstName));
+                Expression = GetNewExpression();
 
                 //4. Устанавливаем флаги
                 isBackSpaceApplicable = false;

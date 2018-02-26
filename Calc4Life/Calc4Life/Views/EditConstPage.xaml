@@ -21,7 +21,7 @@
             <!--  Размер шрифта для заголовка элемента Label и ошибок  -->
             <OnPlatform x:Key="LittleSize" x:TypeArguments="x:Double">
                 <On Platform="iOS" Value="11" />
-                <On Platform="Android, UWP, WinRT, WinPhone" Value="12" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="18" />
             </OnPlatform>
 
             <!--  Стиль для элемента Entry, в котором присутсвует валидация  -->
