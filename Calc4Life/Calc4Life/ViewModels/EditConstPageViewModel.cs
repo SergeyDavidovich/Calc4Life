@@ -57,9 +57,14 @@ namespace Calc4Life.ViewModels
         private async void SaveExecute()
         {
             if (!Validate()) return;
-            await _repositoryService.AddAsync(
-                new Constant { Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note });
-            await _navigationService.GoBackAsync();
+
+            var constant = new Constant { Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
+            await _repositoryService.AddAsync(constant);
+
+            var parameters=new NavigationParameters();
+            parameters.Add("const", constant);
+
+            await _navigationService.GoBackAsync(parameters);
         }
 
         #endregion
