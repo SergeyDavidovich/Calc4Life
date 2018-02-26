@@ -403,7 +403,7 @@ namespace Calc4Life.ViewModels
 
             //заворачиваем в скобки, если отрицательные
             if (operand1.StartsWith("-")) operand1 = $"({operand1})";
-            if (operand2.StartsWith("-")) operand1 = $"({operand2})";
+            if (operand2.StartsWith("-")) operand2 = $"({operand2})";
 
             //получаем оператор из операции
             string oper = "";

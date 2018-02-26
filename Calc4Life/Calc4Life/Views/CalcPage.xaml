@@ -85,11 +85,11 @@
                    IsVisible="{Binding IsMemoryVisible}" Margin="1"/>
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" TextColor="Green" FontSize="16" HorizontalOptions="Start" HorizontalTextAlignment="Start" 
                    VerticalOptions="Center" IsVisible="{Binding IsMemoryVisible}"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="48"
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="46"
                 TextColor="Black" HorizontalOptions="End"/>
             <!--<BoxView Grid.Row="2" Grid.ColumnSpan="2" BackgroundColor="Black" HorizontalOptions="Fill" Margin="2" Opacity="0.8"/>-->
-            <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Expression}" FontSize="18"
-                   HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="0,0,6,4"/>
+            <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Expression}" FontSize="16"
+                   HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="2"/>
         </Grid>
 
         <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>
