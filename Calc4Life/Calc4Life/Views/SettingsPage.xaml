@@ -4,35 +4,42 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Calc4Life.Views.SettingsPage"
-             Title="Settings">
+             Title="Settings" BackgroundColor="{StaticResource Key=Back}">
     <ContentPage.Resources>
         <ResourceDictionary>
-
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+            <Color x:Key="Back">#0d47a1</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-            <!--<StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Label Text="Set defaults" Margin="12" VerticalOptions="Center" FontSize="18" TextColor="Crimson"/>
-                <Switch  IsToggled="True" VerticalOptions="Center"/>
-            </StackLayout>-->
-            <StackLayout Orientation="Vertical" WidthRequest="120">
-                <Label Text="round digits" FontSize="18"/>
-                <Picker Title="2" WidthRequest="20">
-                    <Picker.Items>
-                        <x:String>1</x:String>
-                        <x:String>2</x:String>
-                        <x:String>3</x:String>
-                        <x:String>4</x:String>
-                        <x:String>5</x:String>
-                        <x:String>6</x:String>
-                        <x:String>7</x:String>
-                    </Picker.Items>
-                </Picker>
-                <!--<StackLayout Orientation="Horizontal">
-                    <Label Text="You chose:" />
-                <Label x:Name="label" />-->
-                <!--</StackLayout>-->
+        <StackLayout Margin="12">
+            <StackLayout Orientation="Horizontal" Margin="0,12">
+                <Label Text="Delimiter of the groups of digits" HorizontalOptions="Start"/>
+                <Switch IsToggled="True" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
+            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <StackLayout Orientation="Horizontal" Margin="0,12">
+                <Label Text="Accuracy of calculations" VerticalOptions="Center"/>
+                <Label BindingContext="{x:Reference Name=Stepper}" Text="{Binding Path=Value}" VerticalOptions="Center" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="decimal places" VerticalOptions="Center"/>
+            </StackLayout>
+            <Stepper x:Name="Stepper" Value="2" Minimum="0" Maximum="10" Increment="1"  HorizontalOptions="EndAndExpand"/>
+            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Round up the result? (up to specified accuracy)" VerticalOptions="Center"/>
+                <Switch IsToggled="True" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+            </StackLayout>
+            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <StackLayout Margin="30">
+                <Label Text="Sample:"/>
+                <Label Text="12334567.56" FontSize="40"/>
+            </StackLayout>
+            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <Button Text="Set defaults" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
 <!--<StackLayout VerticalOptions="Start">

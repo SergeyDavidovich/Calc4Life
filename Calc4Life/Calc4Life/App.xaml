@@ -4,8 +4,8 @@
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
              x:Class="Calc4Life.App">
 	<Application.Resources>
-
-		<!-- Application resource dictionary -->
-
+        <ResourceDictionary>
+            
+        </ResourceDictionary>
 	</Application.Resources>
 </prism:PrismApplication>

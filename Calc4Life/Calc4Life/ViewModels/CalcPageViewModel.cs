@@ -410,7 +410,6 @@ namespace Calc4Life.ViewModels
             //получаем оператор из операции
             string oper = "";
 
-            //if (operand1 != "")
             {
                 switch (_binaryOperation.Operator)
                 {
