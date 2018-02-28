@@ -430,11 +430,14 @@ namespace Calc4Life.ViewModels
             string equal;
             double? result = _binaryOperation.Result;
             if (result != null)
-                equal = "=";
+                equal = " =";
             else equal = "";
 
             //формируем строку вывода выражения
-            output = $"{operand1} {oper} {operand2} {equal}";
+            oper = oper.Length == 0 ? "" : " " + oper;
+            operand2 = operand2.Length == 0 ? "" : " " + operand2;
+
+            output = $"{operand1}{oper}{operand2}{equal}";
             return output;
         }
 
