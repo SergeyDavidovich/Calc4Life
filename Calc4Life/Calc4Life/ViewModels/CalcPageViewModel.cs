@@ -154,6 +154,8 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<string> OperatorCommand { get; }
         private void OperatorExecute(string par) // Plus Minus Multiplication Division Discount
         {
+            if (_binaryOperation.Operand1 == null) return;
+
             //1. поднимаем флаг
             mustClearDisplay = true;
 
@@ -407,18 +409,22 @@ namespace Calc4Life.ViewModels
 
             //получаем оператор из операции
             string oper = "";
-            switch (_binaryOperation.Operator)
+
+            //if (operand1 != "")
             {
-                case BinaryOperators.Plus:
-                    oper = "+"; break;
-                case BinaryOperators.Minus:
-                    oper = "-"; break;
-                case BinaryOperators.Multiplication:
-                    oper = "×"; break;
-                case BinaryOperators.Division:
-                    oper = "÷"; break;
-                case BinaryOperators.Discount:
-                    oper = "%"; break;
+                switch (_binaryOperation.Operator)
+                {
+                    case BinaryOperators.Plus:
+                        oper = "+"; break;
+                    case BinaryOperators.Minus:
+                        oper = "-"; break;
+                    case BinaryOperators.Multiplication:
+                        oper = "×"; break;
+                    case BinaryOperators.Division:
+                        oper = "÷"; break;
+                    case BinaryOperators.Discount:
+                        oper = "%"; break;
+                }
             }
 
             //добавляем (или нет) знак равенства в выражение 
