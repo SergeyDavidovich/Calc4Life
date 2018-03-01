@@ -33,26 +33,58 @@ namespace Calc4Life.Helpers
 
         #region Setting Constants
 
-        private const string SettingsKey = "settings_key";
-        private static readonly string SettingsDefault = string.Empty;
+        // Разделитель групп разрядов
 
-        private const bool SeparateGroupsKey = false;
-        private static readonly bool SeparateGroupsDefault = true;
+        private const string GrouppingDigitsKey = "GrouppingDigits";
+        private static readonly bool GrouppingDigitsDefault = true;
+
+        // Экспоненциальная (научная) нотация числа  
+        //private const string ExponentialNotationKey = "ExponentialNotation";
+        //private static readonly bool ExponentialNotationDefault = true;
+
+        // Точность вычисления (количество отражаемых знаков после запятой)
+        private const string AccuracyKey = "Accuracy";
+        private static readonly double AccuracyDefault = 3.0;
+
+        // Округлять результат (при указанной точности) 
+        private const string RoundingKey = "Rounding";
+        private static readonly bool RoundingDefault = true;
 
         #endregion
 
 
-        public static string GeneralSettings
+        public static bool GrouppingDigits
         {
             get
             {
-                return AppSettings.GetValueOrDefault(SettingsKey, SettingsDefault);
+                return AppSettings.GetValueOrDefault(GrouppingDigitsKey, GrouppingDigitsDefault);
             }
             set
             {
-                AppSettings.AddOrUpdateValue(SettingsKey, value);
+                AppSettings.AddOrUpdateValue(GrouppingDigitsKey, value);
             }
         }
-
+        public static double Accuracy
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(AccuracyKey, AccuracyDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(AccuracyKey, value);
+            }
+        }
+        public static bool Rounding
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(RoundingKey, RoundingDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(RoundingKey, value);
+            }
+        }
     }
 }
