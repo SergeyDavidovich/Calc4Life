@@ -12,7 +12,8 @@ namespace Calc4Life.Helpers
     // Разделитель групп разрядов                                        (Delimiter of the groups of digits) 
     // Экспоненциальная (научная) нотация числа                          (Exponential (scientific) number notation) 
     // Точность вычисления (количество отражаемых знаков после запятой)  (Accuracy of calculations (number of decimal places displayed))
-    // Округлять результат (при указанной точности)                      (Round up the result? (up to specified accuracy))
+    // Точность округления                                               (Rounding accuracy)
+    // Округлять результат (при указанной точности)                      (Round up the result (up to specified accuracy))
     //
 
 
@@ -43,8 +44,13 @@ namespace Calc4Life.Helpers
         //private static readonly bool ExponentialNotationDefault = true;
 
         // Точность вычисления (количество отражаемых знаков после запятой)
-        private const string AccuracyKey = "Accuracy";
-        private static readonly double AccuracyDefault = 2.0;
+        private const string CalcAccuracyKey = "CalcAccuracy";
+        private static readonly double CalcAccuracyDefault = 2.0;
+
+        // Точность округления 
+        private const string RoundAccuracyKey = "RoundAccuracy";
+        private static readonly double RoundAccuracyDefault = 2.0;
+
 
         // Округлять результат (при указанной точности) 
         private const string RoundingKey = "Rounding";
@@ -64,17 +70,29 @@ namespace Calc4Life.Helpers
                 AppSettings.AddOrUpdateValue(GrouppingDigitsKey, value);
             }
         }
-        public static double Accuracy
+        public static double CalcAccuracy
         {
             get
             {
-                return AppSettings.GetValueOrDefault(AccuracyKey, AccuracyDefault);
+                return AppSettings.GetValueOrDefault(CalcAccuracyKey, CalcAccuracyDefault);
             }
             set
             {
-                AppSettings.AddOrUpdateValue(AccuracyKey, value);
+                AppSettings.AddOrUpdateValue(CalcAccuracyKey, value);
             }
         }
+        public static double RoundAccuracy
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(RoundAccuracyKey, RoundAccuracyDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(RoundAccuracyKey, value);
+            }
+        }
+
         public static bool Rounding
         {
             get

@@ -22,7 +22,7 @@ namespace Calc4Life.ViewModels
         {
             _navigationService = navigationService;
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
-            Sample = FormatService.FormatResult(sampleValue);
+            //Sample = FormatService.FormatResult(sampleValue);
         }
 
         #endregion
@@ -36,19 +36,19 @@ namespace Calc4Life.ViewModels
             {
                 Settings.GrouppingDigits = value;
                 SetProperty(ref _grouppingDigits, Settings.GrouppingDigits);
-                Sample = FormatService.FormatResult(sampleValue);
+                //Sample = FormatService.FormatResult(sampleValue);
             }
         }
 
-        double _accuracy;
-        public double Accuracy
+        double _calcAccuracy;
+        public double CalcAccuracy
         {
-            get { return Settings.Accuracy; }
+            get { return Settings.CalcAccuracy; }
             set
             {
-                Settings.Accuracy = value;
-                SetProperty(ref _accuracy, Settings.Accuracy);
-                Sample = FormatService.FormatResult(sampleValue);
+                Settings.CalcAccuracy = value;
+                SetProperty(ref _calcAccuracy, Settings.CalcAccuracy);
+                //Sample = FormatService.FormatResult(sampleValue);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Calc4Life.ViewModels
             {
                 Settings.Rounding = value;
                 SetProperty(ref _rounding, Settings.Rounding);
-                Sample = FormatService.FormatResult(sampleValue);
+                //Sample = FormatService.FormatResult(sampleValue);
             }
         }
 
@@ -78,14 +78,14 @@ namespace Calc4Life.ViewModels
         private void SetDefaultExecute()
         {
             Settings.GrouppingDigits = true;
-            Settings.Accuracy = 2.0;
+            Settings.CalcAccuracy = 2.0;
             Settings.Rounding = false;
 
             GroupingDigits = Settings.GrouppingDigits;
-            Accuracy = Settings.Accuracy;
+            CalcAccuracy = Settings.CalcAccuracy;
             Rounding = Settings.Rounding;
 
-            Sample = FormatService.FormatResult(sampleValue);
+            //Sample = FormatService.FormatResult(sampleValue);
         }
 
         #endregion
@@ -95,7 +95,7 @@ namespace Calc4Life.ViewModels
         {
             base.OnNavigatedTo(parameters);
             GroupingDigits = Settings.GrouppingDigits;
-            Accuracy = Settings.Accuracy;
+            CalcAccuracy = Settings.CalcAccuracy;
             Rounding = Settings.Rounding;
         }
 

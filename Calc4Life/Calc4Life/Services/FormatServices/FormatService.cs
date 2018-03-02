@@ -14,14 +14,14 @@ namespace Calc4Life.Services.FormatServices
             string result;
             double number = value;
 
-            int accuracy =(int)Settings.Accuracy;
-            string acStr = accuracy.ToString();
-            NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
+            //int accuracy =(int)Settings.Accuracy;
+            //string acStr = accuracy.ToString();
+            //NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
 
-            string format=$"N{acStr}";
+            //string format=$"N{acStr}";
 
-            if (Settings.Rounding)
-                number = Math.Round(value, accuracy, MidpointRounding.AwayFromZero);
+            //if (Settings.Rounding)
+            //    number = Math.Round(value, accuracy, MidpointRounding.AwayFromZero);
 
             //if (Settings.GrouppingDigits)
             //{
@@ -30,7 +30,7 @@ namespace Calc4Life.Services.FormatServices
             //    result = number.ToString("N",nfi);
             //}
             //else
-                result = number.ToString(format);
+                result = number.ToString();
 
             return result;
         }
