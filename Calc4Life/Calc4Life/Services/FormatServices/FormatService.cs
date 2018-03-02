@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Calc4Life.Services.FormatServices
 {
@@ -11,24 +12,25 @@ namespace Calc4Life.Services.FormatServices
         public static string FormatResult(double value)
         {
             string result;
-            int accuracy = (int)Settings.Accuracy;
-            string format;
+            double number = value;
 
-            if (Settings.GrouppingDigits && !Settings.Rounding)
-            {
-                result = "";
-                format = $"N{accuracy.ToString()}";
-                result = value.ToString();
-            }
-            else if (Settings.GrouppingDigits && Settings.Rounding)
-            {
-                result = "";
-                value = Math.Round(value, accuracy, MidpointRounding.AwayFromZero);
-                format = $"N{(accuracy-1).ToString()}";
-                result = value.ToString(format);
-            }
-            else
-                result = value.ToString();
+            int accuracy =(int)Settings.Accuracy;
+            string acStr = accuracy.ToString();
+            NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
+
+            string format=$"N{acStr}";
+
+            if (Settings.Rounding)
+                number = Math.Round(value, accuracy, MidpointRounding.AwayFromZero);
+
+            //if (Settings.GrouppingDigits)
+            //{
+            //    nfi.NumberDecimalDigits = 3;
+            //    //format = $"N{accuracy.ToString()}";
+            //    result = number.ToString("N",nfi);
+            //}
+            //else
+                result = number.ToString(format);
 
             return result;
         }

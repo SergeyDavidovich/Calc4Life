@@ -22,6 +22,7 @@ namespace Calc4Life.ViewModels
         {
             _navigationService = navigationService;
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
+            Sample = FormatService.FormatResult(sampleValue);
         }
 
         #endregion
@@ -42,10 +43,7 @@ namespace Calc4Life.ViewModels
         double _accuracy;
         public double Accuracy
         {
-             get
-            {
-                return Settings.Accuracy;
-            }
+            get { return Settings.Accuracy; }
             set
             {
                 Settings.Accuracy = value;
@@ -76,12 +74,12 @@ namespace Calc4Life.ViewModels
         #endregion
         #region Commands
 
-        public DelegateCommand SetDefaultCommang { get; }
+        public DelegateCommand SetDefaultCommang { get; set; }
         private void SetDefaultExecute()
         {
             Settings.GrouppingDigits = true;
-            Settings.Accuracy = 3.0;
-            Settings.Rounding = true;
+            Settings.Accuracy = 2.0;
+            Settings.Rounding = false;
 
             GroupingDigits = Settings.GrouppingDigits;
             Accuracy = Settings.Accuracy;

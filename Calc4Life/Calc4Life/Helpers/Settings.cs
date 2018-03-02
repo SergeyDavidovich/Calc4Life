@@ -44,11 +44,11 @@ namespace Calc4Life.Helpers
 
         // Точность вычисления (количество отражаемых знаков после запятой)
         private const string AccuracyKey = "Accuracy";
-        private static readonly double AccuracyDefault = 3.0;
+        private static readonly double AccuracyDefault = 2.0;
 
         // Округлять результат (при указанной точности) 
         private const string RoundingKey = "Rounding";
-        private static readonly bool RoundingDefault = true;
+        private static readonly bool RoundingDefault = false;
 
         #endregion
 
