@@ -8,31 +8,38 @@ namespace Calc4Life.Services.FormatServices
 {
     public static class FormatService
     {
-
         public static string FormatResult(double value)
         {
+            double input;
+            string format;
             string result;
-            double number = value;
 
-            //int accuracy =(int)Settings.Accuracy;
-            //string acStr = accuracy.ToString();
-            //NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
-
-            //string format=$"N{acStr}";
+            int accuracy = (int)Settings.CalcAccuracy - 1;
+            string precisionSpecifier = accuracy.ToString();
 
             //if (Settings.Rounding)
-            //    number = Math.Round(value, accuracy, MidpointRounding.AwayFromZero);
-
-            //if (Settings.GrouppingDigits)
-            //{
-            //    nfi.NumberDecimalDigits = 3;
-            //    //format = $"N{accuracy.ToString()}";
-            //    result = number.ToString("N",nfi);
-            //}
+            //    input = Math.Round(value, accuracy);
             //else
-                result = number.ToString();
+            input = value;
 
-            return result;
+            if (Settings.Rounding)
+            {
+                if (Settings.GrouppingDigits)
+                    format = $"N{precisionSpecifier}";
+                else
+                    format = $"F{precisionSpecifier}";
+            }
+            else
+            {
+                if (Settings.GrouppingDigits)
+                    format = "N17";
+                else
+                    format = "G";
+            }
+
+                result = input.ToString(format);
+                result = result.TrimEnd('0');
+                return result;
+            }
         }
     }
-}

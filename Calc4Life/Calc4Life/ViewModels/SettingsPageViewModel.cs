@@ -22,7 +22,7 @@ namespace Calc4Life.ViewModels
         {
             _navigationService = navigationService;
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
-            //Sample = FormatService.FormatResult(sampleValue);
+            Sample = FormatService.FormatResult(sampleValue);
         }
 
         #endregion
@@ -36,7 +36,7 @@ namespace Calc4Life.ViewModels
             {
                 Settings.GrouppingDigits = value;
                 SetProperty(ref _grouppingDigits, Settings.GrouppingDigits);
-                //Sample = FormatService.FormatResult(sampleValue);
+                Sample = FormatService.FormatResult(sampleValue);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Calc4Life.ViewModels
             {
                 Settings.CalcAccuracy = value;
                 SetProperty(ref _calcAccuracy, Settings.CalcAccuracy);
-                //Sample = FormatService.FormatResult(sampleValue);
+                Sample = FormatService.FormatResult(sampleValue);
             }
         }
 
@@ -67,9 +67,15 @@ namespace Calc4Life.ViewModels
             {
                 Settings.Rounding = value;
                 SetProperty(ref _rounding, Settings.Rounding);
-                //Sample = FormatService.FormatResult(sampleValue);
+                Sample = FormatService.FormatResult(sampleValue);
             }
         }
+
+        //double _stepperMax;
+        //public double StepperMax
+        //{
+        //    get { return CalcAccuracy + 1; }
+        //}
 
         #endregion
         #region Commands
@@ -78,14 +84,14 @@ namespace Calc4Life.ViewModels
         private void SetDefaultExecute()
         {
             Settings.GrouppingDigits = true;
-            Settings.CalcAccuracy = 2.0;
+            Settings.CalcAccuracy = 3.0;
             Settings.Rounding = false;
 
             GroupingDigits = Settings.GrouppingDigits;
             CalcAccuracy = Settings.CalcAccuracy;
             Rounding = Settings.Rounding;
 
-            //Sample = FormatService.FormatResult(sampleValue);
+            Sample = FormatService.FormatResult(sampleValue);
         }
 
         #endregion

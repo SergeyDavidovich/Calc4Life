@@ -16,27 +16,28 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Margin="12">
+            <!--groups of digits-->
             <StackLayout Orientation="Horizontal" Margin="0,12">
                 <Label Text="Delimiter of the groups of digits" HorizontalOptions="Start"/>
                 <Switch IsToggled="{Binding GroupingDigits, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
             <BoxView HeightRequest="1" BackgroundColor="White"/>
-            
+            <!--calc accuracy-->
             <StackLayout Orientation="Horizontal" Margin="0,12">
                 <Label Text="Accuracy of calculations" VerticalOptions="Center"/>
                 <Label BindingContext="{x:Reference Name=Stepper}" Text="{Binding Path=Value}" VerticalOptions="Center" FontSize="26" FontAttributes="Bold"/>
                 <Label Text="decimal places" VerticalOptions="Center"/>
             </StackLayout>
-
-            <Stepper x:Name="Stepper" Value="{Binding CalcAccuracy}" Minimum="1" Maximum="4" Increment="1"  HorizontalOptions="EndAndExpand"/>
+            <Stepper x:Name="Stepper" Value="{Binding CalcAccuracy}" Minimum="0" Maximum="10" Increment="1"  HorizontalOptions="EndAndExpand"/>
             <BoxView HeightRequest="1" BackgroundColor="White"/>
-            
+
+            <!--rounding-->
             <StackLayout Orientation="Horizontal">
                 <Label Text="Round up the result? (up to specified accuracy)" VerticalOptions="Center"/>
                 <Switch IsToggled="{Binding Rounding, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
             </StackLayout>
             <BoxView HeightRequest="1" BackgroundColor="White"/>
-            
+            <!--sample-->
             <StackLayout Margin="30,20">
                 <Label Text="Sample:"/>
                 <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
