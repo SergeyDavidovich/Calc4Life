@@ -10,6 +10,7 @@ using System.Globalization;
 using Calc4Life.Models;
 using Prism.Services;
 using Calc4Life.Services.OperationServices;
+using Calc4Life.Services.FormatServices;
 
 namespace Calc4Life.ViewModels
 {
@@ -204,7 +205,8 @@ namespace Calc4Life.ViewModels
                 double? result = _binaryOperation.GetResult();
 
                 //2. вывести результат на дисплей
-                Display = result.ToString();
+                //Display = result.ToString();
+                Display = FormatService.FormatResult(result.Value);
                 Expression = GetNewExpression();
 
                 //3. очистить операцию
@@ -380,7 +382,7 @@ namespace Calc4Life.ViewModels
                 case "8":
                 case "9":
                     {
-                        if (currentDisplayText.Length == 12) break;
+                        if (currentDisplayText.Length >= 12) break;
                         if (currentDisplayText == "0") Result = "";
                         Result += tag;
                         break;

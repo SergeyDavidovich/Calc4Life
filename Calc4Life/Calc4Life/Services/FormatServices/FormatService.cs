@@ -14,12 +14,16 @@ namespace Calc4Life.Services.FormatServices
             string format;
             string result;
 
-            int accuracy = (int)Settings.CalcAccuracy - 1;
+            if (value.ToString().Length > 12)
+            {
+                format = "e4";
+                result = value.ToString(format);
+                return result;
+            }
+
+            int accuracy = (int)Settings.RoundAccuracy;
             string precisionSpecifier = accuracy.ToString();
 
-            //if (Settings.Rounding)
-            //    input = Math.Round(value, accuracy);
-            //else
             input = value;
 
             if (Settings.Rounding)
@@ -37,9 +41,9 @@ namespace Calc4Life.Services.FormatServices
                     format = "G";
             }
 
-                result = input.ToString(format);
-                result = result.TrimEnd('0');
-                return result;
-            }
+            result = input.ToString(format);
+            result = result.TrimEnd('0');
+            return result;
         }
     }
+}

@@ -28,7 +28,7 @@
                 <Label BindingContext="{x:Reference Name=Stepper}" Text="{Binding Path=Value}" VerticalOptions="Center" FontSize="26" FontAttributes="Bold"/>
                 <Label Text="decimal places" VerticalOptions="Center"/>
             </StackLayout>
-            <Stepper x:Name="Stepper" Value="{Binding CalcAccuracy}" Minimum="0" Maximum="10" Increment="1"  HorizontalOptions="EndAndExpand"/>
+            <Stepper x:Name="Stepper" Value="{Binding RoundAccuracy}" Minimum="1" Maximum="3" Increment="1"  HorizontalOptions="EndAndExpand"/>
             <BoxView HeightRequest="1" BackgroundColor="White"/>
 
             <!--rounding-->

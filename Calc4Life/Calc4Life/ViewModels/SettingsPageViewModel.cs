@@ -13,7 +13,7 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
-        double sampleValue = 1234567.5555;
+        double sampleValue = 1234567.5678;
 
         #endregion
         #region Constructors
@@ -40,17 +40,17 @@ namespace Calc4Life.ViewModels
             }
         }
 
-        double _calcAccuracy;
-        public double CalcAccuracy
-        {
-            get { return Settings.CalcAccuracy; }
-            set
-            {
-                Settings.CalcAccuracy = value;
-                SetProperty(ref _calcAccuracy, Settings.CalcAccuracy);
-                Sample = FormatService.FormatResult(sampleValue);
-            }
-        }
+        //double _calcAccuracy;
+        //public double CalcAccuracy
+        //{
+        //    get { return Settings.CalcAccuracy; }
+        //    set
+        //    {
+        //        Settings.CalcAccuracy = value;
+        //        SetProperty(ref _calcAccuracy, Settings.CalcAccuracy);
+        //        Sample = FormatService.FormatResult(sampleValue);
+        //    }
+        //}
 
         string _sample;
         public string Sample
@@ -71,11 +71,17 @@ namespace Calc4Life.ViewModels
             }
         }
 
-        //double _stepperMax;
-        //public double StepperMax
-        //{
-        //    get { return CalcAccuracy + 1; }
-        //}
+        double _roundAccuracy;
+        public double RoundAccuracy
+        {
+            get { return _roundAccuracy; }
+            set
+            {
+                Settings.RoundAccuracy = value;
+                SetProperty(ref _roundAccuracy, value);
+                Sample = FormatService.FormatResult(sampleValue);
+            }
+        }
 
         #endregion
         #region Commands
@@ -84,11 +90,11 @@ namespace Calc4Life.ViewModels
         private void SetDefaultExecute()
         {
             Settings.GrouppingDigits = true;
-            Settings.CalcAccuracy = 3.0;
+            Settings.RoundAccuracy = 3.0;
             Settings.Rounding = false;
 
             GroupingDigits = Settings.GrouppingDigits;
-            CalcAccuracy = Settings.CalcAccuracy;
+            RoundAccuracy = Settings.RoundAccuracy;
             Rounding = Settings.Rounding;
 
             Sample = FormatService.FormatResult(sampleValue);
@@ -101,8 +107,8 @@ namespace Calc4Life.ViewModels
         {
             base.OnNavigatedTo(parameters);
             GroupingDigits = Settings.GrouppingDigits;
-            CalcAccuracy = Settings.CalcAccuracy;
             Rounding = Settings.Rounding;
+            RoundAccuracy = Settings.RoundAccuracy;
         }
 
         #endregion
