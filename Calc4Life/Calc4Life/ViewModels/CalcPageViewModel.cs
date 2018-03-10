@@ -11,6 +11,7 @@ using Calc4Life.Models;
 using Prism.Services;
 using Calc4Life.Services.OperationServices;
 using Calc4Life.Services.FormatServices;
+using Calc4Life.Helpers;
 
 namespace Calc4Life.ViewModels
 {
@@ -27,16 +28,19 @@ namespace Calc4Life.ViewModels
 
         IPageDialogService _dialogService;
         IBinaryOperationService _binaryOperation;
-
+        FormatService _formatService;
         #endregion
 
         #region Constructors
 
-        public CalcPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IBinaryOperationService binaryOperationService)
+        public CalcPageViewModel(INavigationService navigationService, 
+            IPageDialogService dialogService, 
+            IBinaryOperationService binaryOperationService, FormatService formatService)
             : base(navigationService)
         {
             _dialogService = dialogService;
             _binaryOperation = binaryOperationService;
+            _formatService = formatService;
 
             Title = "Calculator for Life";
             Display = "0";
@@ -117,7 +121,6 @@ namespace Calc4Life.ViewModels
 
             //2. выводим на дисплей, значения вводимые с кнопок
             Display = GetNewDisplayText(Display, par);
-
 
             //4. назначаем операнд в операцию
             //_binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
@@ -206,7 +209,7 @@ namespace Calc4Life.ViewModels
 
                 //2. вывести результат на дисплей
                 //Display = result.ToString();
-                Display = FormatService.FormatResult(result.Value);
+                Display = _formatService.FormatResult(result.Value);
                 Expression = GetNewExpression();
 
                 //3. очистить операцию
@@ -384,7 +387,9 @@ namespace Calc4Life.ViewModels
                     {
                         if (currentDisplayText.Length >= 12) break;
                         if (currentDisplayText == "0") Result = "";
+
                         Result += tag;
+
                         break;
                     }
             }

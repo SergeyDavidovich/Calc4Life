@@ -11,6 +11,8 @@ using Calc4Life.Services;
 using Calc4Life.Services.RepositoryServices;
 using Unity.Lifetime;
 using Calc4Life.Services.OperationServices;
+using Calc4Life.Helpers;
+using Calc4Life.Services.FormatServices;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -68,6 +70,7 @@ namespace Calc4Life
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
+            containerRegistry.RegisterSingleton(typeof(FormatService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");

@@ -2,5 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.Calc4Life" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="26" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="Calculator for Life" android:icon="@drawable/appicon"></application>
+	<application android:label="Calculator for Life" android:icon="@drawable/appicon_a"></application>
 </manifest>
