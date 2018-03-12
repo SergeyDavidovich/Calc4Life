@@ -64,6 +64,7 @@ namespace Calc4Life.Services.FormatServices
     {
         private double maxValue = 99999999999; // 11 characters
         private double minValue = 0.000000001; // 11 characters
+        const int maxResultLenth = 12;
 
         public string FormatResult(double value)
         {
@@ -86,16 +87,20 @@ namespace Calc4Life.Services.FormatServices
         {
             string result = ""; // строка для вывода результата функции
             string input; // строка для внутренних преобразований 
-
             double curValue; //число для внутренних преобразований
+            
+            #region Rounding
 
             if (Settings.Rounding)
                 curValue = Math.Round(value, (int)Settings.RoundAccuracy, MidpointRounding.AwayFromZero);
             else
                 curValue = value;
 
+            #endregion
+
             input = curValue.ToString("G");
 
+            #region Groupping
 
             string negativeSign = ""; // знак перед целой частью
             string integerPart = ""; //целая часть числа
@@ -128,13 +133,10 @@ namespace Calc4Life.Services.FormatServices
                     decimalSeparator = "";
                 }
 
-
                 char[] chars = integerPart.ToCharArray();
-
                 Array.Reverse(chars);
 
                 string output = "";
-
                 for (int i = 0; i < integerPart.Length; i++)
                 {
                     if (i % 3 == 0 & i != 0)
@@ -160,9 +162,17 @@ namespace Calc4Life.Services.FormatServices
             else
                 result = curValue.ToString("G");
 
-            if (result.Length > 12)
-                result = result.Remove(12);
+            #endregion
 
+            #region Trimming
+
+            if (result.Length > maxResultLenth)
+                result = result.Remove(maxResultLenth);
+            if (result.EndsWith(DecimalSeparator))
+                result = result.Remove(result.Length - 1);
+
+
+            #endregion
 
             return result;
         }
