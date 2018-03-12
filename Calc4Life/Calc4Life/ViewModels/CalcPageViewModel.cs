@@ -18,6 +18,7 @@ namespace Calc4Life.ViewModels
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
+        const int maxFiguresNumber = 12;
 
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
@@ -368,6 +369,7 @@ namespace Calc4Life.ViewModels
             {
                 case "DecPoint" when !currentDisplayText.Contains(DecimalSeparator):
                     {
+                        if (currentDisplayText.Length >= maxFiguresNumber) break;
                         if (currentDisplayText == "") currentDisplayText = "0" + DecimalSeparator;
                         else currentDisplayText += DecimalSeparator;
 
@@ -385,7 +387,7 @@ namespace Calc4Life.ViewModels
                 case "8":
                 case "9":
                     {
-                        if (currentDisplayText.Length >= 12) break;
+                        if (currentDisplayText.Length >= maxFiguresNumber) break;
                         if (currentDisplayText == "0") Result = "";
 
                         Result += tag;
