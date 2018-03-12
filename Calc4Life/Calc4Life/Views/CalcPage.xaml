@@ -51,7 +51,7 @@
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <Grid BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
+    <Grid x:Name="Root" BackgroundColor="#cfd8dc" ColumnSpacing="0" RowSpacing="0" Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
             <RowDefinition Height="120"/>
@@ -67,7 +67,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" ColumnSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
+        <Grid x:Name="Display" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" RowSpacing="0" ColumnSpacing="0" Margin="4,4" BackgroundColor="WhiteSmoke">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.4*"/>
                 <RowDefinition Height="Auto"/>
@@ -91,6 +91,10 @@
             <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Expression}" FontSize="16"
                    HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="2"/>
         </Grid>
+        
+        <Button Text="M+" Grid.Row="2" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Add"/>
+        <Button Text="MC" Grid.Row="2" Grid.Column="1" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Clear"/>
+        <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Read"/>
 
         <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>
         <Button Text="8" Grid.Row="4" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="8"/>
@@ -114,9 +118,6 @@
         <Button Text="±" Grid.Row="3" Grid.Column="2" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding SignCommand}"/>
         <Button Text="=" Grid.Row="7" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding CalcCommand}"/>
 
-        <Button Text="M+" Grid.Row="2" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Add"/>
-        <Button Text="MC" Grid.Row="2" Grid.Column="1" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Clear"/>
-        <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Read"/>
 
         <Button Text="C" Grid.Row="2" Grid.Column="2" BackgroundColor="{StaticResource ClearBack}" Command="{Binding ClearCommand}" FontSize="24"/>
         <Button Text="BACK" Grid.Row="2" Grid.Column="3" BackgroundColor="{StaticResource ClearBack}" Command="{Binding BackSpaceCommand}" FontSize="24"/>

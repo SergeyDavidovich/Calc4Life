@@ -41,19 +41,7 @@ namespace Calc4Life.ViewModels
                 Sample = _formatService.FormatResult(sampleValue);
             }
         }
-
-        //double _calcAccuracy;
-        //public double CalcAccuracy
-        //{
-        //    get { return Settings.CalcAccuracy; }
-        //    set
-        //    {
-        //        Settings.CalcAccuracy = value;
-        //        SetProperty(ref _calcAccuracy, Settings.CalcAccuracy);
-        //        Sample = FormatService.FormatResult(sampleValue);
-        //    }
-        //}
-
+      
         string _sample;
         public string Sample
         {
@@ -92,7 +80,7 @@ namespace Calc4Life.ViewModels
         private void SetDefaultExecute()
         {
             Settings.GrouppingDigits = true;
-            Settings.RoundAccuracy = 3.0;
+            Settings.RoundAccuracy = 2.0;
             Settings.Rounding = false;
 
             GroupingDigits = Settings.GrouppingDigits;
