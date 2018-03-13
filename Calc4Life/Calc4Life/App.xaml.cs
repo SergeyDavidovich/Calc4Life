@@ -85,13 +85,11 @@ namespace Calc4Life
             NavigationPage navPage = new NavigationPage(pageOne);
 
             navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
-            navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
+            //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
 
             this.MainPage = navPage;
 
-            //await NavigationService.NavigateAsync("CalcPage");
             await NavigationService.NavigateAsync("CalcPage");
-
 
 #if DEBUG
             Debug.WriteLine("OnStart");

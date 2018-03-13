@@ -83,12 +83,19 @@ namespace Calc4Life.Services.FormatServices
             return result;
         }
 
+        public string FormatResult(string input)
+        {
+            string result;
+            result = input;
+            return result;
+        }
+
         string DoFormatString(double value)
         {
             string result = ""; // строка для вывода результата функции
             string input; // строка для внутренних преобразований 
             double curValue; //число для внутренних преобразований
-            
+
             #region Rounding
 
             if (Settings.Rounding)
@@ -157,7 +164,7 @@ namespace Calc4Life.Services.FormatServices
 
                 //if (result.Length > 12)
 
-                    //return result;
+                //return result;
             }
             else
                 result = curValue.ToString("G");

@@ -24,6 +24,7 @@ namespace Calc4Life.ViewModels
             _formatService = formatService;
 
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
+            SaveCommand = new DelegateCommand(SaveExecute);
             Sample = _formatService.FormatResult(sampleValue);
         }
 
@@ -41,7 +42,7 @@ namespace Calc4Life.ViewModels
                 Sample = _formatService.FormatResult(sampleValue);
             }
         }
-      
+
         string _sample;
         public string Sample
         {
@@ -90,12 +91,24 @@ namespace Calc4Life.ViewModels
             Sample = _formatService.FormatResult(sampleValue);
         }
 
+        public DelegateCommand SaveCommand { get; set; }
+        private void SaveExecute()
+        {
+            NavigationService.GoBackAsync();
+        }
+
         #endregion
         #region Navigation
 
         public override void OnNavigatedTo(NavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+        }
+
+        public override void OnNavigatingTo(NavigationParameters parameters)
+        {
+            base.OnNavigatingTo(parameters);
+
             GroupingDigits = Settings.GrouppingDigits;
             Rounding = Settings.Rounding;
             RoundAccuracy = Settings.RoundAccuracy;

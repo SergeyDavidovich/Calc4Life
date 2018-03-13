@@ -21,6 +21,16 @@
             <Color x:Key="Back">White</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SaveCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="submit.png" />
+                    <On Platform="iOS" Value="submit.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Margin="12">
             <!--groups of digits-->

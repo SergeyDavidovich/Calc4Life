@@ -289,6 +289,7 @@ namespace Calc4Life.ViewModels
                         memoryValue = double.Parse(Display, CultureInfo.CurrentCulture);
                     }
                     Memory = memoryValue.ToString();
+                    //Memory = _formatService.FormatResult(memoryValue);
 
                     IsMemoryVisible = true;
                     break;
@@ -298,6 +299,7 @@ namespace Calc4Life.ViewModels
                     break;
                 case "Read":
                     if (Memory == null) return;
+                    //memoryValue = Double.Parse(Memory, CultureInfo.CurrentCulture);
                     Display = Memory;
                     _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
                     isBackSpaceApplicable = false;
@@ -352,12 +354,12 @@ namespace Calc4Life.ViewModels
                 mustClearDisplay = true;
 
             }
-            IsRounding = Settings.Rounding;
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
+            IsRounding = Settings.Rounding;
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
