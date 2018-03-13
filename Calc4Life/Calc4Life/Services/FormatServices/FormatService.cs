@@ -157,7 +157,7 @@ namespace Calc4Life.Services.FormatServices
 
                 //if (result.Length > 12)
 
-                    return result;
+                    //return result;
             }
             else
                 result = curValue.ToString("G");

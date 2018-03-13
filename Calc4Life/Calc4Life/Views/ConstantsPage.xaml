@@ -42,17 +42,18 @@
     </ContentPage.Resources>
     <StackLayout Spacing="0" VerticalOptions="Fill">
         <ListView ItemsSource="{Binding Constants}" 
-                  RowHeight="70" BackgroundColor="WhiteSmoke" 
+                  RowHeight="56" BackgroundColor="WhiteSmoke" 
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout
-                                Padding="18,0,0,0"
-                                Spacing="4"
+                                Padding="0,0,0,0"
+                                Spacing="0"
                                 VerticalOptions="Center">
-                            <Label Text="{Binding Name}" TextColor="Crimson" FontSize="Medium"/>
-                            <Label Text="{Binding Value}" TextColor="DarkBlue" FontSize="Medium"/>
+                            <Label Text="{Binding Name}" FontSize="18" TextColor="Crimson" Margin="30,0,0,0" FontAttributes="Italic"/>
+                            <Label Text="{Binding Value}" FontSize="18" HorizontalOptions="End" Margin="0,0,30,0" TextColor="DarkBlue"/>
+                            <BoxView HeightRequest="1" BackgroundColor="DarkGray"/>
                             <!--<Label Text="{Binding Id}" TextColor="Blue" FontSize="Small"/>-->
                         </StackLayout>
                         <!--</Grid>-->

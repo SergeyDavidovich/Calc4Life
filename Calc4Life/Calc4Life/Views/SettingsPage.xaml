@@ -7,11 +7,18 @@
              Title="Settings" BackgroundColor="{StaticResource Key=Back}">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Color x:Key="ForeColor">Black</Color>
+            <Color x:Key="BackColor">WhiteSmoke</Color>
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="16"/>
-                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="TextColor" Value="{StaticResource ForeColor}"/>
             </Style>
-            <Color x:Key="Back">#0d47a1</Color>
+            <Style TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{StaticResource ForeColor}"/>
+                <Setter Property="HeightRequest" Value="1"/>
+            </Style>
+            <!--<Color x:Key="Back">#0d47a1</Color>-->
+            <Color x:Key="Back">White</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -21,7 +28,7 @@
                 <Label Text="Delimiter of the groups of digits" HorizontalOptions="Start"/>
                 <Switch IsToggled="{Binding GroupingDigits, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
-            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <BoxView/>
             <!--calc accuracy-->
             <StackLayout Orientation="Horizontal" Margin="0,12">
                 <Label Text="Accuracy of calculations" VerticalOptions="Center"/>
@@ -29,20 +36,20 @@
                 <Label Text="decimal places" VerticalOptions="Center"/>
             </StackLayout>
             <Stepper x:Name="Stepper" Value="{Binding RoundAccuracy}" Minimum="0" Maximum="4" Increment="1"  HorizontalOptions="EndAndExpand"/>
-            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <BoxView/>
 
             <!--rounding-->
             <StackLayout Orientation="Horizontal">
                 <Label Text="Round up the result? (up to specified accuracy)" VerticalOptions="Center"/>
                 <Switch IsToggled="{Binding Rounding, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
             </StackLayout>
-            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <BoxView/>
             <!--sample-->
             <StackLayout Margin="30,20">
                 <Label Text="Sample:"/>
                 <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
             </StackLayout>
-            <BoxView HeightRequest="1" BackgroundColor="White"/>
+            <BoxView/>
             <Button Text="Set defaults" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Command="{Binding SetDefaultCommang}"/>
         </StackLayout>
     </ContentPage.Content>
