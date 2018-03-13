@@ -34,8 +34,8 @@ namespace Calc4Life.ViewModels
 
         #region Constructors
 
-        public CalcPageViewModel(INavigationService navigationService, 
-            IPageDialogService dialogService, 
+        public CalcPageViewModel(INavigationService navigationService,
+            IPageDialogService dialogService,
             IBinaryOperationService binaryOperationService, FormatService formatService)
             : base(navigationService)
         {
@@ -60,6 +60,7 @@ namespace Calc4Life.ViewModels
             MemoryCommand = new DelegateCommand<string>(MemoryExecute);
             AddConstantCommand = new DelegateCommand(AddConstExecute);
             ClearCommand = new DelegateCommand(ClearExecute);
+
         }
 
         #endregion
@@ -98,6 +99,14 @@ namespace Calc4Life.ViewModels
             get { return _DecimalSeparator; }
             set { SetProperty(ref _DecimalSeparator, value); }
         }
+
+        bool _IsRounding;
+        public bool IsRounding
+        {
+            get { return Settings.Rounding; }
+            set { SetProperty(ref _IsRounding, value); }
+        }
+
         #endregion
 
         #region Commands
@@ -341,7 +350,9 @@ namespace Calc4Life.ViewModels
                 //4. Устанавливаем флаги
                 isBackSpaceApplicable = false;
                 mustClearDisplay = true;
+
             }
+            IsRounding = Settings.Rounding;
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
@@ -350,7 +361,8 @@ namespace Calc4Life.ViewModels
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
-            base.OnNavigatedFrom(parameters);
+
+            //base.OnNavigatedFrom(parameters);
         }
 
         #endregion

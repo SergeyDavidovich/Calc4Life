@@ -61,7 +61,7 @@ namespace Calc4Life
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<CalcPage>();
-            containerRegistry.RegisterForNavigation<MainPage>();
+            //containerRegistry.RegisterForNavigation<MainPage>();
             containerRegistry.RegisterForNavigation<ConstantsPage>();
             containerRegistry.RegisterForNavigation<OptionsPage>();
             containerRegistry.RegisterForNavigation<AboutPage>();
@@ -80,6 +80,7 @@ namespace Calc4Life
         protected async override void OnStart()
         {
             var pageOne = new CalcPage();
+
             NavigationPage.SetHasNavigationBar(pageOne, true);
             NavigationPage navPage = new NavigationPage(pageOne);
 
@@ -88,7 +89,9 @@ namespace Calc4Life
 
             this.MainPage = navPage;
 
+            //await NavigationService.NavigateAsync("CalcPage");
             await NavigationService.NavigateAsync("CalcPage");
+
 
 #if DEBUG
             Debug.WriteLine("OnStart");

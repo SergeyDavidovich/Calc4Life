@@ -76,22 +76,36 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            <!--memory-->
             <BoxView Grid.Row="0" Grid.Column="0" 
                      BackgroundColor="{StaticResource MemoryBack}" IsVisible="{Binding IsMemoryVisible}" 
                      Margin="2" VerticalOptions="CenterAndExpand" HorizontalOptions="End"/>
             <Label Grid.Row="0" Grid.Column="0" 
                    Text="M:" TextColor="White" FontSize="16" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"
                    IsVisible="{Binding IsMemoryVisible}" Margin="1"/>
+
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" TextColor="Green" FontSize="16" HorizontalOptions="Start" HorizontalTextAlignment="Start" 
                    VerticalOptions="Center" IsVisible="{Binding IsMemoryVisible}"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Display}" FontSize="46"
+            <!--end memory-->
+            <!--rounding-->
+            <BoxView Grid.Row="0" Grid.Column="2" 
+                     BackgroundColor="Red" IsVisible="{Binding IsRounding}" Margin="2" VerticalOptions="CenterAndExpand" 
+                     HorizontalOptions="FillAndExpand"/>
+            <Label Grid.Row="0" Grid.Column="2" 
+                   Text="   Rounding   " TextColor="White" FontSize="16" HorizontalOptions="EndAndExpand" HorizontalTextAlignment="End" VerticalOptions="CenterAndExpand"
+                   IsVisible="True" Margin="1"/>
+            <!--end rounding-->
+
+
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Display}" FontSize="46"
                 TextColor="Black" HorizontalOptions="End"/>
-            <!--<BoxView Grid.Row="2" Grid.ColumnSpan="2" BackgroundColor="Black" HorizontalOptions="Fill" Margin="2" Opacity="0.8"/>-->
-            <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Expression}" FontSize="16"
+            <!--<BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="Black" HorizontalOptions="Fill" Margin="2" Opacity="0.8"/>-->
+            <Label Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Expression}" FontSize="16"
                    HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="2"/>
         </Grid>
-        
+
         <Button Text="M+" Grid.Row="2" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Add"/>
         <Button Text="MC" Grid.Row="2" Grid.Column="1" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Clear"/>
         <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Read"/>
