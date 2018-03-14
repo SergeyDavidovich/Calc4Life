@@ -5,7 +5,7 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Calc4Life.Views.CalcPage" 
-             Title="{Binding Title}">
+             Title="Calc Your Life">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness">
             <On Platform="iOS" Value="0,40,0,0" />
@@ -74,16 +74,16 @@
                 <RowDefinition Height="1.4*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <!--memory-->
             <BoxView Grid.Row="0" Grid.Column="0" 
                      BackgroundColor="{StaticResource MemoryBack}" IsVisible="{Binding IsMemoryVisible}" 
-                     Margin="2" VerticalOptions="CenterAndExpand" HorizontalOptions="End"/>
+                     Margin="2" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>
             <Label Grid.Row="0" Grid.Column="0" 
-                   Text="M:" TextColor="White" FontSize="16" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"
+                   Text="  Memory: " TextColor="White" FontSize="16" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"
                    IsVisible="{Binding IsMemoryVisible}" Margin="1"/>
 
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" TextColor="Green" FontSize="16" HorizontalOptions="Start" HorizontalTextAlignment="Start" 
