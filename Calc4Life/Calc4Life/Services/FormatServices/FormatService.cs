@@ -120,7 +120,7 @@ namespace Calc4Life.Services.FormatServices
 
             if (Settings.GrouppingDigits)
             {
-                if (input.Contains(NegativeSign))
+                if (input.StartsWith(NegativeSign))
                 {
                     negativeSign = NegativeSign;
                     int index = input.LastIndexOf(NegativeSign);
@@ -175,8 +175,12 @@ namespace Calc4Life.Services.FormatServices
 
             if (result.Length > maxResultLenth)
                 result = result.Remove(maxResultLenth);
+
+            result = result.TrimEnd('0');
+
             if (result.EndsWith(DecimalSeparator))
                 result = result.Remove(result.Length - 1);
+
 
 
             #endregion
