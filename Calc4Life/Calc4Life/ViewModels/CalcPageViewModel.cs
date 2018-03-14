@@ -23,7 +23,7 @@ namespace Calc4Life.ViewModels
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
 
-        double? registerOerand; // текущий операнд
+        double? registerOperand; // текущий операнд
         double? registerMemory; // значение яччейки памяти
 
         string _lastOperator; // последний введенный оператор
@@ -151,6 +151,7 @@ namespace Calc4Life.ViewModels
             if (!isBackSpaceApplicable) return;
 
             string currentDisplayText = Display;
+            if (currentDisplayText == "0") return;
 
             int i = currentDisplayText.Length - 1;
             currentDisplayText = currentDisplayText.Remove(i);
