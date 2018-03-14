@@ -35,14 +35,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
-                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Margin" Value="30,4,0,0"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout Spacing="0" VerticalOptions="Fill">
-        <ListView ItemsSource="{Binding Constants}" SeparatorColor="Red"
-                  RowHeight="56" BackgroundColor="WhiteSmoke" 
+        <ListView ItemsSource="{Binding Constants}" SeparatorColor="Red" IsGroupingEnabled="False" HasUnevenRows="True"
+                  RowHeight="72" BackgroundColor="WhiteSmoke" 
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -51,9 +51,9 @@
                                 Padding="0,0,0,0"
                                 Spacing="0"
                                 VerticalOptions="Center">
-                            <Label Text="{Binding Name}" FontSize="18" TextColor="Crimson" Margin="30,0,0,0" FontAttributes="None"/>
+                            <Label Text="{Binding Name}" FontSize="20" TextColor="Crimson"/>
                             <Label Text="{Binding Value}" FontSize="18" HorizontalOptions="Start" Margin="30,0,30,0" TextColor="DarkBlue"/>
-                            <!--<Label Text="{Binding Id}" TextColor="Blue" FontSize="Small"/>-->
+                            <Label Text="{Binding Note}" Margin="30,0,30,0" TextColor="Gray" FontSize="Small"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

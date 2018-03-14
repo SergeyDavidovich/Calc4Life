@@ -23,7 +23,9 @@ namespace Calc4Life.ViewModels
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
 
-        Operand _currentOperand; // текущий операнд
+        double? registerOerand; // текущий операнд
+        double? registerMemory; // значение яччейки памяти
+
         string _lastOperator; // последний введенный оператор
         string _DecimalSeparator;
 
@@ -133,7 +135,6 @@ namespace Calc4Life.ViewModels
             Display = GetNewDisplayText(Display, par);
 
             //4. назначаем операнд в операцию
-            //_binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
             _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
 
             //3 очищаем строку выражения
@@ -278,17 +279,17 @@ namespace Calc4Life.ViewModels
             switch (par)
             {
                 case "Add":
-                    double memoryValue;
+                    //double memoryValue;
                     if (Memory != null)
                     {
-                        memoryValue = Double.Parse(Memory, CultureInfo.CurrentCulture);
-                        memoryValue += double.Parse(Display, CultureInfo.CurrentCulture);
+                        registerMemory = Double.Parse(Memory, CultureInfo.CurrentCulture);
+                        registerMemory += double.Parse(Display, CultureInfo.CurrentCulture);
                     }
                     else
                     {
-                        memoryValue = double.Parse(Display, CultureInfo.CurrentCulture);
+                        registerMemory = double.Parse(Display, CultureInfo.CurrentCulture);
                     }
-                    Memory = memoryValue.ToString();
+                    Memory = registerMemory.ToString();
                     //Memory = _formatService.FormatResult(memoryValue);
 
                     IsMemoryVisible = true;

@@ -100,8 +100,6 @@ namespace Calc4Life.ViewModels
             get { return _selectedConstant; }
             set { SetProperty(ref _selectedConstant, value); }
         }
-        double _roundAccuracy;
-
        
         #endregion
 
