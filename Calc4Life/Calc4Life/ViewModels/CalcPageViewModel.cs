@@ -190,7 +190,7 @@ namespace Calc4Life.ViewModels
                 double? result = _binaryOperation.GetResult();
 
                 //2. вывести результат на дисплей
-                Display = result.ToString();
+                Display =_formatService.FormatResult(result.Value);
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
