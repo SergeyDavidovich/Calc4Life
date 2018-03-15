@@ -10,12 +10,15 @@ using System.Globalization;
 using Calc4Life.Models;
 using Prism.Services;
 using Calc4Life.Services.OperationServices;
+using Calc4Life.Services.FormatServices;
+using Calc4Life.Helpers;
 
 namespace Calc4Life.ViewModels
 {
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
+        const int maxFiguresNumber = 12;
 
         bool isBackSpaceApplicable; //флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
@@ -26,16 +29,19 @@ namespace Calc4Life.ViewModels
 
         IPageDialogService _dialogService;
         IBinaryOperationService _binaryOperation;
-
+        FormatService _formatService;
         #endregion
 
         #region Constructors
 
-        public CalcPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IBinaryOperationService binaryOperationService)
+        public CalcPageViewModel(INavigationService navigationService,
+            IPageDialogService dialogService,
+            IBinaryOperationService binaryOperationService, FormatService formatService)
             : base(navigationService)
         {
             _dialogService = dialogService;
             _binaryOperation = binaryOperationService;
+            _formatService = formatService;
 
             Title = "Calculator for Life";
             Display = "0";
@@ -54,6 +60,7 @@ namespace Calc4Life.ViewModels
             MemoryCommand = new DelegateCommand<string>(MemoryExecute);
             AddConstantCommand = new DelegateCommand(AddConstExecute);
             ClearCommand = new DelegateCommand(ClearExecute);
+
         }
 
         #endregion
@@ -92,6 +99,14 @@ namespace Calc4Life.ViewModels
             get { return _DecimalSeparator; }
             set { SetProperty(ref _DecimalSeparator, value); }
         }
+
+        bool _IsRounding;
+        public bool IsRounding
+        {
+            get { return Settings.Rounding; }
+            set { SetProperty(ref _IsRounding, value); }
+        }
+
         #endregion
 
         #region Commands
@@ -116,7 +131,6 @@ namespace Calc4Life.ViewModels
 
             //2. выводим на дисплей, значения вводимые с кнопок
             Display = GetNewDisplayText(Display, par);
-
 
             //4. назначаем операнд в операцию
             //_binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
@@ -154,6 +168,8 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<string> OperatorCommand { get; }
         private void OperatorExecute(string par) // Plus Minus Multiplication Division Discount
         {
+            if (_binaryOperation.Operand1 == null) return;
+
             //1. поднимаем флаг
             mustClearDisplay = true;
 
@@ -174,7 +190,7 @@ namespace Calc4Life.ViewModels
                 double? result = _binaryOperation.GetResult();
 
                 //2. вывести результат на дисплей
-                Display = result.ToString();
+                Display =_formatService.FormatResult(result.Value);
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
@@ -202,7 +218,8 @@ namespace Calc4Life.ViewModels
                 double? result = _binaryOperation.GetResult();
 
                 //2. вывести результат на дисплей
-                Display = result.ToString();
+                //Display = result.ToString();
+                Display = _formatService.FormatResult(result.Value);
                 Expression = GetNewExpression();
 
                 //3. очистить операцию
@@ -272,6 +289,7 @@ namespace Calc4Life.ViewModels
                         memoryValue = double.Parse(Display, CultureInfo.CurrentCulture);
                     }
                     Memory = memoryValue.ToString();
+                    //Memory = _formatService.FormatResult(memoryValue);
 
                     IsMemoryVisible = true;
                     break;
@@ -281,6 +299,7 @@ namespace Calc4Life.ViewModels
                     break;
                 case "Read":
                     if (Memory == null) return;
+                    //memoryValue = Double.Parse(Memory, CultureInfo.CurrentCulture);
                     Display = Memory;
                     _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
                     isBackSpaceApplicable = false;
@@ -333,16 +352,19 @@ namespace Calc4Life.ViewModels
                 //4. Устанавливаем флаги
                 isBackSpaceApplicable = false;
                 mustClearDisplay = true;
+
             }
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
+            IsRounding = Settings.Rounding;
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
-            base.OnNavigatedFrom(parameters);
+
+            //base.OnNavigatedFrom(parameters);
         }
 
         #endregion
@@ -361,6 +383,7 @@ namespace Calc4Life.ViewModels
             {
                 case "DecPoint" when !currentDisplayText.Contains(DecimalSeparator):
                     {
+                        if (currentDisplayText.Length >= maxFiguresNumber) break;
                         if (currentDisplayText == "") currentDisplayText = "0" + DecimalSeparator;
                         else currentDisplayText += DecimalSeparator;
 
@@ -378,9 +401,11 @@ namespace Calc4Life.ViewModels
                 case "8":
                 case "9":
                     {
-                        if (currentDisplayText.Length == 12) break;
+                        if (currentDisplayText.Length >= maxFiguresNumber) break;
                         if (currentDisplayText == "0") Result = "";
+
                         Result += tag;
+
                         break;
                     }
             }
@@ -407,29 +432,35 @@ namespace Calc4Life.ViewModels
 
             //получаем оператор из операции
             string oper = "";
-            switch (_binaryOperation.Operator)
+
             {
-                case BinaryOperators.Plus:
-                    oper = "+"; break;
-                case BinaryOperators.Minus:
-                    oper = "-"; break;
-                case BinaryOperators.Multiplication:
-                    oper = "×"; break;
-                case BinaryOperators.Division:
-                    oper = "÷"; break;
-                case BinaryOperators.Discount:
-                    oper = "%"; break;
+                switch (_binaryOperation.Operator)
+                {
+                    case BinaryOperators.Plus:
+                        oper = "+"; break;
+                    case BinaryOperators.Minus:
+                        oper = "-"; break;
+                    case BinaryOperators.Multiplication:
+                        oper = "×"; break;
+                    case BinaryOperators.Division:
+                        oper = "÷"; break;
+                    case BinaryOperators.Discount:
+                        oper = "%"; break;
+                }
             }
 
             //добавляем (или нет) знак равенства в выражение 
             string equal;
             double? result = _binaryOperation.Result;
             if (result != null)
-                equal = "=";
+                equal = " =";
             else equal = "";
 
             //формируем строку вывода выражения
-            output = $"{operand1} {oper} {operand2} {equal}";
+            oper = oper.Length == 0 ? "" : " " + oper;
+            operand2 = operand2.Length == 0 ? "" : " " + operand2;
+
+            output = $"{operand1}{oper}{operand2}{equal}";
             return output;
         }
 

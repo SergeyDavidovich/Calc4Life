@@ -21,16 +21,5 @@ namespace Calc4Life.Views
         {
 
         }
-
-        //public void OnPickerSelectedIndexChanged(object sender, EventArgs args)
-        //{
-        //    var picker = (Picker)sender;
-        //    int selectedIndex = picker.SelectedIndex;
-
-        //    if (selectedIndex != -1)
-        //    {
-        //        this.label.Text = picker.Items[selectedIndex];
-        //    }
-        //}
     }
 }

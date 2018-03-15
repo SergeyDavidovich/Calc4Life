@@ -11,6 +11,8 @@ using Calc4Life.Services;
 using Calc4Life.Services.RepositoryServices;
 using Unity.Lifetime;
 using Calc4Life.Services.OperationServices;
+using Calc4Life.Helpers;
+using Calc4Life.Services.FormatServices;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -59,7 +61,7 @@ namespace Calc4Life
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<CalcPage>();
-            containerRegistry.RegisterForNavigation<MainPage>();
+            //containerRegistry.RegisterForNavigation<MainPage>();
             containerRegistry.RegisterForNavigation<ConstantsPage>();
             containerRegistry.RegisterForNavigation<OptionsPage>();
             containerRegistry.RegisterForNavigation<AboutPage>();
@@ -68,6 +70,7 @@ namespace Calc4Life
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
+            containerRegistry.RegisterSingleton(typeof(FormatService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
@@ -77,11 +80,12 @@ namespace Calc4Life
         protected async override void OnStart()
         {
             var pageOne = new CalcPage();
+
             NavigationPage.SetHasNavigationBar(pageOne, true);
             NavigationPage navPage = new NavigationPage(pageOne);
 
             navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
-            navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
+            //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
 
             this.MainPage = navPage;
 
