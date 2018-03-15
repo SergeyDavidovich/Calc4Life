@@ -21,7 +21,7 @@
             <!--  Размер шрифта для заголовка элемента Label и ошибок  -->
             <OnPlatform x:Key="LittleSize" x:TypeArguments="x:Double">
                 <On Platform="iOS" Value="11" />
-                <On Platform="Android, UWP, WinRT, WinPhone" Value="18" />
+                <On Platform="Android, UWP, WinRT, WinPhone" Value="16" />
             </OnPlatform>
 
             <!--  Стиль для элемента Entry, в котором присутсвует валидация  -->
@@ -42,7 +42,7 @@
             </Style>
             <Style x:Key="HeaderLabelStyle" TargetType="{x:Type Label}">
                 <Setter Property="FontSize" Value="{StaticResource LittleSize}" />
-                <Setter Property="TextColor" Value="#00A69C" />
+                <Setter Property="TextColor" Value="Black" />
                 <Setter Property="HorizontalOptions" Value="Start" />
             </Style>
             <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
@@ -52,7 +52,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Padding="5,40,5,5">
+        <StackLayout Padding="5,40,5,5" Margin="12">
             <Label Style="{StaticResource HeaderLabelStyle}" Text="Constant name" />
             <Entry
                 x:Name="nameEntry"
@@ -68,7 +68,6 @@
                 <Entry.Triggers>
                     <DataTrigger
                         Binding="{Binding Name.IsValid}"
-                       
                         TargetType="Entry"
                         Value="False">
                         <Setter Property="behaviors:LineColorBehavior.LineColor" Value="#ff5252" />
@@ -116,23 +115,13 @@
                 Placeholder="optional"
                 Text="{Binding Note}" />
             <Button
+                Margin="0,30,0,0"
                 BackgroundColor="Green"
                 Command="{Binding SaveCommand}"
                 HorizontalOptions="Center"
                 Text="Save"
                 TextColor="White"
                 WidthRequest="180" />
-            <!--<Button Text="Save" HorizontalOptions="Center" IsEnabled="True" BackgroundColor="Green">
-                <Button.Triggers>
-                    <MultiTrigger TargetType="Button">
-                        <MultiTrigger.Conditions>
-                            <BindingCondition Binding="{Binding Source={x:Reference name}, Path=Text.Length}" Value="0"/>
-                            <BindingCondition Binding="{Binding Source={x:Reference value}, Path=Text.Length}" Value="0" />
-                        </MultiTrigger.Conditions>
-                        <Setter Property="IsEnabled" Value="False"/>
-                    </MultiTrigger>
-                </Button.Triggers>
-            </Button>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -90,7 +90,7 @@ namespace Calc4Life.Services.FormatServices
             return result;
         }
 
-        string DoFormatString(double value)
+        private string DoFormatString(double value)
         {
             string result = ""; // строка для вывода результата функции
             string input; // строка для внутренних преобразований 
@@ -161,10 +161,6 @@ namespace Calc4Life.Services.FormatServices
                 }
 
                 result = negativeSign + output + decimalSeparator + fractionalPart;
-
-                //if (result.Length > 12)
-
-                //return result;
             }
             else
                 result = curValue.ToString("G");
@@ -181,12 +177,9 @@ namespace Calc4Life.Services.FormatServices
             if (result.EndsWith(DecimalSeparator))
                 result = result.Remove(result.Length - 1);
 
-
-
             #endregion
 
             return result;
         }
-
     }
 }

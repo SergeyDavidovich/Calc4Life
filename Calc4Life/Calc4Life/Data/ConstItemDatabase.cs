@@ -19,6 +19,17 @@ namespace Calc4Life.Data
 
         public Task<List<Constant>> GetItemsAsync()
         {
+
+            var list = database.Table<Constant>().ToListAsync().Result;
+
+            if (list.Count == 0)
+                SaveItemAsync(new Constant()
+                {
+                    Name = "Example of constant",
+                    Value = 0,
+                    Note = "This is the constant example. You can edit or delete this one. Also you can add another constants in the list"
+                });
+                
             return database.Table<Constant>().ToListAsync();
         }
 
