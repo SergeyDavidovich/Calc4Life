@@ -27,7 +27,7 @@ namespace Calc4Life.Data
                 {
                     Name = "Example of constant",
                     Value = 0,
-                    Note = "This is the constant example. You can edit or delete this one. Also you can add another constants in the list"
+                    Note = "This is the constant example. You can edit or delete this one. Also you can add another constants in the list. Select and press green button to use"
                 });
                 
             return database.Table<Constant>().ToListAsync();

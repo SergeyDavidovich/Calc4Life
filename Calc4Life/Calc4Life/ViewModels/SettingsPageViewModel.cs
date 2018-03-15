@@ -13,7 +13,7 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
-        double sampleValue = 1234567.5678;
+        double sampleValue = 12345.6789;
         FormatService _formatService;
         #endregion
         #region Constructors
