@@ -155,9 +155,6 @@
     <AndroidResource Include="Resources\drawable\appicon_a.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\splash1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\submit.png" />
   </ItemGroup>
   <ItemGroup>

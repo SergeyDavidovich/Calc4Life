@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace Calc4Life.Droid
 {
-    [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = false, NoHistory = true)]
+    [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : Android.Support.V7.App.AppCompatActivity
     {
         //static readonly string TAG = "X:" + typeof(SplashActivity).Name;
