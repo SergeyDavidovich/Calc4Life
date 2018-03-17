@@ -37,9 +37,10 @@ namespace Calc4Life.ViewModels
 
             _dialogService = dialogService;
 
-            NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
-            NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute, NavigateToCalcCanExecute);
-            DeleteCommand = new DelegateCommand(DeleteExecute);
+            NavigateToAddCommand = new DelegateCommand(NavigateToAddExecute);
+            NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute, ActionCanExecute);
+            NavigateToCalcCommand = new DelegateCommand(NavigateToCalcExecute, ActionCanExecute);
+            DeleteCommand = new DelegateCommand(DeleteExecute, ActionCanExecute);
 
             MessagingCenter.Subscribe<ConstantsRepositoryServiceFake>(this, "deleted", ConstantDeleted);
         }
@@ -48,16 +49,26 @@ namespace Calc4Life.ViewModels
 
         #region Commands
 
-        public DelegateCommand NavigateToEditCommand { get; }
-        private async void NavigateToEditExecute()
+        public DelegateCommand NavigateToAddCommand { get; }
+        private async void NavigateToAddExecute()
         {
             await NavigationService.NavigateAsync("EditConstPage", null, false, true);
         }
+
+        public DelegateCommand NavigateToEditCommand { get; }
+        private async void NavigateToEditExecute()
+        {
+
+            var par = new NavigationParameters();
+            par.Add("edit", SelectedConstant);
+            await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+
+            //await NavigationService.NavigateAsync("EditConstPage", null, false, true);
+        }
+
         public DelegateCommand DeleteCommand { get; }
         public async void DeleteExecute()
         {
-            if (SelectedConstant == null) return;
-
             string title = "WARNING!";
             string message = $"Your are about deleting \"{SelectedConstant.Name}\" \r\n\r\nDelete?";
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
@@ -75,11 +86,7 @@ namespace Calc4Life.ViewModels
             navigationParams.Add("const", SelectedConstant);
             await NavigationService.GoBackAsync(navigationParams);
         }
-        private bool NavigateToCalcCanExecute()
-        {
-            if (SelectedConstant != null) return true;
-            else return false;
-        }
+        private bool ActionCanExecute() => (SelectedConstant != null);
 
         #endregion
 
@@ -102,7 +109,14 @@ namespace Calc4Life.ViewModels
         public Constant SelectedConstant
         {
             get { return _selectedConstant; }
-            set { SetProperty(ref _selectedConstant, value); }
+            set
+            {
+                SetProperty(ref _selectedConstant, value);
+
+                DeleteCommand.RaiseCanExecuteChanged();
+                NavigateToEditCommand.RaiseCanExecuteChanged();
+                NavigateToCalcCommand.RaiseCanExecuteChanged();
+            }
         }
        
         #endregion

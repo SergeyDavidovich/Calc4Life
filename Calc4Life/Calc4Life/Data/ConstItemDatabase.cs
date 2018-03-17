@@ -8,7 +8,7 @@ using Calc4Life.Services.RepositoryServices;
 
 namespace Calc4Life.Data
 {
-    public class ConstItemDatabase: IConstantsRepositoryService
+    public class ConstItemDatabase : IConstantsRepositoryService
     {
         readonly SQLiteAsyncConnection database;
 
@@ -20,18 +20,18 @@ namespace Calc4Life.Data
 
         public Task<List<Constant>> GetItemsAsync()
         {
-
             var list = database.Table<Constant>().ToListAsync().Result;
 
-
-
             if (list.Count == 0)
+            {
                 SaveAsync(new Constant()
                 {
                     Name = "Example of constant",
                     Value = 1234567.89,
                     Note = "This is the constant example. You can edit or delete this one. Also you can add another constants in the list. Select and press green button to use"
                 });
+                list = database.Table<Constant>().ToListAsync().Result;
+            }
 
             return database.Table<Constant>().ToListAsync();
         }

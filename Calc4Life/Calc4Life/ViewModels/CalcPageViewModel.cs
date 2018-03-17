@@ -24,7 +24,7 @@ namespace Calc4Life.ViewModels
         bool mustClearDisplay; //флаг - необходимо ли очистить дисплей перед вводом
 
         double? registerOperand; // текущий операнд
-        double? registerMemory; // значение яччейки памяти
+        double? registerMemory; // значение ячейки памяти
 
         string _lastOperator; // последний введенный оператор
         string _DecimalSeparator;
@@ -354,7 +354,6 @@ namespace Calc4Life.ViewModels
                 //4. Устанавливаем флаги
                 isBackSpaceApplicable = false;
                 mustClearDisplay = true;
-
             }
         }
 
