@@ -7,7 +7,7 @@
              x:Class="Calc4Life.Views.ConstantsPage"
              Title="Constants">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding NavigateToEditCommand}">
+        <ToolbarItem Command="{Binding NavigateToAddCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="Android" Value="add_const.png" />

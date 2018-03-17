@@ -55,7 +55,7 @@
             </StackLayout>
             <BoxView/>
             <!--sample-->
-            <StackLayout Margin="30,20">
+            <StackLayout Margin="0,20">
                 <Label Text="Sample:"/>
                 <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
             </StackLayout>

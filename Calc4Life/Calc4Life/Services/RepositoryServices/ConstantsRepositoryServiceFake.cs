@@ -20,12 +20,12 @@ namespace Calc4Life.Services.RepositoryServices
             Debug.WriteLine($"ConstantsRepositoryServiceFake { DateTime.Now}");
         }
 
-        public async Task<List<Constant>> GetAllAsync()
+        public async Task<List<Constant>> GetItemsAsync()
         {
             return _constants = _constants ?? await ReadConstantsAsync();
         }
 
-        public async Task<Constant> GetByIdAsync(string id)
+        public async Task<Constant> GetItemAsync(int id)
         {
             return await Task.Run(() =>
           (from p in _constants where p.Id.Equals(id) select p).First());
@@ -42,24 +42,26 @@ namespace Calc4Life.Services.RepositoryServices
             await WriteConstatsAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<int> DeleteAsync(Constant item)
         {
-            _constants.Remove(_constants.Find(x => x.Id == id));
+            _constants.Remove(_constants.Find(x => x.Id == item.Id));
 
             MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, "deleted");
 
             await WriteConstatsAsync();
+            return item.Id;
         }
 
-        public async Task<List<Constant>> GetAllFavoritesASync()
+        public async Task<List<Constant>> GetItemsFavoriteAsync()
         {
             return await Task.Run(() =>
                     (from constant in _constants where constant.IsFavorite.Equals(true) select constant).ToList<Constant>());
         }
 
-        public async Task UpdateAsync(Constant entity)
+
+        public async Task<int> SaveAsync(Constant entity)
         {
-            await Task.Run(null);
+            return 1;// await Task.Run(null);
         }
 
         #region read/write
@@ -69,7 +71,7 @@ namespace Calc4Life.Services.RepositoryServices
             return await Task.Run(() => _constants = new List<Constant>
             {
                 new Constant(){Id=1, Name="Example of constant", Value=1234567.89,
-                    Note ="This is the constant example. You can edit or delete this one. Also you can add another constants in the list", IsFavorite=false},
+                    Note ="This is the constant example. You can edit or delete this one. Also you can add another constants in the list. Select and press green button to use", IsFavorite=false},
                 new Constant(){Id=2, Name="Сan of beer", Value=10.55, Note="Средняя цена одной банки пива в Евросоюзе в 2017 году", IsFavorite=false},
                 new Constant(){Id=3, Name="Second Constant", Value=23456789 , Note="Заметка о Second Constant", IsFavorite=false},
                 new Constant(){Id=4, Name="Third Constant", Value=34567890, Note="", IsFavorite=false},
