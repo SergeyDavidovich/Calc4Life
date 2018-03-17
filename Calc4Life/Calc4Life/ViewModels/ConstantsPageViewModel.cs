@@ -63,7 +63,6 @@ namespace Calc4Life.ViewModels
             par.Add("edit", SelectedConstant);
             await NavigationService.NavigateAsync("EditConstPage", par, false, true);
 
-            //await NavigationService.NavigateAsync("EditConstPage", null, false, true);
         }
 
         public DelegateCommand DeleteCommand { get; }
@@ -74,9 +73,10 @@ namespace Calc4Life.ViewModels
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
 
             if (answer == true)
+            {
                 await _constantRepository.DeleteAsync(SelectedConstant);
-
-            Constants.Remove(SelectedConstant);
+                Constants.Remove(SelectedConstant);
+            }
         }
 
         public DelegateCommand NavigateToCalcCommand { get; }
@@ -118,7 +118,7 @@ namespace Calc4Life.ViewModels
                 NavigateToCalcCommand.RaiseCanExecuteChanged();
             }
         }
-       
+
         #endregion
 
         #region Messages actions
