@@ -69,6 +69,7 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
+
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
 

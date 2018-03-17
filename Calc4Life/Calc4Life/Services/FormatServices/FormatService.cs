@@ -118,7 +118,8 @@ namespace Calc4Life.Services.FormatServices
             if (result.Length > maxResultLenth)
                 result = result.Remove(maxResultLenth);
 
-            result = result.TrimEnd('0');
+            if (decimalSeparator != String.Empty)
+                result = result.TrimEnd('0');
 
             if (result.EndsWith(DecimalSeparator))
                 result = result.Remove(result.Length - 1);

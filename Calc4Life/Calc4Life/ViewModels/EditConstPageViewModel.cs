@@ -33,7 +33,10 @@ namespace Calc4Life.ViewModels
             : base(navigationService)
         {
             _navigationService = navigationService;
-            _repositoryService = repositoryService;
+
+            //_repositoryService = repositoryService;
+            _repositoryService = App.Database;
+
             _dialogService = dialogService;
 
             SaveCommand = new DelegateCommand(SaveExecute);
@@ -59,7 +62,7 @@ namespace Calc4Life.ViewModels
             if (!Validate()) return;
 
             var constant = new Constant { Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
-            await _repositoryService.AddAsync(constant);
+            await _repositoryService.SaveAsync(constant);
 
             var parameters=new NavigationParameters();
             parameters.Add("const", constant);

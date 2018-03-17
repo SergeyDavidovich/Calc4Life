@@ -32,7 +32,9 @@ namespace Calc4Life.ViewModels
         {
             Title = "Constants";
 
-            _constantRepository = constantsRepository;
+            //_constantRepository = constantsRepository;
+            _constantRepository = App.Database;
+
             _dialogService = dialogService;
 
             NavigateToEditCommand = new DelegateCommand(NavigateToEditExecute);
@@ -61,7 +63,9 @@ namespace Calc4Life.ViewModels
             var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
 
             if (answer == true)
-                await _constantRepository.DeleteAsync(SelectedConstant.Id);
+                await _constantRepository.DeleteAsync(SelectedConstant);
+
+            Constants.Remove(SelectedConstant);
         }
 
         public DelegateCommand NavigateToCalcCommand { get; }
@@ -82,7 +86,7 @@ namespace Calc4Life.ViewModels
         #region Navigation
         public async override void OnNavigatedTo(NavigationParameters parameters)
         {
-            var list = await _constantRepository.GetAllAsync();
+            var list = await _constantRepository.GetItemsAsync();
             Constants = new ObservableCollection<Constant>(list);
         }
         #endregion
