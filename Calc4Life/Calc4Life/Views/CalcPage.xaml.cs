@@ -12,6 +12,7 @@ namespace Calc4Life.Views
         public CalcPage()
         {
             InitializeComponent();
+           
         }
     }
 }

@@ -87,6 +87,9 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Main.cs" />
@@ -192,6 +195,24 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\insert_const.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\options%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\options.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\add%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\submit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\submit%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

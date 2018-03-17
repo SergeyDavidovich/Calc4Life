@@ -55,6 +55,13 @@
                             <Label Text="{Binding Value}" FontSize="18" HorizontalOptions="Start" Margin="30,0,30,0" TextColor="DarkBlue"/>
                             <Label Text="{Binding Note}" Margin="30,0,30,0" TextColor="Gray" FontSize="Small"/>
                         </StackLayout>
+                        <ViewCell.ContextActions>
+                            <MenuItem CommandParameter="{Binding .}"
+               Text="Edit" />
+                            <MenuItem CommandParameter="{Binding .}"
+               Text="Delete" IsDestructive="True" />
+                        </ViewCell.ContextActions>
+
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
