@@ -268,7 +268,10 @@ namespace Calc4Life.ViewModels
             else
                 if (!str.StartsWith("0"))
                 str = "-" + str;
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
             Display = str;
             _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
             Expression = GetNewExpression();
