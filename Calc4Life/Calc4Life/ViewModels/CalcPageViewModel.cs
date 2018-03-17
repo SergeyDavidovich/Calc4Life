@@ -268,9 +268,6 @@ namespace Calc4Life.ViewModels
                 str = str.Remove(0, 1);
             else
                 str = "-" + str;
-
-
-
             Display = str;
             _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
             Expression = GetNewExpression();
