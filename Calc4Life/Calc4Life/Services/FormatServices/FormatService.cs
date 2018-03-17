@@ -8,8 +8,10 @@ namespace Calc4Life.Services.FormatServices
 {
     public class FormatService
     {
-        private double maxValue = 99999999999; // 11 characters
-        private double minValue = 0.000000001; // 11 characters
+        private double PositiveMax = 99999999999; // 11 characters
+        private double PositiveMin = 0.000000001; // 11 characters
+        private double NegativeMax = -0.000000001;
+        private double NegativeMin = -99999999999;
         const int maxResultLenth = 12;
 
         public string FormatResult(double value)
@@ -17,13 +19,21 @@ namespace Calc4Life.Services.FormatServices
             string result;
             // 1
             if (value == 0) return "0";
-
-            // 2
-            if (value > maxValue || value < minValue)
+            if (value > 0)
             {
-                result = value.ToString("e4");
-                return result;
+                // 2
+                if (value > PositiveMax || value < PositiveMin)
+                {
+                    result = value.ToString("e4");
+                    return result;
+                }
             }
+            else if (value < 0)
+                if (value > NegativeMax || value < NegativeMin)
+                {
+                    result = value.ToString("e4");
+                    return result;
+                }
             //3
             result = DoFormatString(value);
             return result;
