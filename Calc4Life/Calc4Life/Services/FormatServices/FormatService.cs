@@ -8,8 +8,10 @@ namespace Calc4Life.Services.FormatServices
 {
     public class FormatService
     {
-        private double maxValue = 99999999999; // 11 characters
-        private double minValue = 0.000000001; // 11 characters
+        private double PositiveMax = 99999999999; // 11 characters
+        private double PositiveMin = 0.000000001; // 11 characters
+        private double NegativeMax = -0.000000001;
+        private double NegativeMin = -99999999999;
         const int maxResultLenth = 12;
 
         public string FormatResult(double value)
@@ -17,13 +19,21 @@ namespace Calc4Life.Services.FormatServices
             string result;
             // 1
             if (value == 0) return "0";
-
-            // 2
-            if (value > maxValue || value < minValue)
+            if (value > 0)
             {
-                result = value.ToString("e4");
-                return result;
+                // 2
+                if (value > PositiveMax || value < PositiveMin)
+                {
+                    result = value.ToString("e4");
+                    return result;
+                }
             }
+            else if (value < 0)
+                if (value > NegativeMax || value < NegativeMin)
+                {
+                    result = value.ToString("e4");
+                    return result;
+                }
             //3
             result = DoFormatString(value);
             return result;
@@ -57,8 +67,8 @@ namespace Calc4Life.Services.FormatServices
 
             string negativeSign = ""; // знак перед целой частью
             string integerPart = ""; //целая часть числа
-            string decimalSeparator = ""; //десятичныйй знак
             string fractionalPart = ""; //дробная часть числа
+            string decimalSeparator = ""; //десятичныйй знак
 
             string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             string NegativeSign = CultureInfo.CurrentCulture.NumberFormat.NegativeSign;
@@ -72,7 +82,7 @@ namespace Calc4Life.Services.FormatServices
                     int index = input.LastIndexOf(NegativeSign);
                     input = input.Substring(index + 1);
                 }
-                if (input.Contains(DecimalSeparator))// 
+                if (input.Contains(DecimalSeparator))
                 {
                     int index = input.LastIndexOf(DecimalSeparator);
 
@@ -118,8 +128,7 @@ namespace Calc4Life.Services.FormatServices
             if (result.Length > maxResultLenth)
                 result = result.Remove(maxResultLenth);
 
-            if (decimalSeparator != String.Empty)
-                result = result.TrimEnd('0');
+            result = result.TrimEnd('0');
 
             if (result.EndsWith(DecimalSeparator))
                 result = result.Remove(result.Length - 1);
