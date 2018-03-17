@@ -262,12 +262,14 @@ namespace Calc4Life.ViewModels
             //if (isBackSpaceApplicable == false) return;
 
             string str = Display;
+            if (str == "0") return;
 
             if (str.StartsWith("-"))
                 str = str.Remove(0, 1);
             else
-                if (!str.StartsWith("0"))
                 str = "-" + str;
+
+
 
             Display = str;
             _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
