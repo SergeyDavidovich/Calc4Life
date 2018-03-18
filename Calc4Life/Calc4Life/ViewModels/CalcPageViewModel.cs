@@ -28,7 +28,8 @@ namespace Calc4Life.ViewModels
         double? registerOperand; // текущий операнд
         double? registerMemory; // значение ячейки памяти
 
-        string lastOperator; // последний введенный оператор
+        //string lastOperator; // последний введенный оператор
+
         string decimalSeparator; // десятичный знак числа
 
         IPageDialogService _dialogService;
@@ -218,13 +219,9 @@ namespace Calc4Life.ViewModels
             mustClearDisplay = true;
 
             //2. форматируем дисплей
-            //double operand = Double.Parse(Display, CultureInfo.CurrentCulture);
-            //Display = operand.ToString();
-
             Display = registerOperand.ToString();
 
             //3. 
-            lastOperator = par;
 
             if (_binaryOperation.IsReadyForCalc() == false)
             {
@@ -233,17 +230,16 @@ namespace Calc4Life.ViewModels
             else if (_binaryOperation.IsReadyForCalc() == true)
             {
                 //1. произвести вычисление
-                double? result = _binaryOperation.GetResult();
-
+                registerOperand = _binaryOperation.GetResult();
                 //2. вывести результат на дисплей
-                Display = _formatService.FormatResult(result.Value);
+                Display = _formatService.FormatResult(registerOperand.Value);
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
 
                 //4. первому операнду присвоить значение, равное результату операции
 
-                _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
+                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
                 //5.
                 _binaryOperation.SetOperator(par);
@@ -262,18 +258,16 @@ namespace Calc4Life.ViewModels
             if (_binaryOperation.IsReadyForCalc()) //операция готова к вычислению
             {
                 //1. произвести вычисление
-                double? result = _binaryOperation.GetResult();
-
+                registerOperand = _binaryOperation.GetResult();
                 //2. вывести результат на дисплей
-                //Display = result.ToString();
-                Display = _formatService.FormatResult(result.Value);
+                Display = _formatService.FormatResult(registerOperand.Value);
                 Expression = GetNewExpression();
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
 
                 //4. устанавливаем первый операнд равный результату вычисления
-                _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
+                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
                 //5. устанавливаем флаги
                 isBackSpaceApplicable = false;
