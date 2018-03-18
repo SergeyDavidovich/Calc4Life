@@ -259,6 +259,7 @@ namespace Calc4Life.ViewModels
             {
                 //1. произвести вычисление
                 registerOperand = _binaryOperation.GetResult();
+
                 //2. вывести результат на дисплей
                 Display = _formatService.FormatResult(registerOperand.Value);
                 Expression = GetNewExpression();

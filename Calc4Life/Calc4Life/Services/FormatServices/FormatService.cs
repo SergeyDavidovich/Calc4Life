@@ -13,6 +13,7 @@ namespace Calc4Life.Services.FormatServices
         private double NegativeMax = -0.000000001;
         private double NegativeMin = -99999999999;
         const int maxResultLenth = 12;
+        const string expFormatString = "e2";
 
         public string FormatResult(double value)
         {
@@ -24,14 +25,14 @@ namespace Calc4Life.Services.FormatServices
                 // 2
                 if (value > PositiveMax || value < PositiveMin)
                 {
-                    result = value.ToString("e4");
+                    result = value.ToString(expFormatString);
                     return result;
                 }
             }
             else if (value < 0)
                 if (value > NegativeMax || value < NegativeMin)
                 {
-                    result = value.ToString("e4");
+                    result = value.ToString(expFormatString);
                     return result;
                 }
             //3
@@ -125,8 +126,8 @@ namespace Calc4Life.Services.FormatServices
 
             #region Trimming
 
-            if (result.Length > maxResultLenth)
-                result = result.Remove(maxResultLenth);
+            //if (result.Length > maxResultLenth)
+            //    result = result.Remove(maxResultLenth);
 
             if (decimalSeparator != String.Empty)
                 result = result.TrimEnd('0');
