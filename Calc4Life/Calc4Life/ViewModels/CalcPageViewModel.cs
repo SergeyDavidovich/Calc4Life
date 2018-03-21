@@ -296,30 +296,6 @@ namespace Calc4Life.ViewModels
             //}
         }
 
-<<<<<<< HEAD
-        public DelegateCommand SignCommand { get; }
-        private void SignExecute()
-        {
-            //if (isBackSpaceApplicable == false) return;
-
-            string str = Display;
-
-            if (str.StartsWith("-"))
-                str = str.Remove(0, 1);
-            else
-                if (!str.StartsWith("0"))
-                str = "-" + str;
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
-            Display = str;
-            _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
-            Expression = GetNewExpression();
-        }
-
-=======
->>>>>>> upstream/master
         public DelegateCommand<string> MemoryCommand { get; }
         private void MemoryExecute(string par)
         {
