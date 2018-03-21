@@ -75,9 +75,18 @@ namespace Calc4Life.Services.FormatServices
                 curValue = value;
             #endregion
 
+            #region 4
             AnalizeValue(curValue);
+            #endregion
+
+            #region 5 вставка разделилителей груп разрядов
 
 
+            #endregion
+
+            #region 6 отсечение (trimming)
+
+            #endregion
             return result;
         }
 
