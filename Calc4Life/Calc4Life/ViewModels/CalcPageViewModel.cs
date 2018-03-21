@@ -20,7 +20,7 @@ namespace Calc4Life.ViewModels
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
-        const int maxFiguresNumber = 12;
+        const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
 
         bool isBackSpaceApplicable; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; // флаг - необходимо ли очистить дисплей перед вводом
