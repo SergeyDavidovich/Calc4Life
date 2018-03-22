@@ -8,16 +8,21 @@ namespace Calc4Life.Services.RepositoryServices
 {
     public interface IConstantsRepositoryService
     {
-        Task<List<Constant>> GetAllAsync();
+        Task<List<Constant>> GetItemsAsync();
 
-        Task<Constant> GetByIdAsync(string id);
+        Task<Constant> GetItemAsync(int id);
 
-        Task<List<Constant>> GetAllFavoritesASync();
+        Task<List<Constant>> GetItemsFavoriteAsync();
 
-        Task AddAsync(Constant entity);
+        Task<int> DeleteAsync(Constant item);
 
-        Task DeleteAsync(int id);
+        Task<int> SaveAsync(Constant item);
 
-        Task UpdateAsync(Constant entity);
+
+        
+
+
+        //Task AddAsync(Constant entity);
+        //Task UpdateAsync(Constant entity);
     }
 }

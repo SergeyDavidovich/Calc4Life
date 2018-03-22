@@ -20,6 +20,8 @@ namespace Calc4Life.ViewModels
         IConstantsRepositoryService _repositoryService;
         IPageDialogService _dialogService;
 
+        int currentId = 0;
+
         //валидационные свойства(свойства, подверженные валидации)
         ValidatableObject<string> _value;
         ValidatableObject<string> _name;
@@ -33,7 +35,10 @@ namespace Calc4Life.ViewModels
             : base(navigationService)
         {
             _navigationService = navigationService;
-            _repositoryService = repositoryService;
+
+            //_repositoryService = repositoryService;
+            _repositoryService = App.Database;
+
             _dialogService = dialogService;
 
             SaveCommand = new DelegateCommand(SaveExecute);
@@ -58,10 +63,10 @@ namespace Calc4Life.ViewModels
         {
             if (!Validate()) return;
 
-            var constant = new Constant { Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
-            await _repositoryService.AddAsync(constant);
+            var constant = new Constant {Id=currentId, Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
+            await _repositoryService.SaveAsync(constant);
 
-            var parameters=new NavigationParameters();
+            var parameters = new NavigationParameters();
             parameters.Add("const", constant);
 
             await _navigationService.GoBackAsync(parameters);
@@ -72,8 +77,20 @@ namespace Calc4Life.ViewModels
 
         public override void OnNavigatedTo(NavigationParameters parameters)
         {
-            string par = (string)parameters["value"];
-            Value.Value = par;
+            if (parameters.ContainsKey("value")) //  переход со страницы CalcPage
+            {
+                string par = (string)parameters["value"];
+                Value.Value = par;
+            }
+
+            if (parameters.ContainsKey("edit")) //  переход со страницы ConstantsPage по команде Edit
+            {
+                Constant par = (Constant)parameters["edit"];
+                currentId = par.Id;
+                Value.Value = par.Value.ToString();
+                Name.Value = par.Name;
+                Note = par.Note;
+            }
         }
 
         #endregion

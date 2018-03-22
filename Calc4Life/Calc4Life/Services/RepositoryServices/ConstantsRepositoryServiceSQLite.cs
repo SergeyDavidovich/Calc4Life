@@ -3,44 +3,61 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Calc4Life.Models;
+using SQLite;
 
 namespace Calc4Life.Services.RepositoryServices
 {
     public class ConstantsRepositoryServiceSQLite : IConstantsRepositoryService
     {
-        public Task AddAsync(Constant entity)
+        readonly SQLiteAsyncConnection database;
+
+        public ConstantsRepositoryServiceSQLite(string dbPath)
         {
-            throw new NotImplementedException();
+            database = new SQLiteAsyncConnection(dbPath);
+            database.CreateTableAsync<Constant>().Wait();
         }
 
-        public Task DeleteAsync(string id)
+        public Task<List<Constant>> GetItemsAsync()
         {
-            throw new NotImplementedException();
+
+            var list = database.Table<Constant>().ToListAsync().Result;
+
+            if (list.Count == 0)
+                SaveAsync(new Constant()
+                {
+                    Name = "Example of constant",
+                    Value = 0,
+                    Note = "This is the constant example. You can edit or delete this one. Also you can add another constants in the list. Select and press green button to use"
+                });
+
+            return database.Table<Constant>().ToListAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public Task<Constant> GetItemAsync(int id)
         {
-            throw new NotImplementedException();
+            return database.Table<Constant>().Where(i => i.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<List<Constant>> GetAllAsync()
+        public Task<List<Constant>> GetItemsFavoriteAsync()
         {
-            throw new NotImplementedException();
+            return database.QueryAsync<Constant>("SELECT * FROM [Constant] WHERE [IsFavorite] = 0");
         }
 
-        public Task<List<Constant>> GetAllFavoritesASync()
+        public Task<int> DeleteAsync(Constant item)
         {
-            throw new NotImplementedException();
+            return database.DeleteAsync(item);
         }
 
-        public Task<Constant> GetByIdAsync(string id)
+        public Task<int> SaveAsync(Constant item)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Constant entity)
-        {
-            throw new NotImplementedException();
+            if (item.Id != 0)
+            {
+                return database.UpdateAsync(item);
+            }
+            else
+            {
+                return database.InsertAsync(item);
+            }
         }
     }
 }

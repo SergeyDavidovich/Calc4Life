@@ -69,6 +69,7 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<EditConstPage>();
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
+
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
 
@@ -82,7 +83,7 @@ namespace Calc4Life
             var pageOne = new CalcPage();
 
             NavigationPage.SetHasNavigationBar(pageOne, true);
-            NavigationPage navPage = new NavigationPage(pageOne);
+            NavigationPage navPage = new NavigationPage(pageOne) { BarTextColor = Color.White};
 
             navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
             //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];

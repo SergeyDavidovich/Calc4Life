@@ -5,7 +5,8 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Calc4Life.Views.CalcPage" 
-             Title="Calc Your Life">
+            
+             Title="Calc4Life">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness">
             <On Platform="iOS" Value="0,40,0,0" />
@@ -85,7 +86,6 @@
             <Label Grid.Row="0" Grid.Column="0" 
                    Text="  Memory: " TextColor="White" FontSize="16" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"
                    IsVisible="{Binding IsMemoryVisible}" Margin="1"/>
-
             <Label Grid.Row="0" Grid.Column="1" Text="{Binding Memory}" TextColor="Green" FontSize="16" HorizontalOptions="Start" HorizontalTextAlignment="Start" 
                    VerticalOptions="Center" IsVisible="{Binding IsMemoryVisible}"/>
             <!--end memory-->
@@ -95,39 +95,40 @@
                      HorizontalOptions="FillAndExpand"/>
             <Label Grid.Row="0" Grid.Column="2" 
                    Text="   Rounding   " TextColor="White" FontSize="16" HorizontalOptions="EndAndExpand" HorizontalTextAlignment="End" VerticalOptions="CenterAndExpand"
-                   IsVisible="True" Margin="1"/>
+                   IsVisible="{Binding IsRounding}" Margin="1"/>
             <!--end rounding-->
-
-
+            <!--display-->
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Display}" FontSize="46"
                 TextColor="Black" HorizontalOptions="End"/>
-            <!--<BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="Black" HorizontalOptions="Fill" Margin="2" Opacity="0.8"/>-->
+            <!--end display-->
+            <!--expression-->
             <Label Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Expression}" FontSize="16"
                    HorizontalOptions="End" VerticalOptions="Start" TextColor="Crimson" Margin="2"/>
+            <!--end expression-->
         </Grid>
 
         <Button Text="M+" Grid.Row="2" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Add"/>
         <Button Text="MC" Grid.Row="2" Grid.Column="1" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Clear"/>
         <Button Text="MR" Grid.Row="3" Grid.Column="0" BackgroundColor="{StaticResource MemoryBack}" FontSize="24" Command="{Binding MemoryCommand}" CommandParameter="Read"/>
 
-        <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="7"/>
-        <Button Text="8" Grid.Row="4" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="8"/>
-        <Button Text="9" Grid.Row="4" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="9"/>
-        <Button Text="4" Grid.Row="5" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="4"/>
-        <Button Text="5" Grid.Row="5" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="5"/>
-        <Button Text="6" Grid.Row="5" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="6"/>
-        <Button Text="1" Grid.Row="6" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="1"/>
-        <Button Text="2" Grid.Row="6" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="2"/>
-        <Button Text="3" Grid.Row="6" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="3"/>
-        <Button Text="0" Grid.Row="7" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EditDisplayCommand}" CommandParameter="0"/>
+        <Button Text="7" Grid.Row="4" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="7"/>
+        <Button Text="8" Grid.Row="4" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="8"/>
+        <Button Text="9" Grid.Row="4" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="9"/>
+        <Button Text="4" Grid.Row="5" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="4"/>
+        <Button Text="5" Grid.Row="5" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="5"/>
+        <Button Text="6" Grid.Row="5" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="6"/>
+        <Button Text="1" Grid.Row="6" Grid.Column="0" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="1"/>
+        <Button Text="2" Grid.Row="6" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="2"/>
+        <Button Text="3" Grid.Row="6" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="3"/>
+        <Button Text="0" Grid.Row="7" Grid.Column="1" BackgroundColor="{StaticResource FigureBack}" Command="{Binding EnterFiguresCommand}" CommandParameter="0"/>
         <Button Text="{Binding DecimalSeparator}" Grid.Row="7" Grid.Column="2" BackgroundColor="{StaticResource FigureBack}" 
-                Command="{Binding EditDisplayCommand}" CommandParameter="DecPoint"/>
+                Command="{Binding EnterFiguresCommand}" CommandParameter="DecPoint"/>
 
-        <Button Text="÷" Grid.Row="3" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="/"/>
-        <Button Text="×" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="*"/>
-        <Button Text="-" Grid.Row="5" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="-"/>
-        <Button Text="+" Grid.Row="6" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding OperatorCommand}" CommandParameter="+"/>
-        <Button Text="% OFF" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}" Command="{Binding OperatorCommand}" CommandParameter="%" FontSize="22"/>
+        <Button Text="÷" Grid.Row="3" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding EnterOperatorCommand}" CommandParameter="/"/>
+        <Button Text="×" Grid.Row="4" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding EnterOperatorCommand}" CommandParameter="*"/>
+        <Button Text="-" Grid.Row="5" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding EnterOperatorCommand}" CommandParameter="-"/>
+        <Button Text="+" Grid.Row="6" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding EnterOperatorCommand}" CommandParameter="+"/>
+        <Button Text="% OFF" Grid.Row="3" Grid.Column="1" BackgroundColor="{StaticResource DiscountBack}" Command="{Binding EnterOperatorCommand}" CommandParameter="%" FontSize="22"/>
 
         <Button Text="±" Grid.Row="3" Grid.Column="2" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding SignCommand}"/>
         <Button Text="=" Grid.Row="7" Grid.Column="3" BackgroundColor="{StaticResource OperatorBack}" Command="{Binding CalcCommand}"/>

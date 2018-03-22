@@ -20,12 +20,12 @@ namespace Calc4Life.Services.RepositoryServices
             Debug.WriteLine($"ConstantsRepositoryServiceFake { DateTime.Now}");
         }
 
-        public async Task<List<Constant>> GetAllAsync()
+        public async Task<List<Constant>> GetItemsAsync()
         {
             return _constants = _constants ?? await ReadConstantsAsync();
         }
 
-        public async Task<Constant> GetByIdAsync(string id)
+        public async Task<Constant> GetItemAsync(int id)
         {
             return await Task.Run(() =>
           (from p in _constants where p.Id.Equals(id) select p).First());
@@ -42,24 +42,26 @@ namespace Calc4Life.Services.RepositoryServices
             await WriteConstatsAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<int> DeleteAsync(Constant item)
         {
-            _constants.Remove(_constants.Find(x => x.Id == id));
+            _constants.Remove(_constants.Find(x => x.Id == item.Id));
 
             MessagingCenter.Send<ConstantsRepositoryServiceFake>(this, "deleted");
 
             await WriteConstatsAsync();
+            return item.Id;
         }
 
-        public async Task<List<Constant>> GetAllFavoritesASync()
+        public async Task<List<Constant>> GetItemsFavoriteAsync()
         {
             return await Task.Run(() =>
                     (from constant in _constants where constant.IsFavorite.Equals(true) select constant).ToList<Constant>());
         }
 
-        public async Task UpdateAsync(Constant entity)
+
+        public async Task<int> SaveAsync(Constant entity)
         {
-            await Task.Run(null);
+            return 1;// await Task.Run(null);
         }
 
         #region read/write
