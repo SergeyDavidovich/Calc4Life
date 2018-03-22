@@ -41,8 +41,8 @@ namespace Calc4Life.Services.FormatServices
             {
                 PositiveMax = 9999999999;
                 NegativeMin = -9999999999;
-                PositiveMin = 0.00000001; // 13
-                NegativeMax = -0.00000001;
+                PositiveMin = 0.00000000001;  // 13
+                NegativeMax = -0.00000000001;
             }
         }
 
@@ -82,12 +82,12 @@ namespace Calc4Life.Services.FormatServices
             #endregion
 
             #region 4 вставка разделилителей груп разрядов
-            if (Settings.GrouppingDigits)
+              if (Settings.GrouppingDigits)
             {
                 AnalizeValue(curValue);
 
                 char[] chars = integerPart.ToCharArray();
-                Array.Reverse(chars);
+                Array.Reverse(chars); 
 
                 string output = "";
                 for (int i = 0; i < integerPart.Length; i++)
@@ -166,7 +166,7 @@ namespace Calc4Life.Services.FormatServices
             }
             else // целое число
             {
-                integerPart = input;
+                integerPart = input.StartsWith(numberFormat.NegativeSign) ? input.Substring(1, input.Length - 1) : input.Substring(0, input.Length - 1);
                 fractionalPart = String.Empty;
             }
         }
