@@ -50,7 +50,10 @@ namespace Calc4Life.Services.OperationServices
                     result = Operand1.Value.OperandValue * Operand2.Value.OperandValue;
                     break;
                 case BinaryOperators.Division:
-                    result = Operand1.Value.OperandValue / Operand2.Value.OperandValue;
+                    if (Operand2.Value.OperandValue != 0)
+                        result = Operand1.Value.OperandValue / Operand2.Value.OperandValue;
+                    else
+                        throw new DivideByZeroException("infinity");
                     break;
                 case BinaryOperators.Discount:
                     result = (Operand1.Value.OperandValue * Operand2.Value.OperandValue) / 100;

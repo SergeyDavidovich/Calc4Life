@@ -252,27 +252,39 @@ namespace Calc4Life.ViewModels
         }
 
         public DelegateCommand CalcCommand { get; }
-        private void CalcExecute()
+        private void CalcExecute() //todo: обработать деление на ноль
         {
             //1. производим вычисление ИЛИ выходим
             if (_binaryOperation.IsReadyForCalc()) //операция готова к вычислению
             {
                 //1. произвести вычисление
-                registerOperand = _binaryOperation.GetResult();
+                try
+                {
+                    registerOperand = _binaryOperation.GetResult();
 
-                //2. вывести результат на дисплей
-                Display = _formatService.FormatResult(registerOperand.Value);
-                Expression = GetNewExpression();
+                    //2. вывести результат на дисплей
+                    Display = _formatService.FormatResult(registerOperand.Value);
+                    Expression = GetNewExpression();
 
-                //3. очистить операцию
-                _binaryOperation.Clear();
+                    //3. очистить операцию
+                    _binaryOperation.Clear();
 
-                //4. устанавливаем первый операнд равный результату вычисления
-                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+                    //4. устанавливаем первый операнд равный результату вычисления
+                    _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
+
+                }
+                catch (DivideByZeroException ex)
+                {
+                    Display = ex.Message;
+                    //3. очистить операцию
+                    _binaryOperation.Clear();
+                    Expression = String.Empty;
+                }
                 //5. устанавливаем флаги
                 isBackSpaceApplicable = false;
                 mustClearDisplay = true;
+
             }
             //else
             //{
@@ -296,7 +308,7 @@ namespace Calc4Life.ViewModels
             //}
         }
 
-        public DelegateCommand<string> MemoryCommand { get; }
+        public DelegateCommand<string> MemoryCommand { get; } //todo: пересмотреть работу с памятью
         private void MemoryExecute(string par)
         {
             switch (par)
@@ -324,6 +336,7 @@ namespace Calc4Life.ViewModels
                     if (Memory == null) return;
                     //memoryValue = decimal.Parse(Memory, CultureInfo.CurrentCulture);
                     Display = Memory;
+                    Expression = GetNewExpression();
                     _binaryOperation.SetOperand(CreateOperand(decimal.Parse(Display, CultureInfo.CurrentCulture), null));
                     isBackSpaceApplicable = false;
                     mustClearDisplay = true;
