@@ -12,10 +12,10 @@ namespace Calc4Life.Services.FormatServices
         NumberFormatInfo numberFormat = CultureInfo.CurrentCulture.NumberFormat;
 
 
-        double PositiveMax; // = 99999999;//999; // 11 characters
-        double PositiveMin; // = 0.000000001; // 11 characters
-        double NegativeMax; //= -0.000000001;
-        double NegativeMin; //= -99999999999;
+        decimal PositiveMax; // = 9999999999999; // 13 characters
+        decimal PositiveMin; // = 0.00000000001; // 13 characters
+        decimal NegativeMax; //= -0.00000000001;   // 14 characters
+        decimal NegativeMin; //= -9999999999999;   // 14 characters
 
         string negativeSign; // знак перед целой частью
         string decimalSeparator; //десятичный знак
@@ -32,24 +32,24 @@ namespace Calc4Life.Services.FormatServices
             maxResultLength = 14;
             if (!Settings.GrouppingDigits)
             {
-                PositiveMax = 9999999999999; // 13
-                PositiveMin = 0.00000000001; // 13
-                NegativeMax = -0.00000000001;  // 14
-                NegativeMin = -9999999999999;  // 14
+                PositiveMax = 9999999999999m; // 13
+                PositiveMin = 0.00000000001m; // 13
+                NegativeMax = -0.00000000001m;  // 14
+                NegativeMin = -9999999999999m;  // 14
             }
             else if (Settings.GrouppingDigits)
             {
-                PositiveMax = 9999999999;
-                NegativeMin = -9999999999;
-                PositiveMin = 0.00000000001;  // 13
-                NegativeMax = -0.00000000001;
+                PositiveMax = 9999999999; // 10
+                PositiveMin = 0.00000000001m;  // 13
+                NegativeMin = -9999999999; // 10
+                NegativeMax = -0.00000000001m; // 14
             }
         }
 
-        public string FormatResult(double value)
+        public string FormatResult(decimal value)
         {
             string result = "";
-            double curValue; //число для внутренних преобразований
+            decimal curValue; //число для внутренних преобразований
 
             #region 1 форматируем число 0
             if (value == 0) return "0";
@@ -137,7 +137,7 @@ namespace Calc4Life.Services.FormatServices
         /// 
         /// </summary>
         /// <param name="value"></param>
-        private void AnalizeValue(double value)
+        private void AnalizeValue(decimal value)
         {
             string input = value.ToString();
 

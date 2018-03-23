@@ -12,7 +12,7 @@ namespace Calc4Life.Services.OperationServices
         Operand? Operand1 { get; set; }
         Operand? Operand2 { get; set; }
         BinaryOperators? @Operator { get; set; }
-        double? Result { get; }
+        decimal? Result { get; }
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace Calc4Life.Services.OperationServices
         #region Output actions
 
         bool IsReadyForCalc();
-        double? GetResult();
+        decimal? GetResult();
 
         #endregion
     }

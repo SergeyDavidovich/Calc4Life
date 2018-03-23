@@ -70,9 +70,9 @@ namespace Calc4Life.Services.RepositoryServices
 
             return await Task.Run(() => _constants = new List<Constant>
             {
-                new Constant(){Id=1, Name="Example of constant", Value=1234567.89,
+                new Constant(){Id=1, Name="Example of constant", Value=1234567.89m,
                     Note ="This is the constant example. You can edit or delete this one. Also you can add another constants in the list. Select and press green button to use", IsFavorite=false},
-                new Constant(){Id=2, Name="Сan of beer", Value=10.55, Note="Средняя цена одной банки пива в Евросоюзе в 2017 году", IsFavorite=false},
+                new Constant(){Id=2, Name="Сan of beer", Value=10.55m, Note="Средняя цена одной банки пива в Евросоюзе в 2017 году", IsFavorite=false},
                 new Constant(){Id=3, Name="Second Constant", Value=23456789 , Note="Заметка о Second Constant", IsFavorite=false},
                 new Constant(){Id=4, Name="Third Constant", Value=34567890, Note="", IsFavorite=false},
                 new Constant(){Id=5, Name="Forth Constant", Value=456789 , Note="Заметка о Forth Constant", IsFavorite=false},

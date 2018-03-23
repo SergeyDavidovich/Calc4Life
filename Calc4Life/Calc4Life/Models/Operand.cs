@@ -6,7 +6,7 @@ namespace Calc4Life.Models
 {
     public struct Operand
     {
-        public double? OperandValue;
+        public decimal? OperandValue;
         public string OperandName;
 
         public override string ToString()

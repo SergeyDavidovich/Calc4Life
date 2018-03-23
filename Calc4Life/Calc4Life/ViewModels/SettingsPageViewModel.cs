@@ -13,7 +13,7 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
-        double sampleValue = 12345.6789;
+        decimal sampleValue = 12345.6789m;
         FormatService _formatService;
         #endregion
         #region Constructors
@@ -62,8 +62,8 @@ namespace Calc4Life.ViewModels
             }
         }
 
-        double _roundAccuracy;
-        public double RoundAccuracy
+        decimal _roundAccuracy;
+        public decimal RoundAccuracy
         {
             get { return _roundAccuracy; }
             set
@@ -81,7 +81,7 @@ namespace Calc4Life.ViewModels
         private void SetDefaultExecute()
         {
             Settings.GrouppingDigits = true;
-            Settings.RoundAccuracy = 2.0;
+            Settings.RoundAccuracy = 2;
             Settings.Rounding = false;
 
             GroupingDigits = Settings.GrouppingDigits;
