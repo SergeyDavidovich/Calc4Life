@@ -8,14 +8,12 @@ namespace Calc4Life.Services.FormatServices
 {
     public class FormatService
     {
-
         NumberFormatInfo numberFormat = CultureInfo.CurrentCulture.NumberFormat;
-
 
         decimal PositiveMax; // = 9999999999999; // 13 characters
         decimal PositiveMin; // = 0.00000000001; // 13 characters
-        decimal NegativeMax; //= -0.00000000001;   // 14 characters
-        decimal NegativeMin; //= -9999999999999;   // 14 characters
+        decimal NegativeMax; //= -0.00000000001; // 14 characters
+        decimal NegativeMin; //= -9999999999999; // 14 characters
 
         string negativeSign; // знак перед целой частью
         string decimalSeparator; //десятичный знак
@@ -32,8 +30,8 @@ namespace Calc4Life.Services.FormatServices
             maxResultLength = 14;
             if (!Settings.GrouppingDigits)
             {
-                PositiveMax = 9999999999999m; // 13
-                PositiveMin = 0.00000000001m; // 13
+                PositiveMax = 9999999999999m;   // 13
+                PositiveMin = 0.00000000001m;   // 13
                 NegativeMax = -0.00000000001m;  // 14
                 NegativeMin = -9999999999999m;  // 14
             }
@@ -84,10 +82,9 @@ namespace Calc4Life.Services.FormatServices
 
             AnalizeValue(curValue);
 
-            #region 4 вставка разделилителей груп разрядов
+            #region 4 вставка разделителей групп разрядов
             if (Settings.GrouppingDigits)
             {
-
                 char[] chars = integerPart.ToCharArray();
                 Array.Reverse(chars);
 
@@ -118,17 +115,11 @@ namespace Calc4Life.Services.FormatServices
             #region 5 отсечение (trimming)
             if (decimalSeparator != string.Empty)
             {
-                result.TrimEnd('0');
-                if (result.Contains(decimalSeparator))
-                {
-                    if (result.Length > maxResultLength)
-                        result = result.Remove(maxResultLength);
-
-                }
+                result = result.TrimEnd('0');
+                if (result.Length > maxResultLength)
+                    result = result.Remove(maxResultLength);
                 else if (result.EndsWith(decimalSeparator))
-                {
                     result = result.Remove(result.Length - 1);
-                }
             }
             #endregion
             return result;
@@ -153,7 +144,7 @@ namespace Calc4Life.Services.FormatServices
             }
             else // целое число
             {
-                integerPart = input.StartsWith(numberFormat.NegativeSign) ? input.Substring(1, input.Length - 1) : input.Substring(0, input.Length - 1);
+                integerPart = input.StartsWith(numberFormat.NegativeSign) ? input.Substring(1) : input;
                 fractionalPart = String.Empty;
             }
         }
