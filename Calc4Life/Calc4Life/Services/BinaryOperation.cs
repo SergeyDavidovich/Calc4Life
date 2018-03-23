@@ -12,16 +12,16 @@ namespace Calc4Life.Services
     /// </summary>
     public static class BinaryOperation1
     {
-        private static double? operand1; //Первый опернад
-        private static double? operand2; //Второй операнд
-        private static double? result; //Результат последней операций 
+        private static decimal? operand1; //Первый опернад
+        private static decimal? operand2; //Второй операнд
+        private static decimal? result; //Результат последней операций 
         private static BinaryOperators? operation; //Последняя введёная операция
         private static bool _IsOperationFormed; //готова ли операция к выполнению
 
         /// <summary>
         /// Представляет первый операнд
         /// </summary>
-        public static double? Operand1
+        public static decimal? Operand1
         {
             get
             {
@@ -31,7 +31,7 @@ namespace Calc4Life.Services
         /// <summary>
         /// Представляет второй операнд
         /// </summary>
-        public static double? Operand2
+        public static decimal? Operand2
         {
             get
             {
@@ -54,7 +54,7 @@ namespace Calc4Life.Services
         /// <summary>
         /// Представляет результат операций
         /// </summary>
-        public static double? Result
+        public static decimal? Result
         {
             get { return GetResult(); }
         }
@@ -71,7 +71,7 @@ namespace Calc4Life.Services
         /// <param name="operand1"></param>
         /// <param name="operand2"></param>
         /// <param name="operation"></param>
-        private static void SetIsOperationFormed(double? operand1, double? operand2, BinaryOperators? operation)
+        private static void SetIsOperationFormed(decimal? operand1, decimal? operand2, BinaryOperators? operation)
         {
             if (operand1 != null & operand2 != null & operation != null)
                 _IsOperationFormed = true;
@@ -82,7 +82,7 @@ namespace Calc4Life.Services
         /// Устанавливает операнды
         /// </summary>
         /// <param name="operand"></param>
-        public static void SetOperands(double operand)
+        public static void SetOperands(decimal operand)
         {
             if (Operation == null)
                 operand1 = operand;
@@ -94,7 +94,7 @@ namespace Calc4Life.Services
         /// <summary>
         /// Вычисляет результат операций
         /// </summary>
-        private static double? GetResult()
+        private static decimal? GetResult()
         {
             switch (Operation)
             {

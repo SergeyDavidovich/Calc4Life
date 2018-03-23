@@ -27,7 +27,7 @@ namespace Calc4Life.Data
                 SaveAsync(new Constant()
                 {
                     Name = "Example of constant",
-                    Value = 1234567.89,
+                    Value = 1234567.89m,
                     Note = "This is the constant example. You can edit or delete this one. Also you can add another constants in the list. Select and press green button to use"
                 });
                 list = database.Table<Constant>().ToListAsync().Result;

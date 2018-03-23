@@ -45,11 +45,11 @@ namespace Calc4Life.Helpers
 
         // Точность вычисления (количество отражаемых знаков после запятой)
         private const string CalcAccuracyKey = "CalcAccuracy";
-        private static readonly double CalcAccuracyDefault = 2.0;
+        private static readonly decimal CalcAccuracyDefault = 2;
 
         // Точность округления 
         private const string RoundAccuracyKey = "RoundAccuracy";
-        private static readonly double RoundAccuracyDefault = 2.0;
+        private static readonly decimal RoundAccuracyDefault = 2;
 
 
         // Округлять результат (при указанной точности) 
@@ -70,7 +70,7 @@ namespace Calc4Life.Helpers
                 AppSettings.AddOrUpdateValue(GrouppingDigitsKey, value);
             }
         }
-        public static double CalcAccuracy
+        public static decimal CalcAccuracy
         {
             get
             {
@@ -81,7 +81,7 @@ namespace Calc4Life.Helpers
                 AppSettings.AddOrUpdateValue(CalcAccuracyKey, value);
             }
         }
-        public static double RoundAccuracy
+        public static decimal RoundAccuracy
         {
             get
             {

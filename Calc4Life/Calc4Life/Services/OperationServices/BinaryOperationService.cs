@@ -10,7 +10,7 @@ namespace Calc4Life.Services.OperationServices
         public Operand? Operand1 { get; set; }
         public Operand? Operand2 { get; set; }
         public BinaryOperators? Operator { get; set; }
-        public double? Result { get; private set; }
+        public decimal? Result { get; private set; }
 
         public void Clear()
         {
@@ -28,9 +28,9 @@ namespace Calc4Life.Services.OperationServices
                 return false;
         }
 
-        public double? GetResult()
+        public decimal? GetResult()
         {
-            double? result = null;
+            decimal? result = null;
 
             if (Operand1 == null || Operand2 == null)
             {

@@ -63,7 +63,7 @@ namespace Calc4Life.ViewModels
         {
             if (!Validate()) return;
 
-            var constant = new Constant {Id=currentId, Name = Name.Value, Value = Double.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
+            var constant = new Constant {Id=currentId, Name = Name.Value, Value = decimal.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
             await _repositoryService.SaveAsync(constant);
 
             var parameters = new NavigationParameters();

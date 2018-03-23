@@ -25,8 +25,8 @@ namespace Calc4Life.ViewModels
         bool isBackSpaceApplicable; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool mustClearDisplay; // флаг - необходимо ли очистить дисплей перед вводом
 
-        double? registerOperand; // текущий операнд
-        double? registerMemory; // значение ячейки памяти
+        decimal? registerOperand; // текущий операнд
+        decimal? registerMemory; // значение ячейки памяти
 
         //string lastOperator; // последний введенный оператор
 
@@ -140,7 +140,7 @@ namespace Calc4Life.ViewModels
             Display = GetNewDisplayText(Display, par);
 
             //3 запоминаем в регистре операнда
-            registerOperand = Double.Parse(Display, CultureInfo.CurrentCulture);
+            registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
             //4. назначаем операнд в операцию
             _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
@@ -172,7 +172,7 @@ namespace Calc4Life.ViewModels
 
             Display = currentDisplayText;
             // запоминаем в регистре операнда
-            registerOperand = Double.Parse(Display, CultureInfo.CurrentCulture);
+            registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
             _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
@@ -192,7 +192,7 @@ namespace Calc4Life.ViewModels
             Display = currentDisplayText;
 
             // запоминаем в регистре операнда
-            registerOperand = Double.Parse(Display, CultureInfo.CurrentCulture);
+            registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
             _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
@@ -277,9 +277,9 @@ namespace Calc4Life.ViewModels
             //else
             //{
             //    //1.
-            //    _binaryOperation.SetOperand(double.Parse(Display, CultureInfo.CurrentCulture));
+            //    _binaryOperation.SetOperand(decimal.Parse(Display, CultureInfo.CurrentCulture));
             //    //2
-            //    double? result = _binaryOperation.Result();
+            //    decimal? result = _binaryOperation.Result();
 
             //    //2. вывести результат на дисплей
             //    Display = result.ToString();
@@ -288,7 +288,7 @@ namespace Calc4Life.ViewModels
             //    _binaryOperation.Clear();
 
             //    //4. устанавливаем первый операнд равный результату вычисления
-            //    _binaryOperation.SetOperand(Double.Parse(Display, CultureInfo.CurrentCulture));
+            //    _binaryOperation.SetOperand(decimal.Parse(Display, CultureInfo.CurrentCulture));
 
             //    //5. устанавливаем флаги
             //    isBackSpaceApplicable = false;
@@ -302,18 +302,17 @@ namespace Calc4Life.ViewModels
             switch (par)
             {
                 case "Add":
-                    //double memoryValue;
+                    //decimal memoryValue;
                     if (Memory != null)
                     {
-                        registerMemory = Double.Parse(Memory, CultureInfo.CurrentCulture);
-                        registerMemory += double.Parse(Display, CultureInfo.CurrentCulture);
+                        registerMemory = decimal.Parse(Memory, CultureInfo.CurrentCulture);
+                        registerMemory += decimal.Parse(Display, CultureInfo.CurrentCulture);
                     }
                     else
                     {
-                        registerMemory = double.Parse(Display, CultureInfo.CurrentCulture);
+                        registerMemory = decimal.Parse(Display, CultureInfo.CurrentCulture);
                     }
                     Memory = registerMemory.ToString();
-                    //Memory = _formatService.FormatResult(memoryValue);
 
                     IsMemoryVisible = true;
                     break;
@@ -323,9 +322,9 @@ namespace Calc4Life.ViewModels
                     break;
                 case "Read":
                     if (Memory == null) return;
-                    //memoryValue = Double.Parse(Memory, CultureInfo.CurrentCulture);
+                    //memoryValue = decimal.Parse(Memory, CultureInfo.CurrentCulture);
                     Display = Memory;
-                    _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), null));
+                    _binaryOperation.SetOperand(CreateOperand(decimal.Parse(Display, CultureInfo.CurrentCulture), null));
                     isBackSpaceApplicable = false;
                     mustClearDisplay = true;
                     break;
@@ -335,7 +334,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand AddConstantCommand { get; }
         private async void AddConstExecute()
         {
-            string message = $"Do you want to save {(double.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
+            string message = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
             var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
             if (answer == true)
             {
@@ -354,16 +353,18 @@ namespace Calc4Life.ViewModels
             if (parameters.Count != 0)
             {
                 //1. получаем параметр
-                double curConstValue = ((Constant)parameters["const"]).Value;
+                decimal curConstValue = ((Constant)parameters["const"]).Value;
                 string curConstName = ((Constant)parameters["const"]).Name;
 
+                //2 
+                registerOperand = curConstValue;
 
                 //2. отражаем на дисплее
-                Display = curConstValue.ToString();
+                Display = registerOperand.ToString();
                 Expression = GetNewExpression();
 
                 //3. назначаем операнд в операцию
-                _binaryOperation.SetOperand(CreateOperand(Double.Parse(Display, CultureInfo.CurrentCulture), curConstName));
+                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, curConstName));
                 Expression = GetNewExpression();
 
                 //4. Устанавливаем флаги
@@ -467,7 +468,7 @@ namespace Calc4Life.ViewModels
 
             //добавляем (или нет) знак равенства в выражение 
             string equal;
-            double? result = _binaryOperation.Result;
+            decimal? result = _binaryOperation.Result;
             if (result != null)
                 equal = " =";
             else equal = "";
@@ -480,7 +481,7 @@ namespace Calc4Life.ViewModels
             return output;
         }
 
-        private Operand CreateOperand(double value, string name)
+        private Operand CreateOperand(decimal value, string name)
         {
             var result = new Operand();
             result.OperandValue = value;
