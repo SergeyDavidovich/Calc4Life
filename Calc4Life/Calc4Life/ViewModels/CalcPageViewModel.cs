@@ -119,13 +119,26 @@ namespace Calc4Life.ViewModels
         public DelegateCommand ConstCommand { get; }
         private async void ConstCommandExecute()
         {
-            await NavigationService.NavigateAsync("ConstantsPage", null, false, false);
+            await NavigationService.NavigateAsync("ConstantsPage", null, false, true);
         }
 
         public DelegateCommand OptionsCommand { get; }
         private async void OptionsCommandExecute()
         {
             await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
+        }
+
+        public DelegateCommand AddConstantCommand { get; }
+        private async void AddConstExecute()
+        {
+            string message = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
+            var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
+            if (answer == true)
+            {
+                var par = new NavigationParameters();
+                par.Add("value", Display);
+                await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+            }
         }
 
         #region EditDisplayCommands
@@ -337,18 +350,6 @@ namespace Calc4Life.ViewModels
             }
         }
 
-        public DelegateCommand AddConstantCommand { get; }
-        private async void AddConstExecute()
-        {
-            string message = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
-            var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
-            if (answer == true)
-            {
-                var par = new NavigationParameters();
-                par.Add("value", Display);
-                await NavigationService.NavigateAsync("EditConstPage", par, false, true);
-            }
-        }
 
         #endregion
 
