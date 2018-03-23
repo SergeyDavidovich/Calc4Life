@@ -252,7 +252,7 @@ namespace Calc4Life.ViewModels
         }
 
         public DelegateCommand CalcCommand { get; }
-        private void CalcExecute() //todo: обработать деление на ноль
+        private void CalcExecute()
         {
             //1. производим вычисление ИЛИ выходим
             if (_binaryOperation.IsReadyForCalc()) //операция готова к вычислению
@@ -271,7 +271,6 @@ namespace Calc4Life.ViewModels
 
                     //4. устанавливаем первый операнд равный результату вычисления
                     _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
-
 
                 }
                 catch (DivideByZeroException ex)
@@ -314,30 +313,24 @@ namespace Calc4Life.ViewModels
             switch (par)
             {
                 case "Add":
-                    //decimal memoryValue;
-                    if (Memory != null)
-                    {
-                        registerMemory = decimal.Parse(Memory, CultureInfo.CurrentCulture);
-                        registerMemory += decimal.Parse(Display, CultureInfo.CurrentCulture);
-                    }
-                    else
-                    {
-                        registerMemory = decimal.Parse(Display, CultureInfo.CurrentCulture);
-                    }
+                    registerMemory = registerMemory == null ? registerOperand : registerMemory + registerOperand;
                     Memory = registerMemory.ToString();
-
                     IsMemoryVisible = true;
                     break;
                 case "Clear":
+                    registerMemory = null;
                     Memory = null;
                     IsMemoryVisible = false;
                     break;
                 case "Read":
-                    if (Memory == null) return;
-                    //memoryValue = decimal.Parse(Memory, CultureInfo.CurrentCulture);
-                    Display = Memory;
+                    if (registerMemory == null) return;
+
+                    _binaryOperation.SetOperand(CreateOperand(registerMemory.Value, null));
+
+                    Display = registerMemory.ToString();
+
                     Expression = GetNewExpression();
-                    _binaryOperation.SetOperand(CreateOperand(decimal.Parse(Display, CultureInfo.CurrentCulture), null));
+
                     isBackSpaceApplicable = false;
                     mustClearDisplay = true;
                     break;
