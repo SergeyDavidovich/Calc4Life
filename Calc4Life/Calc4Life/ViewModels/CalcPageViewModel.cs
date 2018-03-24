@@ -232,8 +232,8 @@ namespace Calc4Life.ViewModels
             mustClearDisplay = true;
 
             //2. форматируем дисплей
-            Display = registerOperand.ToString();
-
+            //Display = registerOperand.ToString();
+            Display = _formatService.FormatInput(registerOperand.Value);
             //3. 
 
             if (_binaryOperation.IsReadyForCalc() == false)
