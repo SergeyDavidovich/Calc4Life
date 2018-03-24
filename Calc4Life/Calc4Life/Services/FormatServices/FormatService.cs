@@ -43,13 +43,10 @@ namespace Calc4Life.Services.FormatServices
         NegativeMax = -0.00000000001m; // 14
       }
     }
-    public string FormatInput(decimal value, bool trimValue = false)
+    public string FormatInput(decimal value)
     {
-      AnalizeValue(value);
-      if (trimValue)
-        return TrimValue(GroupValue(value));
-      else
-        return GroupValue(value);
+        AnalizeValue(value);
+        return TrimValue(value.ToString());
     }
     public string FormatResult(decimal value)
     {
@@ -98,16 +95,14 @@ namespace Calc4Life.Services.FormatServices
 
       #endregion
 
-      #region 5 отсечение (trimming)
-      if (decimalSeparator != string.Empty)
-      {
+      #region 5 отсечение (trimming)   
         result = TrimValue(result);
-      }
       #endregion
       return result;
     }
     private string TrimValue(string value)
     {
+      if (decimalSeparator == string.Empty) return value;    
       value = value.TrimEnd('0');
       if (value.Length > maxResultLength)
         //отнимаем единицу для того, чтобы оставить место для знака
