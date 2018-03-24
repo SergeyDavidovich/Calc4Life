@@ -43,7 +43,7 @@ namespace Calc4Life.Services.FormatServices
                 NegativeMax = -0.00000000001m; // 14
             }
         }
-        public string FormatInput(decimal value)
+        public string FormatInput(decimal value) //todo: ввести экспоненциальное форматирование для этой функции желательно расшарить
         {
             AnalizeValue(value);
             return TrimValue(value.ToString());
@@ -110,7 +110,7 @@ namespace Calc4Life.Services.FormatServices
                 value = value.TrimEnd('0');
             }
 
-            if (value.EndsWith(decimalSeparator))
+            if (value.EndsWith(decimalSeparator)) // удаляем десятичный знак, если строка на него заканчивается
                 value = value.Remove(value.Length - 1);
 
             return value;

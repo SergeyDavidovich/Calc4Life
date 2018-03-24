@@ -244,8 +244,9 @@ namespace Calc4Life.ViewModels
             {
                 //1. произвести вычисление
                 registerOperand = _binaryOperation.GetResult();
+
                 //2. вывести результат на дисплей
-                Display = _formatService.FormatResult(registerOperand.Value);
+                Display = _formatService.FormatInput(registerOperand.Value);
 
                 //3. очистить операцию
                 _binaryOperation.Clear();
@@ -449,6 +450,9 @@ namespace Calc4Life.ViewModels
             //получаем операнды из операции
             operand1 = (_binaryOperation.Operand1 == null) ? "" : _binaryOperation.Operand1.ToString();
             operand2 = (_binaryOperation.Operand2 == null) ? "" : _binaryOperation.Operand2.ToString();
+
+            operand1 = (_binaryOperation.Operand1 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
+            operand2 = (_binaryOperation.Operand2 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
 
             //заворачиваем в скобки, если отрицательные
             if (operand1.StartsWith("-")) operand1 = $"({operand1})";
