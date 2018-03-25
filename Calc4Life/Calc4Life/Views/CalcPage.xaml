@@ -97,7 +97,7 @@
                    IsVisible="{Binding IsRounding}" Margin="1"/>
             <!--end rounding-->
             <!--display-->
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Display}" FontSize="46"
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Display}" FontSize="46" LineBreakMode="NoWrap"
                 TextColor="Black" HorizontalOptions="End"/>
             <!--end display-->
             <!--expression-->

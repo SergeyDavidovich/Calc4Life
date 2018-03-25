@@ -100,6 +100,7 @@ namespace Calc4Life.Services.FormatServices
             #endregion
             return result;
         }
+
         private string TrimValue(string value)
         {
             if (decimalSeparator == string.Empty) return value; // целое число

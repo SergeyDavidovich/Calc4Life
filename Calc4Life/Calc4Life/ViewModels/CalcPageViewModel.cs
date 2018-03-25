@@ -155,6 +155,8 @@ namespace Calc4Life.ViewModels
             //3 запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
+
+
             //4. назначаем операнд в операцию
             _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
@@ -321,14 +323,14 @@ namespace Calc4Life.ViewModels
             //}
         }
 
-        public DelegateCommand<string> MemoryCommand { get; } //todo: пересмотреть работу с памятью
+        public DelegateCommand<string> MemoryCommand { get; } 
         private void MemoryExecute(string par)
         {
             switch (par)
             {
                 case "Add":
                     registerMemory = registerMemory == null ? registerOperand : registerMemory + registerOperand;
-                    Memory = registerMemory.ToString();
+                    Memory = _formatService.FormatInput(registerMemory.Value);
                     IsMemoryVisible = true;
                     break;
                 case "Clear":
@@ -338,10 +340,10 @@ namespace Calc4Life.ViewModels
                     break;
                 case "Read":
                     if (registerMemory == null) return;
+                    registerOperand = registerMemory;
+                    _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
-                    _binaryOperation.SetOperand(CreateOperand(registerMemory.Value, null));
-
-                    Display = registerMemory.ToString();
+                    Display =_formatService.FormatInput(registerMemory.Value);
 
                     Expression = GetNewExpression();
 
