@@ -102,8 +102,8 @@ namespace Calc4Life.Services.FormatServices
             if (value.Length > maxResultLength)
             {
                 value = value.Remove(maxResultLength - 1);//отнимаем единицу для того, чтобы оставить место для знака
-                value = value.TrimEnd('0');
             }
+                value = value.TrimEnd('0');
 
             if (value.EndsWith(decimalSeparator)) // удаляем десятичный знак, если строка на него заканчивается
                 value = value.Remove(value.Length - 1);
