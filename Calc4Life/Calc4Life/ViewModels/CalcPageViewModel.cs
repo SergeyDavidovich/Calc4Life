@@ -340,8 +340,10 @@ namespace Calc4Life.ViewModels
                     break;
                 case "Read":
                     if (registerMemory == null) return;
+
+                    _binaryOperation.SetOperand(CreateOperand(registerMemory.Value, null));
+
                     registerOperand = registerMemory;
-                    _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
                     Display =_formatService.FormatInput(registerMemory.Value);
 
@@ -449,12 +451,32 @@ namespace Calc4Life.ViewModels
             string operand1;
             string operand2;
 
+            //todo: изменить логику
             //получаем операнды из операции
-            operand1 = (_binaryOperation.Operand1 == null) ? "" : _binaryOperation.Operand1.ToString();
-            operand2 = (_binaryOperation.Operand2 == null) ? "" : _binaryOperation.Operand2.ToString();
+            if (_binaryOperation.Operand1 == null)
+                operand1 = String.Empty;
+            else
+            {
+                if (_binaryOperation.Operand1.Value.IsConstant())
+                    operand1 = _binaryOperation.Operand1.Value.OperandName;
+                else
+                    operand1 =_formatService.FormatInput( _binaryOperation.Operand1.Value.OperandValue.Value);
+            }
+            if (_binaryOperation.Operand2 == null)
+                operand2 = String.Empty;
+            else
+            {
+                if (_binaryOperation.Operand2.Value.IsConstant())
+                    operand2 = _binaryOperation.Operand1.Value.OperandName;
+                else
+                    operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
+            }
 
-            operand1 = (_binaryOperation.Operand1 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
-            operand2 = (_binaryOperation.Operand2 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
+            //operand1 = (_binaryOperation.Operand1 == null) ? "" : _binaryOperation.Operand1.ToString();
+            //operand2 = (_binaryOperation.Operand2 == null) ? "" : _binaryOperation.Operand2.ToString();
+
+            //operand1 = (_binaryOperation.Operand1 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
+            //operand2 = (_binaryOperation.Operand2 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
 
             //заворачиваем в скобки, если отрицательные
             if (operand1.StartsWith("-")) operand1 = $"({operand1})";

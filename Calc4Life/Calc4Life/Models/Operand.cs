@@ -9,13 +9,13 @@ namespace Calc4Life.Models
         public decimal? OperandValue;
         public string OperandName;
 
-        public override string ToString()
-        {
-            if (OperandName == null)
-                return OperandValue.ToString();
-            else
-                return OperandName;
-        }
+        //public override string ToString()
+        //{
+        //    if (OperandName == null)
+        //        return OperandValue.ToString();
+        //    else
+        //        return OperandName;
+        //}
         public bool IsConstant()
         {
             return OperandName == null ? false : true;
