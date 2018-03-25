@@ -46,6 +46,10 @@ namespace Calc4Life.Services.FormatServices
         public string FormatInput(decimal value) //todo: ввести экспоненциальное форматирование для этой функции желательно расшарить
         {
             AnalizeValue(value);
+            if (!IsInRange(value))
+                return value.ToString(exponentialFormatString);
+            if (Settings.Rounding)
+                value = RoundValue(value);
             return TrimValue(value.ToString());
         }
         public string FormatResult(decimal value)
@@ -59,31 +63,21 @@ namespace Calc4Life.Services.FormatServices
 
 
             #region 2 форматируем числа, находящихся вне пределов диапазонов в экспоненциальный формат
-            if (value > 0)
+            if (!IsInRange(value))
             {
-                // 2
-                if (value > PositiveMax || value < PositiveMin)
-                {
-                    result = value.ToString(exponentialFormatString);
-                    return result;
-                }
+                result = value.ToString(exponentialFormatString);
+                return result;
             }
-            else if (value < 0)
-                if (value > NegativeMax || value < NegativeMin)
-                {
-                    result = value.ToString(exponentialFormatString);
-                    return result;
-                }
             #endregion
 
             #region 3 округляем число согласно Settings
             if (Settings.Rounding)
-                curValue = Math.Round(value, (int)Settings.RoundAccuracy, MidpointRounding.AwayFromZero);
+                curValue = RoundValue(value);
             else
                 curValue = value;
             #endregion
 
-            AnalizeValue(value);
+            AnalizeValue(curValue);
 
             #region 4 вставка разделителей групп разрядов
             if (Settings.GrouppingDigits)
@@ -139,6 +133,33 @@ namespace Calc4Life.Services.FormatServices
 
             var result = negativeSign + output + decimalSeparator + fractionalPart;
             return result;
+        }
+        private decimal RoundValue(decimal value)
+        {
+            return Math.Round(value, (int)Settings.RoundAccuracy, MidpointRounding.AwayFromZero);
+        }
+        /// <summary>
+        /// Проверяет границы числа, в случае несоответствия выдаёт число в экспоненциальной форме
+        /// если соответствует границам,то возвращает null
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool IsInRange(decimal value)
+        {
+            if (value > 0)
+            {
+                // 2
+                if (value > PositiveMax || value < PositiveMin)
+                {
+                    return false;
+                }
+            }
+            else if (value < 0)
+                if (value > NegativeMax || value < NegativeMin)
+                {
+                    return false;
+                }
+            return true;
         }
         /// <summary>
         /// Разбивает число на части(знак, целая часть, делиметр, дробная часть)
