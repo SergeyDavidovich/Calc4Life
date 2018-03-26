@@ -12,8 +12,7 @@ using Prism.Services;
 using Calc4Life.Services.OperationServices;
 using Calc4Life.Services.FormatServices;
 using Calc4Life.Helpers;
-
-
+using Calc4Life.Services.RepositoryServices;
 
 namespace Calc4Life.ViewModels
 {
@@ -35,18 +34,21 @@ namespace Calc4Life.ViewModels
         IPageDialogService _dialogService;
         IBinaryOperationService _binaryOperation;
         FormatService _formatService;
+
+        DedicationService _dedicationService;
         #endregion
 
         #region Constructors
 
         public CalcPageViewModel(INavigationService navigationService,
             IPageDialogService dialogService,
-            IBinaryOperationService binaryOperationService, FormatService formatService)
+            IBinaryOperationService binaryOperationService, FormatService formatService, DedicationService dedicationService)
             : base(navigationService)
         {
             _dialogService = dialogService;
             _binaryOperation = binaryOperationService;
             _formatService = formatService;
+            _dedicationService = dedicationService;
 
             Title = "Calculator for Life";
             Display = "0";
@@ -65,7 +67,7 @@ namespace Calc4Life.ViewModels
             MemoryCommand = new DelegateCommand<string>(MemoryExecute);
             AddConstantCommand = new DelegateCommand(AddConstExecute);
             ClearCommand = new DelegateCommand(ClearExecute);
-
+            NaigateToDedicationCommand = new DelegateCommand(NavigateToDedicationExecute);
         }
 
         #endregion
@@ -110,6 +112,12 @@ namespace Calc4Life.ViewModels
         {
             get { return Settings.Rounding; }
             set { SetProperty(ref _IsRounding, value); }
+        }
+        string _dedication;
+        public string Dedication
+        {
+            get { return _dedication; }
+            set { SetProperty(ref _dedication, value); }
         }
 
         #endregion
@@ -323,7 +331,7 @@ namespace Calc4Life.ViewModels
             //}
         }
 
-        public DelegateCommand<string> MemoryCommand { get; } 
+        public DelegateCommand<string> MemoryCommand { get; }
         private void MemoryExecute(string par)
         {
             switch (par)
@@ -345,7 +353,7 @@ namespace Calc4Life.ViewModels
 
                     registerOperand = registerMemory;
 
-                    Display =_formatService.FormatInput(registerMemory.Value);
+                    Display = _formatService.FormatInput(registerMemory.Value);
 
                     Expression = GetNewExpression();
 
@@ -355,6 +363,16 @@ namespace Calc4Life.ViewModels
             }
         }
 
+        public DelegateCommand NaigateToDedicationCommand { get; }
+        private async void NavigateToDedicationExecute()
+        {
+            if (_dedicationService.GetDedication(Display) !=null)
+            {
+                var navParams= new NavigationParameters();
+                navParams.Add("code", Display);
+                await NavigationService.NavigateAsync("DedicationPage", navParams, false, true);
+            }
+        }
 
         #endregion
 
@@ -460,7 +478,7 @@ namespace Calc4Life.ViewModels
                 if (_binaryOperation.Operand1.Value.IsConstant())
                     operand1 = _binaryOperation.Operand1.Value.OperandName;
                 else
-                    operand1 =_formatService.FormatInput( _binaryOperation.Operand1.Value.OperandValue.Value);
+                    operand1 = _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
             }
             if (_binaryOperation.Operand2 == null)
                 operand2 = String.Empty;

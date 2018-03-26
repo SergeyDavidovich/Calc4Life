@@ -98,7 +98,12 @@
             <!--end rounding-->
             <!--display-->
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Display}" FontSize="46" LineBreakMode="NoWrap"
-                TextColor="Black" HorizontalOptions="End"/>
+                TextColor="Black" HorizontalOptions="End">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="2"
+                        Command="{Binding NaigateToDedicationCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
             <!--end display-->
             <!--expression-->
             <Label Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Expression}" FontSize="16"

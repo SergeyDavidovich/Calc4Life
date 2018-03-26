@@ -31,7 +31,7 @@ namespace Calc4Life
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-        
+
 
         public static ConstItemDatabase Database
         {
@@ -67,11 +67,13 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<AboutPage>();
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
+            containerRegistry.RegisterForNavigation<DedicationPage>();
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
 
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
+            containerRegistry.RegisterInstance(typeof(DedicationService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
@@ -83,7 +85,7 @@ namespace Calc4Life
             var pageOne = new CalcPage();
 
             NavigationPage.SetHasNavigationBar(pageOne, true);
-            NavigationPage navPage = new NavigationPage(pageOne) { BarTextColor = Color.White};
+            NavigationPage navPage = new NavigationPage(pageOne) { BarTextColor = Color.White };
 
             navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
             //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
