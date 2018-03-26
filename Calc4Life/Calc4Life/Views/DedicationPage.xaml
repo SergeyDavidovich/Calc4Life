@@ -7,8 +7,10 @@
              x:Class="Calc4Life.Views.DedicationPage"
              Title="Calc4Life">
   <ContentView.Content>
-      <StackLayout>
-            <Label Text="{Binding DedicationText}" />
+        <StackLayout BackgroundColor="#7f0000">
+            <Label Text="{Binding DedicationText}" 
+                   VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
+                   FontSize="66" TextColor="#ffc107" />
       </StackLayout>
   </ContentView.Content>
 </ContentPage>
