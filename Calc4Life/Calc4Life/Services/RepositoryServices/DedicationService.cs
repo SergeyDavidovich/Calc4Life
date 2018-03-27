@@ -11,7 +11,7 @@ namespace Calc4Life.Services.RepositoryServices
         {
             return new List<Dedication>()
             {
-                new Dedication{Code="30051988", Content="Dedicated to my love dauther", Name="Anastasia"}
+                new Dedication{Code="30051988", Content="Dedicated to my love daughter", Name="Anastasia"}
 
             };
         }
