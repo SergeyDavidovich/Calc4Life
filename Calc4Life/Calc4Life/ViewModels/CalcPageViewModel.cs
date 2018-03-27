@@ -485,16 +485,10 @@ namespace Calc4Life.ViewModels
             else
             {
                 if (_binaryOperation.Operand2.Value.IsConstant())
-                    operand2 = _binaryOperation.Operand1.Value.OperandName;
+                    operand2 = _binaryOperation.Operand2.Value.OperandName;
                 else
                     operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
             }
-
-            //operand1 = (_binaryOperation.Operand1 == null) ? "" : _binaryOperation.Operand1.ToString();
-            //operand2 = (_binaryOperation.Operand2 == null) ? "" : _binaryOperation.Operand2.ToString();
-
-            //operand1 = (_binaryOperation.Operand1 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
-            //operand2 = (_binaryOperation.Operand2 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
 
             //заворачиваем в скобки, если отрицательные
             if (operand1.StartsWith("-")) operand1 = $"({operand1})";
