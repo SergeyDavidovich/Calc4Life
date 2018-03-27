@@ -127,7 +127,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand ConstCommand { get; }
         private async void ConstCommandExecute()
         {
-            await NavigationService.NavigateAsync("ConstantsPage", null, false, true);
+            await NavigationService.NavigateAsync("ConstantsPage", null, false, false);
         }
 
         public DelegateCommand OptionsCommand { get; }
@@ -366,7 +366,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand NaigateToDedicationCommand { get; }
         private async void NavigateToDedicationExecute()
         {
-            if (_dedicationService.GetDedication(Display) !=null)
+            if (_dedicationService.GetDedicationName(Display) !=null)
             {
                 var navParams= new NavigationParameters();
                 navParams.Add("code", Display);

@@ -22,7 +22,8 @@ namespace Calc4Life.ViewModels
             if (parameters.ContainsKey("code")) //  переход со страницы CalcPage
             {
                 string par =(string)parameters["code"];
-                DedicationText = _dedicationService.GetDedication(par);
+                DedicationContent = _dedicationService.GetDedicationContent(par);
+                DedicationName=_dedicationService.GetDedicationName(par);
             }
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
@@ -30,11 +31,17 @@ namespace Calc4Life.ViewModels
             base.OnNavigatedFrom(parameters);
         }
 
-        private string _DedicationText;
-        public string DedicationText
+        private string _DedicationContent;
+        public string DedicationContent
         {
-            get { return _DedicationText; }
-            set { SetProperty(ref _DedicationText, value); }
+            get { return _DedicationContent; }
+            set { SetProperty(ref _DedicationContent, value); }
+        }
+        private string _DedicationName;
+        public string DedicationName
+        {
+            get { return _DedicationName; }
+            set { SetProperty(ref _DedicationName, value); }
         }
     }
 }

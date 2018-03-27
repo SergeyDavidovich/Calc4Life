@@ -1,16 +1,19 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Calc4Life"
+             xmlns:local="clr-namespace:Calc4Life;assembly=Calc4Life"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Calc4Life.Views.DedicationPage"
-             Title="Calc4Life">
-  <ContentView.Content>
-        <StackLayout BackgroundColor="#7f0000">
-            <Label Text="{Binding DedicationText}" 
-                   VerticalOptions="CenterAndExpand" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
-                   FontSize="66" TextColor="#ffc107" />
+             Title="Calc4Life" BackgroundImage="dedication.png">
+    <ContentView.Content>
+        <StackLayout VerticalOptions="CenterAndExpand" >
+            <Label Text="{Binding DedicationContent}" 
+                   VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
+                   FontSize="36" TextColor="#fdd835" />
+            <Label Text="{Binding DedicationName}" 
+                   VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
+                   FontSize="66" TextColor="Red" />
       </StackLayout>
   </ContentView.Content>
 </ContentPage>
