@@ -19,23 +19,26 @@ namespace Calc4Life.ViewModels
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
-        const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
 
-        bool isBackSpaceApplicable; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
+        const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
+        string decimalSeparator; // десятичный знак числа
+
+        //flags
+        bool canBackSpace; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
+        bool canChangeSign; //флаг - возможно ли изменение знака числа
         bool mustClearDisplay; // флаг - необходимо ли очистить дисплей перед вводом
 
+        //current values
         decimal? registerOperand; // текущий операнд
         decimal? registerMemory; // значение ячейки памяти
 
-        //string lastOperator; // последний введенный оператор
 
-        string decimalSeparator; // десятичный знак числа
-
+        //services
         IPageDialogService _dialogService;
         IBinaryOperationService _binaryOperation;
         FormatService _formatService;
-
         DedicationService _dedicationService;
+
         #endregion
 
         #region Constructors
@@ -50,9 +53,11 @@ namespace Calc4Life.ViewModels
             _formatService = formatService;
             _dedicationService = dedicationService;
 
+            //defaults
             Title = "Calculator for Life";
             Display = "0";
-            isBackSpaceApplicable = true;
+            canBackSpace = true;
+            canChangeSign = true;
             mustClearDisplay = false;
 
             DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
@@ -153,6 +158,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<string> EnterFiguresCommand { get; }
         private void EnterFiguresExecute(string par)
         {
+            canChangeSign = true;
             //1 усли в операции определен оператор (значит идет ввод второго операнда), очищаем дисплей
             if (mustClearDisplay) Display = String.Empty;
 
@@ -172,13 +178,13 @@ namespace Calc4Life.ViewModels
 
             //6 устанавливаем флаги
             mustClearDisplay = false;
-            isBackSpaceApplicable = true;
+            canBackSpace = true;
         }
 
         public DelegateCommand BackSpaceCommand { get; }
         private void BackSpaceExecute()
         {
-            if (!isBackSpaceApplicable) return;
+            if (!canBackSpace) return;
 
             string currentDisplayText = Display;
 
@@ -204,14 +210,23 @@ namespace Calc4Life.ViewModels
         public DelegateCommand SignCommand { get; }
         private void SignExecute() //todo: пересмотреть 
         {
-            string currentDisplayText = Display;
-            if (currentDisplayText == "0") return;
+            if (canChangeSign == false) return;
+            if (registerOperand == 0) return;
 
-            if (currentDisplayText.StartsWith("-"))
-                currentDisplayText = currentDisplayText.Remove(0, 1);
+            string curDisplay = Display;
+
+            if (Display.StartsWith("-"))
+            {
+                Display = "";
+                curDisplay = curDisplay.Remove(0, 1);
+                Display = curDisplay;
+            }
             else
-                currentDisplayText = "-" + currentDisplayText;
-            Display = currentDisplayText;
+            {
+                Display = "";
+                curDisplay = curDisplay.Insert(0, "-");
+                Display = curDisplay;
+            }
 
             // запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
@@ -237,14 +252,15 @@ namespace Calc4Life.ViewModels
         {
             if (_binaryOperation.Operand1 == null) return;
 
-            //1. поднимаем флаг
+            //1. устанавливаем флаги
             mustClearDisplay = true;
+            canBackSpace = false;
+            canChangeSign = false;
 
             //2. форматируем дисплей
-            //Display = registerOperand.ToString();
             Display = _formatService.FormatInput(registerOperand.Value);
+            
             //3. 
-
             if (_binaryOperation.IsReadyForCalc() == false)
             {
                 _binaryOperation.SetOperator(par);
@@ -261,14 +277,10 @@ namespace Calc4Life.ViewModels
                 _binaryOperation.Clear();
 
                 //4. первому операнду присвоить значение, равное результату операции
-
                 _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
 
-                //5.
+                //5. назначить следующий оператор в операцию
                 _binaryOperation.SetOperator(par);
-
-                //6.
-                isBackSpaceApplicable = false;
             }
 
             Expression = GetNewExpression();
@@ -304,7 +316,8 @@ namespace Calc4Life.ViewModels
                     Expression = String.Empty;
                 }
                 //5. устанавливаем флаги
-                isBackSpaceApplicable = false;
+                canBackSpace = false;
+                canChangeSign = false;
                 mustClearDisplay = true;
 
             }
@@ -356,7 +369,7 @@ namespace Calc4Life.ViewModels
 
                     Expression = GetNewExpression();
 
-                    isBackSpaceApplicable = false;
+                    canBackSpace = false;
                     mustClearDisplay = true;
                     break;
             }
@@ -365,9 +378,9 @@ namespace Calc4Life.ViewModels
         public DelegateCommand NaigateToDedicationCommand { get; }
         private async void NavigateToDedicationExecute()
         {
-            if (_dedicationService.GetDedicationName(Display) !=null)
+            if (_dedicationService.GetDedicationName(Display) != null)
             {
-                var navParams= new NavigationParameters();
+                var navParams = new NavigationParameters();
                 navParams.Add("code", Display);
                 await NavigationService.NavigateAsync("DedicationPage", navParams, false, true);
             }
@@ -397,7 +410,7 @@ namespace Calc4Life.ViewModels
                 Expression = GetNewExpression();
 
                 //4. Устанавливаем флаги
-                isBackSpaceApplicable = false;
+                canBackSpace = false;
                 mustClearDisplay = true;
             }
         }

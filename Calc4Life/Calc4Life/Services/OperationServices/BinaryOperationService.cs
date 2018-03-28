@@ -93,5 +93,10 @@ namespace Calc4Life.Services.OperationServices
 
             }
         }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }
