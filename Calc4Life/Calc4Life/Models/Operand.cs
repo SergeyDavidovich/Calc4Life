@@ -4,21 +4,21 @@ using System.Text;
 
 namespace Calc4Life.Models
 {
+
     public struct Operand
     {
         public decimal? OperandValue;
         public string OperandName;
 
-        //public override string ToString()
-        //{
-        //    if (OperandName == null)
-        //        return OperandValue.ToString();
-        //    else
-        //        return OperandName;
-        //}
+        public Operand(decimal value, string name)
+        {
+            OperandValue = value;
+            OperandName = name;
+        }
         public bool IsConstant()
         {
             return OperandName == null ? false : true;
         }
+
     }
 }

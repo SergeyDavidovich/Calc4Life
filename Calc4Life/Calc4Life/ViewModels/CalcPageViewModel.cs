@@ -168,13 +168,12 @@ namespace Calc4Life.ViewModels
             //3 запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
-
-
             //4. назначаем операнд в операцию
-            _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
             //5 очищаем строку выражения
-            Expression = GetNewExpression();
+            //Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
 
             //6 устанавливаем флаги
             mustClearDisplay = false;
@@ -202,9 +201,9 @@ namespace Calc4Life.ViewModels
             // запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
-            _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
-            Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         public DelegateCommand SignCommand { get; }
@@ -231,9 +230,9 @@ namespace Calc4Life.ViewModels
             // запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
-            _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
-            Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         public DelegateCommand ClearCommand { get; }
@@ -241,8 +240,8 @@ namespace Calc4Life.ViewModels
         {
             registerOperand = null;
             Display = "0";
-            Expression = "";
             _binaryOperation.Clear();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         #endregion
@@ -277,13 +276,13 @@ namespace Calc4Life.ViewModels
                 _binaryOperation.Clear();
 
                 //4. первому операнду присвоить значение, равное результату операции
-                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+                _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
                 //5. назначить следующий оператор в операцию
                 _binaryOperation.SetOperator(par);
             }
 
-            Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         public DelegateCommand CalcCommand { get; }
@@ -299,13 +298,13 @@ namespace Calc4Life.ViewModels
 
                     //2. вывести результат на дисплей
                     Display = _formatService.FormatResult(registerOperand.Value);
-                    Expression = GetNewExpression();
+                    Expression = _binaryOperation.GetOperationExpression();
 
                     //3. очистить операцию
                     _binaryOperation.Clear();
 
                     //4. устанавливаем первый операнд равный результату вычисления
-                    _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+                    _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
                 }
                 catch (DivideByZeroException ex)
@@ -313,7 +312,7 @@ namespace Calc4Life.ViewModels
                     Display = ex.Message;
                     //3. очистить операцию
                     _binaryOperation.Clear();
-                    Expression = String.Empty;
+                    Expression = _binaryOperation.GetOperationExpression(); 
                 }
                 //5. устанавливаем флаги
                 canBackSpace = false;
@@ -361,13 +360,13 @@ namespace Calc4Life.ViewModels
                 case "Read":
                     if (registerMemory == null) return;
 
-                    _binaryOperation.SetOperand(CreateOperand(registerMemory.Value, null));
+                    _binaryOperation.SetOperand(new Operand(registerMemory.Value, null));
 
                     registerOperand = registerMemory;
 
                     Display = _formatService.FormatInput(registerMemory.Value);
 
-                    Expression = GetNewExpression();
+                    Expression = _binaryOperation.GetOperationExpression();
 
                     canBackSpace = false;
                     mustClearDisplay = true;
@@ -402,12 +401,12 @@ namespace Calc4Life.ViewModels
                 registerOperand = curConstValue;
 
                 //2. отражаем на дисплее
-                Display = registerOperand.ToString();
-                Expression = GetNewExpression();
+                Display =_formatService.FormatInput(registerOperand.Value);
+                //Expression = _binaryOperation.GetOperationExpression();
 
                 //3. назначаем операнд в операцию
-                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, curConstName));
-                Expression = GetNewExpression();
+                _binaryOperation.SetOperand(new Operand(registerOperand.Value, curConstName));
+                Expression = _binaryOperation.GetOperationExpression();
 
                 //4. Устанавливаем флаги
                 canBackSpace = false;
@@ -467,6 +466,10 @@ namespace Calc4Life.ViewModels
 
                         break;
                     }
+                default:
+                    {
+                        throw new ArgumentOutOfRangeException(tag);
+                    }
             }
             return Result;
         }
@@ -475,78 +478,78 @@ namespace Calc4Life.ViewModels
         /// 
         /// </summary>
         /// <returns></returns>
-        private string GetNewExpression()
-        {
-            string output;
-            string operand1;
-            string operand2;
+        //private string GetNewExpression()
+        //{
+        //    string output;
+        //    string operand1;
+        //    string operand2;
 
-            //получаем операнды из операции
-            if (_binaryOperation.Operand1 == null)
-                operand1 = String.Empty;
-            else
-            {
-                if (_binaryOperation.Operand1.Value.IsConstant())
-                    operand1 = _binaryOperation.Operand1.Value.OperandName;
-                else
-                    operand1 = _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
-            }
-            if (_binaryOperation.Operand2 == null)
-                operand2 = String.Empty;
-            else
-            {
-                if (_binaryOperation.Operand2.Value.IsConstant())
-                    operand2 = _binaryOperation.Operand2.Value.OperandName;
-                else
-                    operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
-            }
+        //    //получаем операнды из операции
+        //    if (_binaryOperation.Operand1 == null)
+        //        operand1 = String.Empty;
+        //    else
+        //    {
+        //        if (_binaryOperation.Operand1.Value.IsConstant())
+        //            operand1 = _binaryOperation.Operand1.Value.OperandName;
+        //        else
+        //            operand1 = _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
+        //    }
+        //    if (_binaryOperation.Operand2 == null)
+        //        operand2 = String.Empty;
+        //    else
+        //    {
+        //        if (_binaryOperation.Operand2.Value.IsConstant())
+        //            operand2 = _binaryOperation.Operand2.Value.OperandName;
+        //        else
+        //            operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
+        //    }
 
-            //заворачиваем в скобки, если отрицательные
-            if (operand1.StartsWith("-")) operand1 = $"({operand1})";
-            if (operand2.StartsWith("-")) operand2 = $"({operand2})";
+        //    //заворачиваем в скобки, если отрицательные
+        //    if (operand1.StartsWith("-")) operand1 = $"({operand1})";
+        //    if (operand2.StartsWith("-")) operand2 = $"({operand2})";
 
-            //получаем оператор из операции
-            string oper = "";
+        //    //получаем оператор из операции
+        //    string oper = "";
 
-            {
-                switch (_binaryOperation.Operator)
-                {
-                    case BinaryOperators.Plus:
-                        oper = "+"; break;
-                    case BinaryOperators.Minus:
-                        oper = "-"; break;
-                    case BinaryOperators.Multiplication:
-                        oper = "×"; break;
-                    case BinaryOperators.Division:
-                        oper = "÷"; break;
-                    case BinaryOperators.Discount:
-                        oper = "%"; break;
-                }
-            }
+        //    {
+        //        switch (_binaryOperation.Operator)
+        //        {
+        //            case BinaryOperators.Plus:
+        //                oper = "+"; break;
+        //            case BinaryOperators.Minus:
+        //                oper = "-"; break;
+        //            case BinaryOperators.Multiplication:
+        //                oper = "×"; break;
+        //            case BinaryOperators.Division:
+        //                oper = "÷"; break;
+        //            case BinaryOperators.Discount:
+        //                oper = "%"; break;
+        //        }
+        //    }
 
-            //добавляем (или нет) знак равенства в выражение 
-            string equal;
-            decimal? result = _binaryOperation.Result;
-            if (result != null)
-                equal = " =";
-            else equal = "";
+        //    //добавляем (или нет) знак равенства в выражение 
+        //    string equal;
+        //    decimal? result = _binaryOperation.Result;
+        //    if (result != null)
+        //        equal = " =";
+        //    else equal = "";
 
-            //формируем строку вывода выражения
-            oper = oper.Length == 0 ? "" : " " + oper;
-            operand2 = operand2.Length == 0 ? "" : " " + operand2;
+        //    //формируем строку вывода выражения
+        //    oper = oper.Length == 0 ? "" : " " + oper;
+        //    operand2 = operand2.Length == 0 ? "" : " " + operand2;
 
-            output = $"{operand1}{oper}{operand2}{equal}";
-            return output;
-        }
+        //    output = $"{operand1}{oper}{operand2}{equal}";
+        //    return output;
+        //}
 
-        private Operand CreateOperand(decimal value, string name)
-        {
-            var result = new Operand();
-            result.OperandValue = value;
-            result.OperandName = name;
+        //private Operand CreateOperand(decimal value, string name)
+        //{
+        //    var result = new Operand();
+        //    result.OperandValue = value;
+        //    result.OperandName = name;
 
-            return result;
-        }
+        //    return result;
+        //}
 
         #endregion
     }
