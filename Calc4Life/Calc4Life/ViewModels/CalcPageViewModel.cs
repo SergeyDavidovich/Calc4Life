@@ -135,6 +135,7 @@ namespace Calc4Life.ViewModels
         {
             await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
         }
+        #region EditDisplayCommands
 
         public DelegateCommand AddConstantCommand { get; }
         private async void AddConstExecute()
@@ -148,8 +149,6 @@ namespace Calc4Life.ViewModels
                 await NavigationService.NavigateAsync("EditConstPage", par, false, true);
             }
         }
-
-        #region EditDisplayCommands
 
         public DelegateCommand<string> EnterFiguresCommand { get; }
         private void EnterFiguresExecute(string par)
@@ -203,7 +202,7 @@ namespace Calc4Life.ViewModels
         }
 
         public DelegateCommand SignCommand { get; }
-        private void SignExecute()
+        private void SignExecute() //todo: пересмотреть 
         {
             string currentDisplayText = Display;
             if (currentDisplayText == "0") return;
@@ -469,7 +468,6 @@ namespace Calc4Life.ViewModels
             string operand1;
             string operand2;
 
-            //todo: изменить логику
             //получаем операнды из операции
             if (_binaryOperation.Operand1 == null)
                 operand1 = String.Empty;
