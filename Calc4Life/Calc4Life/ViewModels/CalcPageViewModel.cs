@@ -348,6 +348,8 @@ namespace Calc4Life.ViewModels
             switch (par)
             {
                 case "Add":
+                    if (registerOperand == null) return;
+
                     registerMemory = registerMemory == null ? registerOperand : registerMemory + registerOperand;
                     Memory = _formatService.FormatInput(registerMemory.Value);
                     IsMemoryVisible = true;

@@ -21,7 +21,12 @@ namespace Calc4Life.Droid
 
             base.OnCreate(bundle);
 
+
+            Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+
             LoadApplication(new App(new AndroidInitializer()));
         }
     }
