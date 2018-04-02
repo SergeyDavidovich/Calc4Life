@@ -13,6 +13,7 @@ using Calc4Life.Services.OperationServices;
 using Calc4Life.Services.FormatServices;
 using Calc4Life.Helpers;
 using Calc4Life.Services.RepositoryServices;
+using Xamarin.Forms;
 
 namespace Calc4Life.ViewModels
 {
@@ -73,6 +74,10 @@ namespace Calc4Life.ViewModels
             AddConstantCommand = new DelegateCommand(AddConstExecute);
             ClearCommand = new DelegateCommand(ClearExecute);
             NaigateToDedicationCommand = new DelegateCommand(NavigateToDedicationExecute);
+
+            //подписываемся на событие изменения настроек калькулятора, для того чтобы отформатировать Display 
+            //на основе новых настроек
+            MessagingCenter.Subscribe<SettingsPageViewModel>(this, Constants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
         }
 
         #endregion
@@ -258,7 +263,7 @@ namespace Calc4Life.ViewModels
 
             //2. форматируем дисплей
             Display = _formatService.FormatInput(registerOperand.Value);
-            
+
             //3. 
             if (_binaryOperation.IsReadyForCalc() == false)
             {
@@ -312,7 +317,7 @@ namespace Calc4Life.ViewModels
                     Display = ex.Message;
                     //3. очистить операцию
                     _binaryOperation.Clear();
-                    Expression = _binaryOperation.GetOperationExpression(); 
+                    Expression = _binaryOperation.GetOperationExpression();
                 }
                 //5. устанавливаем флаги
                 canBackSpace = false;
@@ -403,7 +408,7 @@ namespace Calc4Life.ViewModels
                 registerOperand = curConstValue;
 
                 //2. отражаем на дисплее
-                Display =_formatService.FormatInput(registerOperand.Value);
+                Display = _formatService.FormatInput(registerOperand.Value);
                 //Expression = _binaryOperation.GetOperationExpression();
 
                 //3. назначаем операнд в операцию
@@ -476,6 +481,19 @@ namespace Calc4Life.ViewModels
             return Result;
         }
 
+        /// <summary>
+        /// обновляет строку вывода(Display) каждый раз когда меняются настройки 
+        /// </summary>
+        private void UpdateDisplayText()
+        {
+            //todo подумать над экспрешн строкой
+            //нужно ли обновлять экспрешн строку
+            if (!registerOperand.HasValue || Display == "0") return;
+            if (Expression.Contains('='))
+                Display = _formatService.FormatResult(registerOperand.Value);
+            else
+                Display = _formatService.FormatInput(registerOperand.Value);
+        }
         /// <summary>
         /// 
         /// </summary>

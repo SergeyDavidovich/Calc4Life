@@ -5,6 +5,7 @@ using Calc4Life.Helpers;
 using Calc4Life.Services.FormatServices;
 using Prism.Commands;
 using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace Calc4Life.ViewModels
 {
@@ -103,12 +104,24 @@ namespace Calc4Life.ViewModels
         public override void OnNavigatedTo(NavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+           
+            this.PropertyChanged += SettingsPageViewModel_PropertyChanged;
+        }
+        /// <summary>
+        ///  каждый раз когда меняется свойство привязки(настройки калькулятора) отправляем сообщение 
+        ///  об изменение настроек
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsPageViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            MessagingCenter.Send(this, Constants.SETTINGS_CHANGED_MESSAGE);
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
-
+            this.PropertyChanged -= SettingsPageViewModel_PropertyChanged;
             GroupingDigits = Settings.GrouppingDigits;
             Rounding = Settings.Rounding;
             RoundAccuracy = Settings.RoundAccuracy;
