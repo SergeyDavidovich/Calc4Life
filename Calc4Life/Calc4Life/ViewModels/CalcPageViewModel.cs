@@ -486,13 +486,18 @@ namespace Calc4Life.ViewModels
         /// </summary>
         private void UpdateDisplayText()
         {
-            //todo подумать над экспрешн строкой
-            //нужно ли обновлять экспрешн строку
+            //1 обновляем видимость метки Rounding
+            IsRounding = Settings.Rounding;
+
+            //2 обновляем Expression
+            Expression = _binaryOperation.GetOperationExpression();
+
             if (!registerOperand.HasValue || Display == "0") return;
-            if (Expression.Contains('='))
-                Display = _formatService.FormatResult(registerOperand.Value);
-            else
+
+            if (_binaryOperation.IsReadyForCalc() )
                 Display = _formatService.FormatInput(registerOperand.Value);
+            else
+                Display = _formatService.FormatResult(registerOperand.Value);
         }
         /// <summary>
         /// 
