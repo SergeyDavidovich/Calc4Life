@@ -7,7 +7,7 @@ using Prism.Ioc;
 namespace Calc4Life.Droid
 {
     [Activity(Label = "Calc4Life", 
-        Icon = "@drawable/icon", 
+        Icon = "@drawable/appicon_a", 
         Theme = "@style/MainTheme",
         MainLauncher = false,
         ScreenOrientation = ScreenOrientation.Portrait,

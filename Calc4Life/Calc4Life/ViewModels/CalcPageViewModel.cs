@@ -446,12 +446,19 @@ namespace Calc4Life.ViewModels
             string Result = currentDisplayText;
             switch (tag)
             {
-                case "DecPoint" when !currentDisplayText.Contains(DecimalSeparator):
+                case "DecPoint":
                     {
-                        if (currentDisplayText.Length >= maxFiguresNumber) break;
-                        if (currentDisplayText == "") currentDisplayText = "0" + DecimalSeparator;
-                        else currentDisplayText += DecimalSeparator;
-
+                        if (currentDisplayText.Length >= maxFiguresNumber)
+                            break;
+                        if (currentDisplayText.Contains(DecimalSeparator))
+                            break;
+                        if (currentDisplayText == "")
+                        {
+                            currentDisplayText = "0" + DecimalSeparator;
+                            Result = currentDisplayText;
+                            break;
+                        }
+                        currentDisplayText += DecimalSeparator;
                         Result = currentDisplayText;
                         break;
                     }
@@ -494,7 +501,7 @@ namespace Calc4Life.ViewModels
 
             if (!registerOperand.HasValue || Display == "0") return;
 
-            if (_binaryOperation.IsReadyForCalc() )
+            if (_binaryOperation.IsReadyForCalc())
                 Display = _formatService.FormatInput(registerOperand.Value);
             else
                 Display = _formatService.FormatResult(registerOperand.Value);
