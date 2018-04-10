@@ -462,7 +462,14 @@ namespace Calc4Life.ViewModels
                         Result = currentDisplayText;
                         break;
                     }
-                case "0" when currentDisplayText != "0":
+                case "0":
+                    {
+                        if (currentDisplayText == "0")
+                            break;
+                        else
+                            Result = currentDisplayText += tag;
+                        break;
+                    }
                 case "1":
                 case "2":
                 case "3":
