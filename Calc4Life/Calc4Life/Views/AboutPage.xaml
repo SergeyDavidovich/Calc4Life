@@ -6,11 +6,11 @@
              x:Class="Calc4Life.Views.AboutPage"
              Title="About">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="SaddleBrown" Orientation="Vertical">
-            <Label Text="Staff:" VerticalOptions="Center" FontSize="Large" HorizontalOptions="Start"/>
-            <Label Text="Bekzod Masharipow" VerticalOptions="Center" FontSize="Large" HorizontalOptions="Start"/>
-            <Label Text="Sergiush Kriwobokow" VerticalOptions="Center" FontSize="Large" HorizontalOptions="Start"/>
-            <Button Text="Link1" Command="{Binding NavigateCommand}" Margin="20"/>
+        <StackLayout Orientation="Vertical" Margin="20">
+            <Label Text="Staff:" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Start"/>
+            <Label Text="Bekzod Masharipow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
+            <Label Text="Sergiush Kriwobokow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
+            <Button Text="Contact mail" Command="{Binding NavigateCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -19,9 +19,9 @@ namespace Calc4Life.ViewModels
         }
 
         public DelegateCommand NavigateCommand { get; }
-        private async void NavigateExecute()
+        private void NavigateExecute()
         {
-          await  NavigationService.NavigateAsync(new Uri("https://www.facebook.com/writesd", UriKind.Absolute));
+            Xamarin.Forms.Device.OpenUri(new Uri("mailto:writesd@hotmail.com?subject=Calc4Life%20Feedback"));
         }
     }
 }
