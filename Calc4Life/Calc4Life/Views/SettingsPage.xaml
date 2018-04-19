@@ -50,7 +50,11 @@
                 <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
             </StackLayout>
             <BoxView/>
-            <Button Text="Set defaults" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Command="{Binding SetDefaultCommang}"/>
+            <StackLayout  Orientation="Horizontal">
+                <Button Text="Set defaults" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Command="{Binding SetDefaultCommang}"/>
+                <Button Text="Purchase" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Command="{Binding PurchaseCommand}"/>
+                <Button Text="Restore" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Command="{Binding RestorePurchaseCommand}"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

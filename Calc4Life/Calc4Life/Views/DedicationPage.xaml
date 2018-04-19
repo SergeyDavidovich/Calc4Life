@@ -11,9 +11,11 @@
             <Label Text="{Binding DedicationContent}" 
                    VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
                    FontSize="36" TextColor="#fdd835" />
-            <Label Text="{Binding DedicationName}" 
+            <!--<Frame BackgroundColor="White" OutlineColor="Red" CornerRadius="10" HasShadow="True" Opacity="0.1" Margin="20" HeightRequest="50" VerticalOptions="Center">
+            </Frame>-->
+                <Label Text="{Binding DedicationName}" 
                    VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"
-                   FontSize="66" TextColor="Red" />
-      </StackLayout>
-  </ContentView.Content>
+                   FontSize="62" TextColor="Red" Opacity="0.5" />
+        </StackLayout>
+    </ContentView.Content>
 </ContentPage>

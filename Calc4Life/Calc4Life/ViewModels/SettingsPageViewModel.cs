@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Calc4Life.Helpers;
 using Calc4Life.Services.FormatServices;
+using Calc4Life.Services.PurchasingServices;
 using Prism.Commands;
 using Prism.Navigation;
 using Xamarin.Forms;
@@ -14,18 +15,25 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
+        private NonConsumablePurchasingService _purchasingService;
+
         decimal sampleValue = 12345.6789m;
         FormatService _formatService;
         #endregion
         #region Constructors
 
-        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService) : base(navigationService)
+        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, NonConsumablePurchasingService purchasingService)
+            : base(navigationService)
         {
             _navigationService = navigationService;
             _formatService = formatService;
+            _purchasingService = purchasingService;
 
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
             SaveCommand = new DelegateCommand(SaveExecute);
+            PurchaseCommand = new DelegateCommand(PurchaseExecute);
+            RestorePurchaseCommand = new DelegateCommand(RestorePurchaseExecute);
+
             Sample = _formatService.FormatResult(sampleValue);
         }
 
@@ -98,13 +106,25 @@ namespace Calc4Life.ViewModels
             NavigationService.GoBackAsync();
         }
 
+        public DelegateCommand PurchaseCommand { get; }
+        private async void PurchaseExecute()
+        {
+            await _purchasingService.PurchaseItem("constants_unblocked", "payload");
+        }
+
+        public DelegateCommand RestorePurchaseCommand { get; }
+        private async void RestorePurchaseExecute()
+        {
+            await _purchasingService.WasItemPurchased("constants_unblocked");
+        }
+
         #endregion
         #region Navigation
 
         public override void OnNavigatedTo(NavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-           
+
             this.PropertyChanged += SettingsPageViewModel_PropertyChanged;
         }
         /// <summary>
