@@ -2,15 +2,35 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:helpers="clr-namespace:Calc4Life.Helpers"
              prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:cells="clr-namespace:Calc4Life.Views.CustomCells"
              x:Class="Calc4Life.Views.AboutPage"
              Title="About">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <helpers:ChatListViewTemplateSelector x:Key="ChatTemplateSelector"></helpers:ChatListViewTemplateSelector>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Margin="20">
-            <Label Text="Staff:" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Start"/>
-            <Label Text="Bekzod Masharipow" VerticalOptions="Center" FontSize="Medium" FontAttributes="None" TextColor="Black" HorizontalOptions="Start"/>
-            <Label Text="Sergiush Kriwobokow" VerticalOptions="Center" FontSize="Medium" FontAttributes="None" TextColor="Black" HorizontalOptions="Start"/>
-            <Button Text="Contact mail" Command="{Binding NavigateCommand}"/>
+        <StackLayout Spacing="0" Padding="0" Margin="0" Orientation="Vertical" >
+
+            <!--<Label Text="Calc4Life был задуман как калькулятор для жизни, в котором отсутствует бесполезные операции присущие остальным калькуляторам. Основной идеей является константы, которые помогают при расчёте в жизни, например цена за бутылку пива, молока или цена за кубометр газа.Вам больше не придётся запоминать всё это в голове, достаточно один раз внести значение"></Label>-->
+            <!--<TableView x:Name="tableView" Intent="Data">
+                <TableRoot>
+                    <TableSection x:Name="section1">
+                      
+                    </TableSection>
+                </TableRoot>
+            </TableView>-->
+            <AbsoluteLayout HorizontalOptions="StartAndExpand" x:Name="chatLayout"></AbsoluteLayout>
+            <!--<Label Text="Staff:" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Start"/>
+            <Label Text="Bekzod Masharipow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
+            <Label Text="Sergiush Kriwobokow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
+            <Button Text="Contact mail" Command="{Binding NavigateCommand}"/>-->
+            <!--<ListView x:Name="chatListView" HasUnevenRows="True" SeparatorVisibility="None" ItemTemplate="{StaticResource ChatTemplateSelector}" ItemsSource="{Binding AboutMessages}">
+            </ListView>-->
+      
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -42,7 +42,7 @@
     </ContentPage.Resources>
     <StackLayout Spacing="0" VerticalOptions="Fill">
         <ListView ItemsSource="{Binding Constants}" SeparatorColor="Red" IsGroupingEnabled="False" HasUnevenRows="True"
-                  RowHeight="72" BackgroundColor="WhiteSmoke"  
+                  BackgroundColor="WhiteSmoke"  
                   SelectedItem="{Binding SelectedConstant, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
