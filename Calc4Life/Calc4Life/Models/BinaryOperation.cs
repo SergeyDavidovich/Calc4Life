@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calc4Life.Services
+namespace Calc4Life.Models
 {
     /// <summary>
     /// Абстракция бинарной операций

@@ -30,6 +30,7 @@
             <Button Text="Contact mail" Command="{Binding NavigateCommand}"/>-->
             <!--<ListView x:Name="chatListView" HasUnevenRows="True" SeparatorVisibility="None" ItemTemplate="{StaticResource ChatTemplateSelector}" ItemsSource="{Binding AboutMessages}">
             </ListView>-->
+      
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

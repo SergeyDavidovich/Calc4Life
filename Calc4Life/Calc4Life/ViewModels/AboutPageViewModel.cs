@@ -4,18 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Prism.Navigation;
-using System.Collections.ObjectModel;
-using Calc4Life.Models;
 
 namespace Calc4Life.ViewModels
 {
     public class AboutPageViewModel : ViewModelBase
     {
         private INavigationService _navigationService;
-
         public AboutPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _navigationService = navigationService;
+
             NavigateCommand = new DelegateCommand(NavigateExecute);
             AboutMessages = new ObservableCollection<AboutMessage>();
             AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Что такое константа?" });
@@ -35,12 +33,6 @@ namespace Calc4Life.ViewModels
         private void NavigateExecute()
         {
             Xamarin.Forms.Device.OpenUri(new Uri("mailto:writesd@hotmail.com?subject=Calc4Life%20Feedback"));
-        }
-        private ObservableCollection<AboutMessage> _aboutMessages;
-        public ObservableCollection<AboutMessage> AboutMessages
-        {
-            get => _aboutMessages;
-            set => SetProperty(ref _aboutMessages, value);
         }
     }
 }
