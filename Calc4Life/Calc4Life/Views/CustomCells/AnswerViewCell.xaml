@@ -2,9 +2,10 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:roundImage="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-             x:Class="Calc4Life.Views.CustomCells.AnswerViewCell">
+             x:Class="Calc4Life.Views.CustomCells.AnswerViewCell"
+             x:Name="answerView">
     <ContentView.Content>
-        <Grid ColumnSpacing="2" HeightRequest="70" Padding="5">
+        <Grid ColumnSpacing="2" Padding="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -29,7 +30,7 @@
                 </Frame.BackgroundColor>
                 <StackLayout VerticalOptions="CenterAndExpand">
                     <!--<Image IsVisible="{Binding HasAttachement}" WidthRequest="175" HeightRequest="175" Source="{Binding AttachementUrl}" />-->
-                    <Label TextColor="Black"  Text="{Binding Text}" />
+                    <Label x:Name="textLabel" TextColor="Black" BindingContext="{x:Reference answerView}" Text="{Binding Path=Text}" />
                 </StackLayout>
             </Frame>
         </Grid>

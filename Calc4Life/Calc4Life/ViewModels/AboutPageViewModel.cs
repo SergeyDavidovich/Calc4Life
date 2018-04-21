@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Prism.Navigation;
+using System.Collections.ObjectModel;
+using Calc4Life.Models;
 
 namespace Calc4Life.ViewModels
 {
@@ -28,6 +30,12 @@ namespace Calc4Life.ViewModels
         {
             base.OnNavigatedTo(parameters);
             
+        }
+        private ObservableCollection<AboutMessage> _aboutMessages;
+        public ObservableCollection<AboutMessage> AboutMessages
+        {
+            get => _aboutMessages;
+            set => SetProperty(ref _aboutMessages, value);
         }
         public DelegateCommand NavigateCommand { get; }
         private void NavigateExecute()

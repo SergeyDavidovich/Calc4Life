@@ -16,5 +16,18 @@ namespace Calc4Life.Views.CustomCells
 		{
 			InitializeComponent ();
 		}
-	}
+
+
+        public static readonly BindableProperty TextProperty =
+      BindableProperty.Create("Text", typeof(string), typeof(AnswerViewCell),
+                  default(string));
+
+
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+    }
 }

@@ -23,7 +23,10 @@
                     </TableSection>
                 </TableRoot>
             </TableView>-->
-            <AbsoluteLayout HorizontalOptions="StartAndExpand" x:Name="chatLayout"></AbsoluteLayout>
+            <ScrollView>
+                <AbsoluteLayout HorizontalOptions="StartAndExpand" x:Name="chatLayout"></AbsoluteLayout>
+
+            </ScrollView>
             <!--<Label Text="Staff:" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Start"/>
             <Label Text="Bekzod Masharipow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
             <Label Text="Sergiush Kriwobokow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>
