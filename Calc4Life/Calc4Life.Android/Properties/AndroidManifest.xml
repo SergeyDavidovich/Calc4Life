@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="8" android:versionName="1.1" package="sd.calc4life" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="26" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="9" android:versionName="1.1" package="sd.calc4life" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="27" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<application android:label="Calc4Life" android:icon="@drawable/appicon_a"></application>
 </manifest>

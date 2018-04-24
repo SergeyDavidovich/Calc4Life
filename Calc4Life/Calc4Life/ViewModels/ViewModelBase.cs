@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Calc4Life.ViewModels
 {
-    public class ViewModelBase : BindableBase, INavigationAware, IDestructible
+    public class ViewModelBase : BindableBase, INavigationAware, IDestructible, IConfirmNavigation
     {
         protected INavigationService NavigationService { get; private set; }
 
@@ -25,22 +25,27 @@ namespace Calc4Life.ViewModels
 
         public virtual void OnNavigatedFrom(NavigationParameters parameters)
         {
-            
+
         }
 
         public virtual void OnNavigatedTo(NavigationParameters parameters)
         {
-            
+
         }
 
         public virtual void OnNavigatingTo(NavigationParameters parameters)
         {
-            
+
         }
 
         public virtual void Destroy()
         {
-            
+
+        }
+
+        public bool CanNavigate(NavigationParameters parameters)
+        {
+            return true;
         }
     }
 }

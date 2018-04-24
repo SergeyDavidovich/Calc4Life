@@ -15,14 +15,14 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
-        private NonConsumablePurchasingService _purchasingService;
+        private PurchasingService _purchasingService;
 
         decimal sampleValue = 12345.6789m;
         FormatService _formatService;
         #endregion
         #region Constructors
 
-        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, NonConsumablePurchasingService purchasingService)
+        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, PurchasingService purchasingService)
             : base(navigationService)
         {
             _navigationService = navigationService;
@@ -31,8 +31,7 @@ namespace Calc4Life.ViewModels
 
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
             SaveCommand = new DelegateCommand(SaveExecute);
-            PurchaseCommand = new DelegateCommand(PurchaseExecute);
-            RestorePurchaseCommand = new DelegateCommand(RestorePurchaseExecute);
+            PurchaseCommand = new DelegateCommand(PurchaseExecute, PurchaseCanExecute);
 
             Sample = _formatService.FormatResult(sampleValue);
         }
@@ -109,13 +108,21 @@ namespace Calc4Life.ViewModels
         public DelegateCommand PurchaseCommand { get; }
         private async void PurchaseExecute()
         {
-            await _purchasingService.PurchaseItem("constants_unblocked", "payload");
+            await _purchasingService.PurchaseConsumableItem("constants_unblocked", "payload");
+            App.Current.Properties["constants_unblocked"] = "constants_unblocked";
         }
-
-        public DelegateCommand RestorePurchaseCommand { get; }
-        private async void RestorePurchaseExecute()
+        public bool PurchaseCanExecute()
         {
-            await _purchasingService.WasItemPurchased("constants_unblocked");
+            bool result = true;
+            if (App.Current.Properties.ContainsKey("constants_unblocked"))
+            {
+                if ((string)App.Current.Properties["constants_unblocked"] == "constants_unblocked")
+                    result = false;
+                else
+                    result = true;
+                return result;
+            }
+            return result;
         }
 
         #endregion
