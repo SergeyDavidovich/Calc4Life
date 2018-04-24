@@ -79,14 +79,10 @@ namespace Calc4Life.ViewModels
                         if (success)
                             App.Current.Properties["constants_unblocked"] = "constants_unblocked";
                     }
-                    catch (InAppBillingPurchaseException ex)
-                    {
-                        await _dialogService.DisplayAlertAsync("ERROR", ex.PurchaseError.ToString(),"Close");
-                    }
-                    //catch (Exception ex)
-                    //{
-                    //    await _dialogService.DisplayAlertAsync("ERROR", ex.Message,"Close");
-                    //}
+                    catch (InAppBillingPurchaseException)
+                    { }
+                    catch (Exception)
+                    {}
                 }
             }
         }

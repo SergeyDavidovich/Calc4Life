@@ -57,11 +57,11 @@ namespace Calc4Life.Services.PurchasingServices
             try
             {
                 var connected = await billing.ConnectAsync();
-                //if (!connected)
-                //{
-                //    //we are offline or can't connect, don't try to purchase
-                //    return false;
-                //}
+                if (!connected)
+                {
+                    //we are offline or can't connect, don't try to purchase
+                    return false;
+                }
                 //check purchases
                 var purchase = await billing.PurchaseAsync(productId, ItemType.InAppPurchase, payload);
 
@@ -92,18 +92,18 @@ namespace Calc4Life.Services.PurchasingServices
                 else
                     return false;
             }
-            catch (InAppBillingPurchaseException purchaseEx)
-            {
-                //Billing Exception handle this based on the type
-                Debug.WriteLine("Error: " + purchaseEx);
-                throw new InAppBillingPurchaseException(new PurchaseError());
-            }
-            catch (Exception ex)
-            {
-                //Something else has gone wrong, log it
-                Debug.WriteLine("Issue connecting: " + ex);
-                throw new Exception("Issue connecting", ex.InnerException);
-            }
+            //catch (InAppBillingPurchaseException purchaseEx)
+            //{
+            //    //Billing Exception handle this based on the type
+            //    Debug.WriteLine("Error: " + purchaseEx);
+            //    //throw new InAppBillingPurchaseException(new PurchaseError());
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Something else has gone wrong, log it
+            //    Debug.WriteLine("Issue connecting: " + ex);
+            //    //throw new Exception("Issue connecting", ex.InnerException);
+            //}
             finally
             {
                 await billing.DisconnectAsync();
