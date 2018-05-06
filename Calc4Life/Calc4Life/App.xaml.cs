@@ -53,7 +53,11 @@ namespace Calc4Life
             Resources = new ResourceDictionary();
             Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
             Resources.Add("colorTitle", Color.WhiteSmoke);
+
+            CreateProduct("constants_unblocked");
 #if DEBUG
+            App.Current.Properties["constants_unblocked"] = string.Empty; 
+
             Debug.WriteLine("OnInitialized");
 #endif
         }
@@ -75,7 +79,7 @@ namespace Calc4Life
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
             containerRegistry.RegisterInstance(typeof(DedicationService));
-            containerRegistry.RegisterInstance(typeof(NonConsumablePurchasingService));
+            containerRegistry.RegisterInstance(typeof(PurchasingService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
@@ -115,6 +119,12 @@ namespace Calc4Life
 #if DEBUG
             Debug.WriteLine("OnResume");
 #endif
+        }
+
+        public void CreateProduct(string productId) //constants_unblocked in app product
+        {
+            if (App.Current.Properties.ContainsKey(productId) == false)
+                App.Current.Properties.Add(productId, null);
         }
     }
 }
