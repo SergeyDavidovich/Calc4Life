@@ -23,7 +23,7 @@ namespace Calc4Life.ViewModels
             AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Как добавить константу?" });
             AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Для этого нужно нажать ввести значения и нажать на кнопку +, дать имя константе и сохранить" });
             AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Как использовать константы при счёте?" });
-            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Нажмите на кнопку CONST, выберите константу и нажмите на зеленую кнопку" });
+            AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Нажмите на кнопку CONST, выберите константу и нажмите на зеленую кнопку" });
 
         }
         public override void OnNavigatedTo(NavigationParameters parameters)

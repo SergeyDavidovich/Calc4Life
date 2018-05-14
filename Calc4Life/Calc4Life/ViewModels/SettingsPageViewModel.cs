@@ -15,14 +15,14 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
-        private PurchasingService _purchasingService;
+        private ConstantsPurchasingService _purchasingService;
 
         decimal sampleValue = 12345.6789m;
         FormatService _formatService;
         #endregion
         #region Constructors
 
-        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, PurchasingService purchasingService)
+        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, ConstantsPurchasingService purchasingService)
             : base(navigationService)
         {
             _navigationService = navigationService;
@@ -108,15 +108,15 @@ namespace Calc4Life.ViewModels
         public DelegateCommand PurchaseCommand { get; }
         private async void PurchaseExecute()
         {
-            await _purchasingService.PurchaseConsumableItem("constants_unblocked", "payload");
-            App.Current.Properties["constants_unblocked"] = "constants_unblocked";
+            await _purchasingService.PurchaseConsumableItem(AppConstants.KEY_CONSTANTS_PURSHASING, "payload");
+            App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = AppConstants.KEY_CONSTANTS_PURSHASING;
         }
         public bool PurchaseCanExecute()
         {
             bool result = true;
-            if (App.Current.Properties.ContainsKey("constants_unblocked"))
+            if (App.Current.Properties.ContainsKey(AppConstants.KEY_CONSTANTS_PURSHASING))
             {
-                if ((string)App.Current.Properties["constants_unblocked"] == "constants_unblocked")
+                if ((string)App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] == AppConstants.KEY_CONSTANTS_PURSHASING)
                     result = false;
                 else
                     result = true;
@@ -142,7 +142,7 @@ namespace Calc4Life.ViewModels
         /// <param name="e"></param>
         private void SettingsPageViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            MessagingCenter.Send(this, Constants.SETTINGS_CHANGED_MESSAGE);
+            MessagingCenter.Send(this, AppConstants.SETTINGS_CHANGED_MESSAGE);
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)

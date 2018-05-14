@@ -32,8 +32,6 @@ namespace Calc4Life
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-
-
         public static ConstItemDatabase Database
         {
             get
@@ -54,10 +52,22 @@ namespace Calc4Life
             Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
             Resources.Add("colorTitle", Color.WhiteSmoke);
 
-            CreateProduct("constants_unblocked");
-#if DEBUG
-            App.Current.Properties["constants_unblocked"] = string.Empty; 
+            #region Creation an initialization App properties
 
+            // contains max constants number (before purchasing)
+            if (App.Current.Properties.Keys.Contains(AppConstants.KEY_MAX_CONSTANTS_NUMBER) == false)
+                App.Current.Properties.Add(AppConstants.KEY_CONSTANTS_NUMBER, 3);
+
+            // constants_unblocked productId
+            if (App.Current.Properties.ContainsKey(AppConstants.CONSTANTS_PPODUCT_ID) == false)
+                App.Current.Properties.Add(AppConstants.CONSTANTS_PPODUCT_ID, AppConstants.CONSTANTS_PPODUCT_ID);
+
+            // constants_unblocked product purchased
+            if (App.Current.Properties.ContainsKey(AppConstants.IS_CONSTANT_PURCHASED) == false)
+                App.Current.Properties.Add(AppConstants.IS_CONSTANT_PURCHASED, false);
+            #endregion
+
+#if DEBUG
             Debug.WriteLine("OnInitialized");
 #endif
         }
@@ -79,7 +89,7 @@ namespace Calc4Life
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
             containerRegistry.RegisterInstance(typeof(DedicationService));
-            containerRegistry.RegisterInstance(typeof(PurchasingService));
+            containerRegistry.RegisterInstance(typeof(ConstantsPurchasingService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
@@ -97,7 +107,6 @@ namespace Calc4Life
             //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
 
             this.MainPage = navPage;
-
             await NavigationService.NavigateAsync("CalcPage");
 
 #if DEBUG
@@ -119,12 +128,6 @@ namespace Calc4Life
 #if DEBUG
             Debug.WriteLine("OnResume");
 #endif
-        }
-
-        public void CreateProduct(string productId) //constants_unblocked in app product
-        {
-            if (App.Current.Properties.ContainsKey(productId) == false)
-                App.Current.Properties.Add(productId, null);
         }
     }
 }

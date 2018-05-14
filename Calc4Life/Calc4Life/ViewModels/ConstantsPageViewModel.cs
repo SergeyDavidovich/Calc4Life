@@ -12,6 +12,7 @@ using Prism.Services;
 using System.Diagnostics;
 using Calc4Life.Services.PurchasingServices;
 using Plugin.InAppBilling.Abstractions;
+using Calc4Life.Helpers;
 
 namespace Calc4Life.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Calc4Life.ViewModels
 
         IConstantsRepositoryService _constantRepository;
         IPageDialogService _dialogService;
-        PurchasingService _purchasingService;
+        ConstantsPurchasingService _purchasingService;
         ObservableCollection<Constant> _constants;
         Constant _selectedConstant;
 
@@ -31,7 +32,7 @@ namespace Calc4Life.ViewModels
         public ConstantsPageViewModel(INavigationService navigationService,
             IConstantsRepositoryService constantsRepository,
             IPageDialogService dialogService,
-            PurchasingService purchasingService)
+            ConstantsPurchasingService purchasingService)
            : base(navigationService)
         {
             Title = "Constants";
@@ -56,7 +57,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand NavigateToAddCommand { get; }
         private async void NavigateToAddExecute()
         {
-            bool isPurchased = _purchasingService.IsPurchasedItemSaved("constants_unblocked");
+            bool isPurchased = _purchasingService.IsPurchasedItemSaved(AppConstants.KEY_CONSTANTS_PURSHASING);
 
             if (Constants.Count < 3)
                 await NavigationService.NavigateAsync("EditConstPage", null, false, true);
@@ -75,9 +76,9 @@ namespace Calc4Life.ViewModels
                     bool success;
                     try
                     {
-                        success = await _purchasingService.PurchaseConsumableItem("constants_unblocked", "payload");
+                        success = await _purchasingService.PurchaseConsumableItem(AppConstants.KEY_CONSTANTS_PURSHASING, "payload");
                         if (success)
-                            App.Current.Properties["constants_unblocked"] = "constants_unblocked";
+                            App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = AppConstants.KEY_CONSTANTS_PURSHASING;
                     }
                     catch (InAppBillingPurchaseException)
                     { }

@@ -9,6 +9,7 @@ using Calc4Life.Models;
 using System.Globalization;
 using Prism.Services;
 using Calc4Life.Validations;
+using Calc4Life.Helpers;
 
 namespace Calc4Life.ViewModels
 {
@@ -63,8 +64,10 @@ namespace Calc4Life.ViewModels
         {
             if (!Validate()) return;
 
-            var constant = new Constant {Id=currentId, Name = Name.Value, Value = decimal.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
+            var constant = new Constant { Id = currentId, Name = Name.Value, Value = decimal.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
             await _repositoryService.SaveAsync(constant);
+
+            App.Current.Properties[AppConstants.KEY_CONSTANTS_NUMBER] = ((int)App.Current.Properties[AppConstants.KEY_CONSTANTS_NUMBER]) + 1;
 
             var parameters = new NavigationParameters();
             parameters.Add("const", constant);

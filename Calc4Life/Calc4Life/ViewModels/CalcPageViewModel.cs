@@ -77,7 +77,7 @@ namespace Calc4Life.ViewModels
 
             //подписываемся на событие изменения настроек калькулятора, для того чтобы отформатировать Display 
             //на основе новых настроек
-            MessagingCenter.Subscribe<SettingsPageViewModel>(this, Constants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
+            MessagingCenter.Subscribe<SettingsPageViewModel>(this, AppConstants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
         }
 
         #endregion

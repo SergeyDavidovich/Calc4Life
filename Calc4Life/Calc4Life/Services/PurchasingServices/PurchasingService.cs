@@ -1,4 +1,5 @@
-﻿using Plugin.InAppBilling;
+﻿using Calc4Life.Helpers;
+using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ using Xamarin.Forms;
 
 namespace Calc4Life.Services.PurchasingServices
 {
-    public class PurchasingService
+    public class ConstantsPurchasingService
     {
+        #region Google Play operations
+
         public async Task PurchaseNonConsumableItem(string productId, string payload)
         {
             var billing = CrossInAppBilling.Current;
@@ -111,7 +114,7 @@ namespace Calc4Life.Services.PurchasingServices
 
         }
 
-        public async Task<bool> WasItemPurchased(string productId)
+        public async Task<bool> IsItemPurchased(string productId)
         {
             var billing = CrossInAppBilling.Current;
             try
@@ -156,6 +159,10 @@ namespace Calc4Life.Services.PurchasingServices
             return false;
         }
 
+        #endregion
+
+        #region App operations
+
         public bool IsPurchasedItemSaved(string productId)
         {
             string str = (string)Application.Current.Properties[productId];
@@ -167,9 +174,10 @@ namespace Calc4Life.Services.PurchasingServices
 
         private void SavePurchasedItem(string productId)
         {
-            App.Current.Properties["constants_unblocked"] = productId;
+            App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = productId;
         }
 
+        #endregion
     }
 }
 
