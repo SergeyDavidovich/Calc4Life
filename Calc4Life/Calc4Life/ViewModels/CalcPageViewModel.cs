@@ -85,9 +85,9 @@ namespace Calc4Life.ViewModels
             //на основе новых настроек
             MessagingCenter.Subscribe<SettingsPageViewModel>(this, Constants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
 
-            var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this,
-      nameof(PropertyChanged));
+            var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged));
             var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
+
             displayChangedObservale.ObserveOn(SynchronizationContext.Current)
                 .DistinctUntilChanged()
                 .Subscribe(async s =>
@@ -571,84 +571,6 @@ namespace Calc4Life.ViewModels
             else
                 Display = _formatService.FormatResult(registerOperand.Value);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        //private string GetNewExpression()
-        //{
-        //    string output;
-        //    string operand1;
-        //    string operand2;
-
-        //    //получаем операнды из операции
-        //    if (_binaryOperation.Operand1 == null)
-        //        operand1 = String.Empty;
-        //    else
-        //    {
-        //        if (_binaryOperation.Operand1.Value.IsConstant())
-        //            operand1 = _binaryOperation.Operand1.Value.OperandName;
-        //        else
-        //            operand1 = _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
-        //    }
-        //    if (_binaryOperation.Operand2 == null)
-        //        operand2 = String.Empty;
-        //    else
-        //    {
-        //        if (_binaryOperation.Operand2.Value.IsConstant())
-        //            operand2 = _binaryOperation.Operand2.Value.OperandName;
-        //        else
-        //            operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
-        //    }
-
-        //    //заворачиваем в скобки, если отрицательные
-        //    if (operand1.StartsWith("-")) operand1 = $"({operand1})";
-        //    if (operand2.StartsWith("-")) operand2 = $"({operand2})";
-
-        //    //получаем оператор из операции
-        //    string oper = "";
-
-        //    {
-        //        switch (_binaryOperation.Operator)
-        //        {
-        //            case BinaryOperators.Plus:
-        //                oper = "+"; break;
-        //            case BinaryOperators.Minus:
-        //                oper = "-"; break;
-        //            case BinaryOperators.Multiplication:
-        //                oper = "×"; break;
-        //            case BinaryOperators.Division:
-        //                oper = "÷"; break;
-        //            case BinaryOperators.Discount:
-        //                oper = "%"; break;
-        //        }
-        //    }
-
-        //    //добавляем (или нет) знак равенства в выражение 
-        //    string equal;
-        //    decimal? result = _binaryOperation.Result;
-        //    if (result != null)
-        //        equal = " =";
-        //    else equal = "";
-
-        //    //формируем строку вывода выражения
-        //    oper = oper.Length == 0 ? "" : " " + oper;
-        //    operand2 = operand2.Length == 0 ? "" : " " + operand2;
-
-        //    output = $"{operand1}{oper}{operand2}{equal}";
-        //    return output;
-        //}
-
-        //private Operand CreateOperand(decimal value, string name)
-        //{
-        //    var result = new Operand();
-        //    result.OperandValue = value;
-        //    result.OperandName = name;
-
-        //    return result;
-        //}
-
         #endregion
-
     }
 }
