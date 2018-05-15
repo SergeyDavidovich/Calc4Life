@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Calc4Life.Helpers;
 using Calc4Life.Services.FormatServices;
+using Calc4Life.Services.PurchasingServices;
 using Prism.Commands;
 using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace Calc4Life.ViewModels
 {
@@ -13,18 +15,24 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         private INavigationService _navigationService;
+        private PurchasingService _purchasingService;
+
         decimal sampleValue = 12345.6789m;
         FormatService _formatService;
         #endregion
         #region Constructors
 
-        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService) : base(navigationService)
+        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, PurchasingService purchasingService)
+            : base(navigationService)
         {
             _navigationService = navigationService;
             _formatService = formatService;
+            _purchasingService = purchasingService;
 
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
             SaveCommand = new DelegateCommand(SaveExecute);
+            PurchaseCommand = new DelegateCommand(PurchaseExecute, PurchaseCanExecute);
+
             Sample = _formatService.FormatResult(sampleValue);
         }
 
@@ -97,18 +105,50 @@ namespace Calc4Life.ViewModels
             NavigationService.GoBackAsync();
         }
 
+        public DelegateCommand PurchaseCommand { get; }
+        private async void PurchaseExecute()
+        {
+            await _purchasingService.PurchaseConsumableItem("constants_unblocked", "payload");
+            App.Current.Properties["constants_unblocked"] = "constants_unblocked";
+        }
+        public bool PurchaseCanExecute()
+        {
+            bool result = true;
+            if (App.Current.Properties.ContainsKey("constants_unblocked"))
+            {
+                if ((string)App.Current.Properties["constants_unblocked"] == "constants_unblocked")
+                    result = false;
+                else
+                    result = true;
+                return result;
+            }
+            return result;
+        }
+
         #endregion
         #region Navigation
 
         public override void OnNavigatedTo(NavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+
+            this.PropertyChanged += SettingsPageViewModel_PropertyChanged;
+        }
+        /// <summary>
+        ///  каждый раз когда меняется свойство привязки(настройки калькулятора) отправляем сообщение 
+        ///  об изменение настроек
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsPageViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            MessagingCenter.Send(this, Constants.SETTINGS_CHANGED_MESSAGE);
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
-
+            this.PropertyChanged -= SettingsPageViewModel_PropertyChanged;
             GroupingDigits = Settings.GrouppingDigits;
             Rounding = Settings.Rounding;
             RoundAccuracy = Settings.RoundAccuracy;

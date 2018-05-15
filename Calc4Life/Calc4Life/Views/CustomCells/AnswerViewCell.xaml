@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:roundImage="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+             x:Class="Calc4Life.Views.CustomCells.AnswerViewCell"
+             x:Name="answerView">
+    <ContentView.Content>
+        <Grid ColumnSpacing="2" Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <roundImage:CircleImage
+                      Grid.Row="0"
+                      Grid.Column="2"
+                      HeightRequest="35"
+                      WidthRequest="35"
+                      BorderThickness="2"
+                      BorderColor="#03A9F4"
+                      Aspect="AspectFill"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center" Source="sd.png" ></roundImage:CircleImage>
+            <Frame Grid.Row="0" VerticalOptions="Start" Grid.Column="1">
+                <Frame.HasShadow>
+                    <OnPlatform x:TypeArguments="x:Boolean" iOS="false" Android="true"/>
+                </Frame.HasShadow>
+                <Frame.BackgroundColor>
+                    <OnPlatform x:TypeArguments="Color" iOS="#F5F5F5" Android="White"/>
+                </Frame.BackgroundColor>
+                <StackLayout VerticalOptions="CenterAndExpand">
+                    <!--<Image IsVisible="{Binding HasAttachement}" WidthRequest="175" HeightRequest="175" Source="{Binding AttachementUrl}" />-->
+                    <Label x:Name="textLabel" TextColor="Black" BindingContext="{x:Reference answerView}" Text="{Binding Path=Text}" />
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

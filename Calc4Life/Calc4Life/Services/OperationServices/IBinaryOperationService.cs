@@ -28,6 +28,7 @@ namespace Calc4Life.Services.OperationServices
 
         bool IsReadyForCalc();
         decimal? GetResult();
+        string GetOperationExpression();
 
         #endregion
     }

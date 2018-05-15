@@ -1,13 +1,15 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Plugin.InAppBilling;
 using Prism;
 using Prism.Ioc;
 
 namespace Calc4Life.Droid
 {
     [Activity(Label = "Calc4Life", 
-        Icon = "@drawable/icon", 
+        Icon = "@drawable/appicon_a", 
         Theme = "@style/MainTheme",
         MainLauncher = false,
         ScreenOrientation = ScreenOrientation.Portrait,
@@ -21,8 +23,21 @@ namespace Calc4Life.Droid
 
             base.OnCreate(bundle);
 
+
+            Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+
             LoadApplication(new App(new AndroidInitializer()));
+
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = this;
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            InAppBillingImplementation.HandleActivityResult(requestCode, resultCode, data);
         }
     }
 

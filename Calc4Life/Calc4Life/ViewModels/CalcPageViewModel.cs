@@ -12,45 +12,59 @@ using Prism.Services;
 using Calc4Life.Services.OperationServices;
 using Calc4Life.Services.FormatServices;
 using Calc4Life.Helpers;
-
-
+using Calc4Life.Services.RepositoryServices;
+using Xamarin.Forms;
+using System.Reactive.Linq;
+using System.ComponentModel;
+using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace Calc4Life.ViewModels
 {
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
+
         const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
+        string decimalSeparator; // десятичный знак числа
 
-        bool isBackSpaceApplicable; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
+        //flags
+        bool canBackSpace; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
+        bool canChangeSign; //флаг - возможно ли изменение знака числа
         bool mustClearDisplay; // флаг - необходимо ли очистить дисплей перед вводом
+        bool isConstantSuggestionsUpdated;
 
+        //current values
         decimal? registerOperand; // текущий операнд
         decimal? registerMemory; // значение ячейки памяти
 
-        //string lastOperator; // последний введенный оператор
 
-        string decimalSeparator; // десятичный знак числа
-
+        //services
         IPageDialogService _dialogService;
         IBinaryOperationService _binaryOperation;
         FormatService _formatService;
+        DedicationService _dedicationService;
+        IConstantsRepositoryService _constantsRepository;
         #endregion
 
         #region Constructors
 
         public CalcPageViewModel(INavigationService navigationService,
             IPageDialogService dialogService,
-            IBinaryOperationService binaryOperationService, FormatService formatService)
+            IBinaryOperationService binaryOperationService, FormatService formatService, DedicationService dedicationService)
             : base(navigationService)
         {
             _dialogService = dialogService;
             _binaryOperation = binaryOperationService;
             _formatService = formatService;
+            _dedicationService = dedicationService;
+            _constantsRepository = App.Database;
 
+            //defaults
             Title = "Calculator for Life";
             Display = "0";
-            isBackSpaceApplicable = true;
+            canBackSpace = true;
+            canChangeSign = true;
             mustClearDisplay = false;
 
             DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
@@ -65,12 +79,49 @@ namespace Calc4Life.ViewModels
             MemoryCommand = new DelegateCommand<string>(MemoryExecute);
             AddConstantCommand = new DelegateCommand(AddConstExecute);
             ClearCommand = new DelegateCommand(ClearExecute);
+            NaigateToDedicationCommand = new DelegateCommand(NavigateToDedicationExecute);
 
+            //подписываемся на событие изменения настроек калькулятора, для того чтобы отформатировать Display 
+            //на основе новых настроек
+            MessagingCenter.Subscribe<SettingsPageViewModel>(this, Constants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
+
+            var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this,
+      nameof(PropertyChanged));
+            var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
+            displayChangedObservale.ObserveOn(SynchronizationContext.Current)
+                .DistinctUntilChanged()
+                .Subscribe(async s =>
+               {
+                   if (!isConstantSuggestionsUpdated)
+                   {
+                       _constants = await _constantsRepository.GetItemsAsync();
+                       _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
+                       isConstantSuggestionsUpdated = true;
+                   }
+                   SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
+               });
         }
-
         #endregion
 
         #region Bindable Properties
+        private List<Constant> _constants;
+        private ObservableCollection<Constant> _suggestionConstants;
+        public ObservableCollection<Constant> SuggestionConstants
+        {
+            get => _suggestionConstants;
+            set => SetProperty(ref _suggestionConstants, value);
+        }
+        private Constant _selectedSuggestionConstant;
+        public Constant SelectedSuggestionConstant
+        {
+            get => _selectedSuggestionConstant;
+            set
+            {
+                if (SetProperty(ref _selectedSuggestionConstant, value))
+                    SetSuggestedConstant(value);
+
+            }
+        }
         string _Display;
         public string Display
         {
@@ -111,15 +162,39 @@ namespace Calc4Life.ViewModels
             get { return Settings.Rounding; }
             set { SetProperty(ref _IsRounding, value); }
         }
+        string _dedication;
+        public string Dedication
+        {
+            get { return _dedication; }
+            set { SetProperty(ref _dedication, value); }
+        }
 
         #endregion
 
         #region Commands
+        private void SetSuggestedConstant(Constant selectedConstant)
+        {
+            if (selectedConstant == null) return;
+            //TODO вывести в отдельную процедуру, данный код повторяется в нескольких местах
+            //2 
+            registerOperand = selectedConstant.Value;
 
+            //2. отражаем на дисплее
+            Display = _formatService.FormatInput(registerOperand.Value);
+            //Expression = _binaryOperation.GetOperationExpression();
+
+            //3. назначаем операнд в операцию
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, selectedConstant.Name));
+            Expression = _binaryOperation.GetOperationExpression();
+
+            //4. Устанавливаем флаги
+            canBackSpace = false;
+            mustClearDisplay = true;
+        }
         public DelegateCommand ConstCommand { get; }
         private async void ConstCommandExecute()
         {
-            await NavigationService.NavigateAsync("ConstantsPage", null, false, true);
+            await NavigationService.NavigateAsync("ConstantsPage", null, false, false);
         }
 
         public DelegateCommand OptionsCommand { get; }
@@ -127,6 +202,7 @@ namespace Calc4Life.ViewModels
         {
             await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
         }
+        #region EditDisplayCommands
 
         public DelegateCommand AddConstantCommand { get; }
         private async void AddConstExecute()
@@ -141,11 +217,10 @@ namespace Calc4Life.ViewModels
             }
         }
 
-        #region EditDisplayCommands
-
         public DelegateCommand<string> EnterFiguresCommand { get; }
         private void EnterFiguresExecute(string par)
         {
+            canChangeSign = true;
             //1 усли в операции определен оператор (значит идет ввод второго операнда), очищаем дисплей
             if (mustClearDisplay) Display = String.Empty;
 
@@ -155,23 +230,22 @@ namespace Calc4Life.ViewModels
             //3 запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
-
-
             //4. назначаем операнд в операцию
-            _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
             //5 очищаем строку выражения
-            Expression = GetNewExpression();
+            //Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
 
             //6 устанавливаем флаги
             mustClearDisplay = false;
-            isBackSpaceApplicable = true;
+            canBackSpace = true;
         }
 
         public DelegateCommand BackSpaceCommand { get; }
         private void BackSpaceExecute()
         {
-            if (!isBackSpaceApplicable) return;
+            if (!canBackSpace) return;
 
             string currentDisplayText = Display;
 
@@ -189,29 +263,38 @@ namespace Calc4Life.ViewModels
             // запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
-            _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
-            Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         public DelegateCommand SignCommand { get; }
-        private void SignExecute()
+        private void SignExecute() //todo: пересмотреть 
         {
-            string currentDisplayText = Display;
-            if (currentDisplayText == "0") return;
+            if (canChangeSign == false) return;
+            if (registerOperand == 0) return;
 
-            if (currentDisplayText.StartsWith("-"))
-                currentDisplayText = currentDisplayText.Remove(0, 1);
+            string curDisplay = Display;
+
+            if (Display.StartsWith("-"))
+            {
+                Display = "";
+                curDisplay = curDisplay.Remove(0, 1);
+                Display = curDisplay;
+            }
             else
-                currentDisplayText = "-" + currentDisplayText;
-            Display = currentDisplayText;
+            {
+                Display = "";
+                curDisplay = curDisplay.Insert(0, "-");
+                Display = curDisplay;
+            }
 
             // запоминаем в регистре операнда
             registerOperand = decimal.Parse(Display, CultureInfo.CurrentCulture);
 
-            _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
-            Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         public DelegateCommand ClearCommand { get; }
@@ -219,8 +302,8 @@ namespace Calc4Life.ViewModels
         {
             registerOperand = null;
             Display = "0";
-            Expression = "";
             _binaryOperation.Clear();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         #endregion
@@ -230,14 +313,15 @@ namespace Calc4Life.ViewModels
         {
             if (_binaryOperation.Operand1 == null) return;
 
-            //1. поднимаем флаг
+            //1. устанавливаем флаги
             mustClearDisplay = true;
+            canBackSpace = false;
+            canChangeSign = false;
 
             //2. форматируем дисплей
-            //Display = registerOperand.ToString();
             Display = _formatService.FormatInput(registerOperand.Value);
-            //3. 
 
+            //3. 
             if (_binaryOperation.IsReadyForCalc() == false)
             {
                 _binaryOperation.SetOperator(par);
@@ -254,17 +338,13 @@ namespace Calc4Life.ViewModels
                 _binaryOperation.Clear();
 
                 //4. первому операнду присвоить значение, равное результату операции
+                _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
-                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
-
-                //5.
+                //5. назначить следующий оператор в операцию
                 _binaryOperation.SetOperator(par);
-
-                //6.
-                isBackSpaceApplicable = false;
             }
 
-            Expression = GetNewExpression();
+            Expression = _binaryOperation.GetOperationExpression();
         }
 
         public DelegateCommand CalcCommand { get; }
@@ -280,13 +360,13 @@ namespace Calc4Life.ViewModels
 
                     //2. вывести результат на дисплей
                     Display = _formatService.FormatResult(registerOperand.Value);
-                    Expression = GetNewExpression();
+                    Expression = _binaryOperation.GetOperationExpression();
 
                     //3. очистить операцию
                     _binaryOperation.Clear();
 
                     //4. устанавливаем первый операнд равный результату вычисления
-                    _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, null));
+                    _binaryOperation.SetOperand(new Operand(registerOperand.Value, null));
 
                 }
                 catch (DivideByZeroException ex)
@@ -294,10 +374,11 @@ namespace Calc4Life.ViewModels
                     Display = ex.Message;
                     //3. очистить операцию
                     _binaryOperation.Clear();
-                    Expression = String.Empty;
+                    Expression = _binaryOperation.GetOperationExpression();
                 }
                 //5. устанавливаем флаги
-                isBackSpaceApplicable = false;
+                canBackSpace = false;
+                canChangeSign = false;
                 mustClearDisplay = true;
 
             }
@@ -323,12 +404,14 @@ namespace Calc4Life.ViewModels
             //}
         }
 
-        public DelegateCommand<string> MemoryCommand { get; } 
+        public DelegateCommand<string> MemoryCommand { get; }
         private void MemoryExecute(string par)
         {
             switch (par)
             {
                 case "Add":
+                    if (registerOperand == null) return;
+
                     registerMemory = registerMemory == null ? registerOperand : registerMemory + registerOperand;
                     Memory = _formatService.FormatInput(registerMemory.Value);
                     IsMemoryVisible = true;
@@ -341,20 +424,30 @@ namespace Calc4Life.ViewModels
                 case "Read":
                     if (registerMemory == null) return;
 
-                    _binaryOperation.SetOperand(CreateOperand(registerMemory.Value, null));
+                    _binaryOperation.SetOperand(new Operand(registerMemory.Value, null));
 
                     registerOperand = registerMemory;
 
-                    Display =_formatService.FormatInput(registerMemory.Value);
+                    Display = _formatService.FormatInput(registerMemory.Value);
 
-                    Expression = GetNewExpression();
+                    Expression = _binaryOperation.GetOperationExpression();
 
-                    isBackSpaceApplicable = false;
+                    canBackSpace = false;
                     mustClearDisplay = true;
                     break;
             }
         }
 
+        public DelegateCommand NaigateToDedicationCommand { get; }
+        private async void NavigateToDedicationExecute()
+        {
+            if (_dedicationService.GetDedicationName(Display) != null)
+            {
+                var navParams = new NavigationParameters();
+                navParams.Add("code", Display);
+                await NavigationService.NavigateAsync("DedicationPage", navParams, false, true);
+            }
+        }
 
         #endregion
 
@@ -372,17 +465,18 @@ namespace Calc4Life.ViewModels
                 registerOperand = curConstValue;
 
                 //2. отражаем на дисплее
-                Display = registerOperand.ToString();
-                Expression = GetNewExpression();
+                Display = _formatService.FormatInput(registerOperand.Value);
+                //Expression = _binaryOperation.GetOperationExpression();
 
                 //3. назначаем операнд в операцию
-                _binaryOperation.SetOperand(CreateOperand(registerOperand.Value, curConstName));
-                Expression = GetNewExpression();
+                _binaryOperation.SetOperand(new Operand(registerOperand.Value, curConstName));
+                Expression = _binaryOperation.GetOperationExpression();
 
                 //4. Устанавливаем флаги
-                isBackSpaceApplicable = false;
+                canBackSpace = false;
                 mustClearDisplay = true;
             }
+
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
@@ -392,8 +486,8 @@ namespace Calc4Life.ViewModels
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
-
-            //base.OnNavigatedFrom(parameters);
+            isConstantSuggestionsUpdated = false;
+            base.OnNavigatedFrom(parameters);
         }
 
         #endregion
@@ -410,16 +504,30 @@ namespace Calc4Life.ViewModels
             string Result = currentDisplayText;
             switch (tag)
             {
-                case "DecPoint" when !currentDisplayText.Contains(DecimalSeparator):
+                case "DecPoint":
                     {
-                        if (currentDisplayText.Length >= maxFiguresNumber) break;
-                        if (currentDisplayText == "") currentDisplayText = "0" + DecimalSeparator;
-                        else currentDisplayText += DecimalSeparator;
-
+                        if (currentDisplayText.Length >= maxFiguresNumber)
+                            break;
+                        if (currentDisplayText.Contains(DecimalSeparator))
+                            break;
+                        if (currentDisplayText == "")
+                        {
+                            currentDisplayText = "0" + DecimalSeparator;
+                            Result = currentDisplayText;
+                            break;
+                        }
+                        currentDisplayText += DecimalSeparator;
                         Result = currentDisplayText;
                         break;
                     }
-                case "0" when currentDisplayText != "0":
+                case "0":
+                    {
+                        if (currentDisplayText == "0")
+                            break;
+                        else
+                            Result = currentDisplayText += tag;
+                        break;
+                    }
                 case "1":
                 case "2":
                 case "3":
@@ -437,94 +545,110 @@ namespace Calc4Life.ViewModels
 
                         break;
                     }
+                default:
+                    {
+                        throw new ArgumentOutOfRangeException(tag);
+                    }
             }
             return Result;
         }
 
         /// <summary>
+        /// обновляет строку вывода(Display) каждый раз когда меняются настройки 
+        /// </summary>
+        private void UpdateDisplayText()
+        {
+            //1 обновляем видимость метки Rounding
+            IsRounding = Settings.Rounding;
+
+            //2 обновляем Expression
+            Expression = _binaryOperation.GetOperationExpression();
+
+            if (!registerOperand.HasValue || Display == "0") return;
+
+            if (_binaryOperation.IsReadyForCalc())
+                Display = _formatService.FormatInput(registerOperand.Value);
+            else
+                Display = _formatService.FormatResult(registerOperand.Value);
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private string GetNewExpression()
-        {
-            string output;
-            string operand1;
-            string operand2;
+        //private string GetNewExpression()
+        //{
+        //    string output;
+        //    string operand1;
+        //    string operand2;
 
-            //todo: изменить логику
-            //получаем операнды из операции
-            if (_binaryOperation.Operand1 == null)
-                operand1 = String.Empty;
-            else
-            {
-                if (_binaryOperation.Operand1.Value.IsConstant())
-                    operand1 = _binaryOperation.Operand1.Value.OperandName;
-                else
-                    operand1 =_formatService.FormatInput( _binaryOperation.Operand1.Value.OperandValue.Value);
-            }
-            if (_binaryOperation.Operand2 == null)
-                operand2 = String.Empty;
-            else
-            {
-                if (_binaryOperation.Operand2.Value.IsConstant())
-                    operand2 = _binaryOperation.Operand1.Value.OperandName;
-                else
-                    operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
-            }
+        //    //получаем операнды из операции
+        //    if (_binaryOperation.Operand1 == null)
+        //        operand1 = String.Empty;
+        //    else
+        //    {
+        //        if (_binaryOperation.Operand1.Value.IsConstant())
+        //            operand1 = _binaryOperation.Operand1.Value.OperandName;
+        //        else
+        //            operand1 = _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
+        //    }
+        //    if (_binaryOperation.Operand2 == null)
+        //        operand2 = String.Empty;
+        //    else
+        //    {
+        //        if (_binaryOperation.Operand2.Value.IsConstant())
+        //            operand2 = _binaryOperation.Operand2.Value.OperandName;
+        //        else
+        //            operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
+        //    }
 
-            //operand1 = (_binaryOperation.Operand1 == null) ? "" : _binaryOperation.Operand1.ToString();
-            //operand2 = (_binaryOperation.Operand2 == null) ? "" : _binaryOperation.Operand2.ToString();
+        //    //заворачиваем в скобки, если отрицательные
+        //    if (operand1.StartsWith("-")) operand1 = $"({operand1})";
+        //    if (operand2.StartsWith("-")) operand2 = $"({operand2})";
 
-            //operand1 = (_binaryOperation.Operand1 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
-            //operand2 = (_binaryOperation.Operand2 == null) ? "" : _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
+        //    //получаем оператор из операции
+        //    string oper = "";
 
-            //заворачиваем в скобки, если отрицательные
-            if (operand1.StartsWith("-")) operand1 = $"({operand1})";
-            if (operand2.StartsWith("-")) operand2 = $"({operand2})";
+        //    {
+        //        switch (_binaryOperation.Operator)
+        //        {
+        //            case BinaryOperators.Plus:
+        //                oper = "+"; break;
+        //            case BinaryOperators.Minus:
+        //                oper = "-"; break;
+        //            case BinaryOperators.Multiplication:
+        //                oper = "×"; break;
+        //            case BinaryOperators.Division:
+        //                oper = "÷"; break;
+        //            case BinaryOperators.Discount:
+        //                oper = "%"; break;
+        //        }
+        //    }
 
-            //получаем оператор из операции
-            string oper = "";
+        //    //добавляем (или нет) знак равенства в выражение 
+        //    string equal;
+        //    decimal? result = _binaryOperation.Result;
+        //    if (result != null)
+        //        equal = " =";
+        //    else equal = "";
 
-            {
-                switch (_binaryOperation.Operator)
-                {
-                    case BinaryOperators.Plus:
-                        oper = "+"; break;
-                    case BinaryOperators.Minus:
-                        oper = "-"; break;
-                    case BinaryOperators.Multiplication:
-                        oper = "×"; break;
-                    case BinaryOperators.Division:
-                        oper = "÷"; break;
-                    case BinaryOperators.Discount:
-                        oper = "%"; break;
-                }
-            }
+        //    //формируем строку вывода выражения
+        //    oper = oper.Length == 0 ? "" : " " + oper;
+        //    operand2 = operand2.Length == 0 ? "" : " " + operand2;
 
-            //добавляем (или нет) знак равенства в выражение 
-            string equal;
-            decimal? result = _binaryOperation.Result;
-            if (result != null)
-                equal = " =";
-            else equal = "";
+        //    output = $"{operand1}{oper}{operand2}{equal}";
+        //    return output;
+        //}
 
-            //формируем строку вывода выражения
-            oper = oper.Length == 0 ? "" : " " + oper;
-            operand2 = operand2.Length == 0 ? "" : " " + operand2;
+        //private Operand CreateOperand(decimal value, string name)
+        //{
+        //    var result = new Operand();
+        //    result.OperandValue = value;
+        //    result.OperandName = name;
 
-            output = $"{operand1}{oper}{operand2}{equal}";
-            return output;
-        }
-
-        private Operand CreateOperand(decimal value, string name)
-        {
-            var result = new Operand();
-            result.OperandValue = value;
-            result.OperandName = name;
-
-            return result;
-        }
+        //    return result;
+        //}
 
         #endregion
+
     }
 }

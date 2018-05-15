@@ -5,7 +5,7 @@ using Prism.Navigation;
 
 namespace Calc4Life.Views
 {
-    public partial class OptionsPage : TabbedPage, INavigatingAware
+    public partial class OptionsPage : TabbedPage//, INavigatingAware
     {
         public OptionsPage()
         {
@@ -13,14 +13,14 @@ namespace Calc4Life.Views
         }
 
 
-        public void OnNavigatingTo(NavigationParameters parameters)
-        {
-            foreach (var child in this.Children)
-            {
-                Prism.Common.PageUtilities.OnNavigatingTo(child, parameters);
-            }
+        //public void OnNavigatingTo(NavigationParameters parameters)
+        //{
+        //    foreach (var child in this.Children)
+        //    {
+        //        Prism.Common.PageUtilities.OnNavigatingTo(child, parameters);
+        //    }
 
-        }
-       
+        //}
+
     }
 }

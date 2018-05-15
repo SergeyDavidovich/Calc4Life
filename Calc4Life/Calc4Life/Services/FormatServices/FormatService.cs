@@ -43,7 +43,7 @@ namespace Calc4Life.Services.FormatServices
                 NegativeMax = -0.00000000001m; // 14
             }
         }
-        public string FormatInput(decimal value) //todo: ввести экспоненциальное форматирование для этой функции желательно расшарить
+        public string FormatInput(decimal value) 
         {
             AnalizeValue(value);
             if (!IsInRange(value))

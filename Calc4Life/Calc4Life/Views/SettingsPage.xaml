@@ -21,18 +21,16 @@
             <Color x:Key="Back">White</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SaveCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="Android" Value="submit.png" />
-                    <On Platform="iOS" Value="submit.png" />
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Margin="12">
+            <Grid HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Text="Set defaults" Command="{Binding SetDefaultCommang}"/>
+                <Button Grid.Column="1" Text="Unlock constants" Command="{Binding PurchaseCommand}"/>
+            </Grid>
             <!--groups of digits-->
             <StackLayout Orientation="Horizontal" Margin="0,12">
                 <Label Text="Delimiter of the groups of digits" HorizontalOptions="Start"/>
@@ -55,12 +53,11 @@
             </StackLayout>
             <BoxView/>
             <!--sample-->
-            <StackLayout Margin="0,20">
+            <StackLayout Margin="20,20">
                 <Label Text="Sample:"/>
                 <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
             </StackLayout>
             <BoxView/>
-            <Button Text="Set defaults" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Command="{Binding SetDefaultCommang}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

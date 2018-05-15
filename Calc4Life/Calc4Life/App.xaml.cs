@@ -13,6 +13,7 @@ using Unity.Lifetime;
 using Calc4Life.Services.OperationServices;
 using Calc4Life.Helpers;
 using Calc4Life.Services.FormatServices;
+using Calc4Life.Services.PurchasingServices;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -31,7 +32,7 @@ namespace Calc4Life
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-        
+
 
         public static ConstItemDatabase Database
         {
@@ -52,7 +53,11 @@ namespace Calc4Life
             Resources = new ResourceDictionary();
             Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
             Resources.Add("colorTitle", Color.WhiteSmoke);
+
+            CreateProduct("constants_unblocked");
 #if DEBUG
+            App.Current.Properties["constants_unblocked"] = string.Empty; 
+
             Debug.WriteLine("OnInitialized");
 #endif
         }
@@ -67,11 +72,14 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<AboutPage>();
             containerRegistry.RegisterForNavigation<SettingsPage>();
             containerRegistry.RegisterForNavigation<EditConstPage>();
+            containerRegistry.RegisterForNavigation<DedicationPage>();
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
 
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
+            containerRegistry.RegisterInstance(typeof(DedicationService));
+            containerRegistry.RegisterInstance(typeof(PurchasingService));
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
@@ -83,7 +91,7 @@ namespace Calc4Life
             var pageOne = new CalcPage();
 
             NavigationPage.SetHasNavigationBar(pageOne, true);
-            NavigationPage navPage = new NavigationPage(pageOne) { BarTextColor = Color.White};
+            NavigationPage navPage = new NavigationPage(pageOne) { BarTextColor = Color.White };
 
             navPage.BarBackgroundColor = (Color)App.Current.Resources["primaryBlue"];
             //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
@@ -111,6 +119,12 @@ namespace Calc4Life
 #if DEBUG
             Debug.WriteLine("OnResume");
 #endif
+        }
+
+        public void CreateProduct(string productId) //constants_unblocked in app product
+        {
+            if (App.Current.Properties.ContainsKey(productId) == false)
+                App.Current.Properties.Add(productId, null);
         }
     }
 }
