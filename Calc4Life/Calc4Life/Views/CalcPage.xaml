@@ -56,7 +56,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
             <RowDefinition Height="120"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -122,8 +122,9 @@
                                 <ColumnDefinition Width="99"/>
                                 <ColumnDefinition Width="1"/>
                             </Grid.ColumnDefinitions>
-                            <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="CharacterWrap" VerticalTextAlignment="Center" FontSize="Small" TextColor="Black" HeightRequest="30" Text="{Binding Name}"></Label>
-                            <BoxView Grid.Column="1" WidthRequest="1" HeightRequest="20" Color="DarkGray"></BoxView>
+                            <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="CharacterWrap" VerticalTextAlignment="Center" FontSize="Micro"
+                                   TextColor="Black" Text="{Binding Name}"></Label>
+                            <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray"></BoxView>
                         </Grid>
                     </DataTemplate>
                 </horizontalList:HorizontalList.ItemTemplate>
