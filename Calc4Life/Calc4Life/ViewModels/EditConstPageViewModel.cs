@@ -67,8 +67,6 @@ namespace Calc4Life.ViewModels
             var constant = new Constant { Id = currentId, Name = Name.Value, Value = decimal.Parse(Value.Value, CultureInfo.CurrentCulture), Note = Note };
             await _repositoryService.SaveAsync(constant);
 
-            App.Current.Properties[AppConstants.KEY_CONSTANTS_NUMBER] = ((int)App.Current.Properties[AppConstants.KEY_CONSTANTS_NUMBER]) + 1;
-
             var parameters = new NavigationParameters();
             parameters.Add("const", constant);
 

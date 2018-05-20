@@ -51,6 +51,17 @@ namespace Calc4Life.ViewModels
             }
         }
 
+        bool _vibrateButtons;
+        public bool VibrateButtons
+        {
+            get { return Settings.Vibration; }
+            set
+            {
+                Settings.Vibration = value;
+                SetProperty(ref _vibrateButtons, Settings.Vibration);
+            }
+        }
+
         string _sample;
         public string Sample
         {
@@ -91,10 +102,12 @@ namespace Calc4Life.ViewModels
             Settings.GrouppingDigits = true;
             Settings.RoundAccuracy = 2;
             Settings.Rounding = false;
+            Settings.Vibration = true;
 
             GroupingDigits = Settings.GrouppingDigits;
             RoundAccuracy = Settings.RoundAccuracy;
             Rounding = Settings.Rounding;
+            VibrateButtons = Settings.Vibration;
 
             Sample = _formatService.FormatResult(sampleValue);
         }
@@ -108,20 +121,20 @@ namespace Calc4Life.ViewModels
         public DelegateCommand PurchaseCommand { get; }
         private async void PurchaseExecute()
         {
-            await _purchasingService.PurchaseConsumableItem(AppConstants.KEY_CONSTANTS_PURSHASING, "payload");
-            App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = AppConstants.KEY_CONSTANTS_PURSHASING;
+            //await _purchasingService.PurchaseConsumableItem(AppConstants.KEY_CONSTANTS_PURSHASING, "payload");
+            //App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = AppConstants.KEY_CONSTANTS_PURSHASING;
         }
         public bool PurchaseCanExecute()
         {
             bool result = true;
-            if (App.Current.Properties.ContainsKey(AppConstants.KEY_CONSTANTS_PURSHASING))
-            {
-                if ((string)App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] == AppConstants.KEY_CONSTANTS_PURSHASING)
-                    result = false;
-                else
-                    result = true;
-                return result;
-            }
+            //if (App.Current.Properties.ContainsKey(AppConstants.KEY_CONSTANTS_PURSHASING))
+            //{
+            //    if ((string)App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] == AppConstants.KEY_CONSTANTS_PURSHASING)
+            //        result = false;
+            //    else
+            //        result = true;
+            //    return result;
+            //}
             return result;
         }
 

@@ -57,33 +57,20 @@ namespace Calc4Life.ViewModels
         public DelegateCommand NavigateToAddCommand { get; }
         private async void NavigateToAddExecute()
         {
-            bool isPurchased = _purchasingService.IsPurchasedItemSaved(AppConstants.KEY_CONSTANTS_PURSHASING);
-
-            if (Constants.Count < 3)
+            if (Constants.Count < AppConstants.MAX_CONSTANTS_NUMBER)
                 await NavigationService.NavigateAsync("EditConstPage", null, false, true);
             else
             {
-                if (isPurchased)
+                if (Settings.ConstProductPurchased)
                     await NavigationService.NavigateAsync("EditConstPage", null, false, true);
                 else
                 {
-                    //string title = "Purchasing";
-                    //string message = $"Do You want to buy the item?\r\n Proceeding?";
-                    //var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
+                    string title = "Purchasing";
+                    string message = $"Do You want to buy the item?\r\n Proceeding?";
+                    var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
 
-                    //if (answer == true)
-                    //    await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
-                    bool success;
-                    try
-                    {
-                        success = await _purchasingService.PurchaseConsumableItem(AppConstants.KEY_CONSTANTS_PURSHASING, "payload");
-                        if (success)
-                            App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = AppConstants.KEY_CONSTANTS_PURSHASING;
-                    }
-                    catch (InAppBillingPurchaseException)
-                    { }
-                    catch (Exception)
-                    {}
+                    if (answer == true)
+                        Settings.ConstProductPurchased = true;
                 }
             }
         }

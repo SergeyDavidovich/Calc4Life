@@ -105,7 +105,7 @@ namespace Calc4Life.Helpers
         #region Common app settings
         //установить вибрацию
         private const string VibrationKey = "Vibration";
-        private static readonly bool VibrationDefault = false;
+        private static readonly bool VibrationDefault = true;
         public static bool Vibration
         {
             get { return AppSettings.GetValueOrDefault(VibrationKey, VibrationDefault); }

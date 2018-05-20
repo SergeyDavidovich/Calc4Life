@@ -21,44 +21,73 @@
             <Color x:Key="Back">White</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Set defaults" Command="{Binding SetDefaultCommang}">
+            <!--<ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="add_const.png" />
+                    <On Platform="iOS" Value="add.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>-->
+        </ToolbarItem>
+        <!--<ToolbarItem Text="Constants Unlock">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="Android" Value="options.png" />
+                    <On Platform="iOS" Value="options.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>-->
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="12">
-            <Grid HorizontalOptions="FillAndExpand">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Text="Set defaults" Command="{Binding SetDefaultCommang}"/>
-                <Button Grid.Column="1" Text="Unlock constants" Command="{Binding PurchaseCommand}"/>
-            </Grid>
-            <!--groups of digits-->
-            <StackLayout Orientation="Horizontal" Margin="0,12">
-                <Label Text="Delimiter of the groups of digits" HorizontalOptions="Start"/>
-                <Switch IsToggled="{Binding GroupingDigits, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
-            </StackLayout>
-            <BoxView/>
-            <!--calc accuracy-->
-            <StackLayout Orientation="Horizontal" Margin="0,12">
-                <Label Text="Accuracy of calculations" VerticalOptions="Center"/>
-                <Label BindingContext="{x:Reference Name=Stepper}" Text="{Binding Path=Value}" VerticalOptions="Center" FontSize="26" FontAttributes="Bold"/>
-                <Label Text="decimal places" VerticalOptions="Center"/>
-            </StackLayout>
-            <Stepper x:Name="Stepper" Value="{Binding RoundAccuracy}" Minimum="0" Maximum="4" Increment="1"  HorizontalOptions="EndAndExpand"/>
-            <BoxView/>
+        <ScrollView>
+            <StackLayout Margin="12">
+                <!--<Grid HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Text="Set defaults" Command="{Binding SetDefaultCommang}"/>-->
+                    <Button Grid.Column="1" Text="Unlock constants" Command="{Binding PurchaseCommand}"/>
+                <!--</Grid>-->
+                <BoxView/>
 
-            <!--rounding-->
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Round up the result? (up to specified accuracy)" VerticalOptions="Center"/>
-                <Switch IsToggled="{Binding Rounding, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                <!--groups of digits-->
+                <StackLayout Orientation="Horizontal" Margin="0,12">
+                    <Label Text="Delimiter of the groups of digits" HorizontalOptions="Start"/>
+                    <Switch IsToggled="{Binding GroupingDigits, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                <BoxView BackgroundColor="LightGray"/>
+                <!--calc accuracy-->
+                <StackLayout Orientation="Horizontal" Margin="0,12">
+                    <Label Text="Accuracy of calculations" VerticalOptions="Center"/>
+                    <Label BindingContext="{x:Reference Name=Stepper}" Text="{Binding Path=Value}" VerticalOptions="Center" FontSize="26" FontAttributes="Bold"/>
+                    <Label Text="decimal places" VerticalOptions="Center"/>
+                </StackLayout>
+                <Stepper x:Name="Stepper" Value="{Binding RoundAccuracy}" Minimum="0" Maximum="4" Increment="1"  HorizontalOptions="EndAndExpand"/>
+                <BoxView BackgroundColor="LightGray"/>
+
+                <!--rounding-->
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Round up the result? (up to specified accuracy)" VerticalOptions="Center"/>
+                    <Switch IsToggled="{Binding Rounding, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                </StackLayout>
+                <BoxView BackgroundColor="LightGray"/>
+                <!--sample-->
+                <StackLayout Margin="0,0">
+                    <Label Text="Sample:"/>
+                    <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
+                </StackLayout>
+                <BoxView/>
+
+                <!--vibration-->
+                <StackLayout Orientation="Horizontal" Margin="0,12">
+                    <Label Text="Buttons vibration" HorizontalOptions="Start"/>
+                    <Switch IsToggled="{Binding VibrateButtons, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                <BoxView/>
             </StackLayout>
-            <BoxView/>
-            <!--sample-->
-            <StackLayout Margin="20,20">
-                <Label Text="Sample:"/>
-                <Label Text="{Binding Sample, Mode=TwoWay}" FontSize="40"/>
-            </StackLayout>
-            <BoxView/>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
 

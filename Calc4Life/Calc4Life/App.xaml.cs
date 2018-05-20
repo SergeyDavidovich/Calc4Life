@@ -52,21 +52,6 @@ namespace Calc4Life
             Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
             Resources.Add("colorTitle", Color.WhiteSmoke);
 
-            #region Creation an initialization App properties
-
-            // contains max constants number (before purchasing)
-            if (App.Current.Properties.Keys.Contains(AppConstants.KEY_MAX_CONSTANTS_NUMBER) == false)
-                App.Current.Properties.Add(AppConstants.KEY_CONSTANTS_NUMBER, 3);
-
-            // constants_unblocked productId
-            if (App.Current.Properties.ContainsKey(AppConstants.CONSTANTS_PPODUCT_ID) == false)
-                App.Current.Properties.Add(AppConstants.CONSTANTS_PPODUCT_ID, AppConstants.CONSTANTS_PPODUCT_ID);
-
-            // constants_unblocked product purchased
-            if (App.Current.Properties.ContainsKey(AppConstants.IS_CONSTANT_PURCHASED) == false)
-                App.Current.Properties.Add(AppConstants.IS_CONSTANT_PURCHASED, false);
-            #endregion
-
 #if DEBUG
             Debug.WriteLine("OnInitialized");
 #endif

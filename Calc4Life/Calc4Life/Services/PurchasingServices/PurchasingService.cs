@@ -2,18 +2,17 @@
 using Plugin.InAppBilling;
 using Plugin.InAppBilling.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+
 
 namespace Calc4Life.Services.PurchasingServices
 {
     public class ConstantsPurchasingService
     {
-        #region Google Play operations
+        #region Google Play purchasing operations
 
         public async Task PurchaseNonConsumableItem(string productId, string payload)
         {
@@ -35,7 +34,7 @@ namespace Calc4Life.Services.PurchasingServices
                 if (purchase.State == PurchaseState.Purchased)
                 {
                     //purchased!
-                    SavePurchasedItem(productId);
+                    SaveConstantsPurchased();
                 }
             }
             catch (InAppBillingPurchaseException purchaseEx)
@@ -87,7 +86,7 @@ namespace Calc4Life.Services.PurchasingServices
                     if (consumedItem != null)
                     {
                         //Consumed!!
-                        SavePurchasedItem(productId);
+                        //SavePurchasedItem(productId);
                         return true;
                     }
                     return false;
@@ -161,7 +160,7 @@ namespace Calc4Life.Services.PurchasingServices
 
         #endregion
 
-        #region App operations
+        #region App purchasing operations
 
         public bool IsPurchasedItemSaved(string productId)
         {
@@ -172,11 +171,10 @@ namespace Calc4Life.Services.PurchasingServices
                 return false;
         }
 
-        private void SavePurchasedItem(string productId)
+        private void SaveConstantsPurchased()
         {
-            App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = productId;
+            Settings.ConstProductPurchased = true;
         }
-
         #endregion
     }
 }

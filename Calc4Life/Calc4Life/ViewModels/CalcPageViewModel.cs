@@ -14,6 +14,7 @@ using Calc4Life.Services.FormatServices;
 using Calc4Life.Helpers;
 using Calc4Life.Services.RepositoryServices;
 using Xamarin.Forms;
+using Plugin.Vibrate;
 
 namespace Calc4Life.ViewModels
 {
@@ -22,6 +23,7 @@ namespace Calc4Life.ViewModels
         #region Declarations
 
         const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
+        const int VIBRATE_DURATION = 50;
         string decimalSeparator; // десятичный знак числа
 
         //flags
@@ -163,6 +165,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<string> EnterFiguresCommand { get; }
         private void EnterFiguresExecute(string par)
         {
+            VibrateButton();
             canChangeSign = true;
             //1 усли в операции определен оператор (значит идет ввод второго операнда), очищаем дисплей
             if (mustClearDisplay) Display = String.Empty;
@@ -193,7 +196,7 @@ namespace Calc4Life.ViewModels
             string currentDisplayText = Display;
 
             if (currentDisplayText == "0") return;
-
+            VibrateButton();
             int i = currentDisplayText.Length - 1;
             currentDisplayText = currentDisplayText.Remove(i);
 
@@ -216,7 +219,7 @@ namespace Calc4Life.ViewModels
         {
             if (canChangeSign == false) return;
             if (registerOperand == 0) return;
-
+            VibrateButton();
             string curDisplay = Display;
 
             if (Display.StartsWith("-"))
@@ -243,6 +246,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand ClearCommand { get; }
         private void ClearExecute()
         {
+            VibrateButton();
             registerOperand = null;
             Display = "0";
             _binaryOperation.Clear();
@@ -255,7 +259,7 @@ namespace Calc4Life.ViewModels
         private void EnterOperatorExecute(string par) // Plus Minus Multiplication Division Discount
         {
             if (_binaryOperation.Operand1 == null) return;
-
+            VibrateButton();
             //1. устанавливаем флаги
             mustClearDisplay = true;
             canBackSpace = false;
@@ -296,6 +300,7 @@ namespace Calc4Life.ViewModels
             //1. производим вычисление ИЛИ выходим
             if (_binaryOperation.IsReadyForCalc()) //операция готова к вычислению
             {
+                VibrateButton();
                 //1. произвести вычисление
                 try
                 {
@@ -350,6 +355,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<string> MemoryCommand { get; }
         private void MemoryExecute(string par)
         {
+            VibrateButton();
             switch (par)
             {
                 case "Add":
@@ -513,82 +519,12 @@ namespace Calc4Life.ViewModels
             else
                 Display = _formatService.FormatResult(registerOperand.Value);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        //private string GetNewExpression()
-        //{
-        //    string output;
-        //    string operand1;
-        //    string operand2;
 
-        //    //получаем операнды из операции
-        //    if (_binaryOperation.Operand1 == null)
-        //        operand1 = String.Empty;
-        //    else
-        //    {
-        //        if (_binaryOperation.Operand1.Value.IsConstant())
-        //            operand1 = _binaryOperation.Operand1.Value.OperandName;
-        //        else
-        //            operand1 = _formatService.FormatInput(_binaryOperation.Operand1.Value.OperandValue.Value);
-        //    }
-        //    if (_binaryOperation.Operand2 == null)
-        //        operand2 = String.Empty;
-        //    else
-        //    {
-        //        if (_binaryOperation.Operand2.Value.IsConstant())
-        //            operand2 = _binaryOperation.Operand2.Value.OperandName;
-        //        else
-        //            operand2 = _formatService.FormatInput(_binaryOperation.Operand2.Value.OperandValue.Value);
-        //    }
-
-        //    //заворачиваем в скобки, если отрицательные
-        //    if (operand1.StartsWith("-")) operand1 = $"({operand1})";
-        //    if (operand2.StartsWith("-")) operand2 = $"({operand2})";
-
-        //    //получаем оператор из операции
-        //    string oper = "";
-
-        //    {
-        //        switch (_binaryOperation.Operator)
-        //        {
-        //            case BinaryOperators.Plus:
-        //                oper = "+"; break;
-        //            case BinaryOperators.Minus:
-        //                oper = "-"; break;
-        //            case BinaryOperators.Multiplication:
-        //                oper = "×"; break;
-        //            case BinaryOperators.Division:
-        //                oper = "÷"; break;
-        //            case BinaryOperators.Discount:
-        //                oper = "%"; break;
-        //        }
-        //    }
-
-        //    //добавляем (или нет) знак равенства в выражение 
-        //    string equal;
-        //    decimal? result = _binaryOperation.Result;
-        //    if (result != null)
-        //        equal = " =";
-        //    else equal = "";
-
-        //    //формируем строку вывода выражения
-        //    oper = oper.Length == 0 ? "" : " " + oper;
-        //    operand2 = operand2.Length == 0 ? "" : " " + operand2;
-
-        //    output = $"{operand1}{oper}{operand2}{equal}";
-        //    return output;
-        //}
-
-        //private Operand CreateOperand(decimal value, string name)
-        //{
-        //    var result = new Operand();
-        //    result.OperandValue = value;
-        //    result.OperandName = name;
-
-        //    return result;
-        //}
+        private void VibrateButton()
+        {
+            if (Settings.Vibration)
+                CrossVibrate.Current.Vibration(TimeSpan.FromMilliseconds(VIBRATE_DURATION));
+        }
 
         #endregion
 
