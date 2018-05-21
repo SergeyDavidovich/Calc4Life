@@ -5,7 +5,7 @@
              x:Class="Calc4Life.Views.CustomCells.AnswerViewCell"
              x:Name="answerView">
     <ContentView.Content>
-        <Grid ColumnSpacing="2" Padding="5">
+        <Grid ColumnSpacing="2" Padding="5" HorizontalOptions="CenterAndExpand">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
