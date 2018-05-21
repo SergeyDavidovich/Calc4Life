@@ -14,9 +14,9 @@
             </Grid.ColumnDefinitions>
             <roundImage:CircleImage
                 Grid.Column="0"
-                HeightRequest="35"
-                WidthRequest="35"
-                BorderThickness="2"
+                HeightRequest="56"
+                WidthRequest="56"
+                BorderThickness="1"
                 BorderColor="#03A9F4"
                 Aspect="AspectFill"
                 HorizontalOptions="Center"
