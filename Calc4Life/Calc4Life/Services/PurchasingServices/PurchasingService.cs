@@ -7,20 +7,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-
 namespace Calc4Life.Services.PurchasingServices
 {
     public class ConstantsPurchasingService
     {
-        #region Google Play purchasing operations
-
-        public async Task PurchaseNonConsumableItem(string productId, string payload)
+        public async Task<bool> PurchaseNonConsumableItem(string productId, string payload)
         {
             var billing = CrossInAppBilling.Current;
             try
             {
                 var connected = await billing.ConnectAsync();
-                if (!connected) return; //we are offline or can't connect, don't try to purchase
+                if (!connected) return false; //we are offline or can't connect, don't try to purchase
 
                 //check purchases
                 var purchase = await billing.PurchaseAsync(productId, ItemType.InAppPurchase, payload);
@@ -29,88 +26,35 @@ namespace Calc4Life.Services.PurchasingServices
                 if (purchase == null)
                 {
                     //did not purchase
-                    return;
+                    Settings.ConstProductPurchased = false;
+                    return false;
                 }
                 if (purchase.State == PurchaseState.Purchased)
                 {
                     //purchased!
-                    SaveConstantsPurchased();
+                    Settings.ConstProductPurchased = true;
+                    return true;
                 }
             }
             catch (InAppBillingPurchaseException purchaseEx)
             {
                 //Billing Exception handle this based on the type
+#if DEBUG
                 Debug.WriteLine("Error: " + purchaseEx);
+#endif
             }
             catch (Exception ex)
             {
                 //Something else has gone wrong, log it
+#if DEBUG
                 Debug.WriteLine("Issue connecting: " + ex);
+#endif
             }
             finally
             {
                 await billing.DisconnectAsync();
             }
-        }
-
-        public async Task<bool> PurchaseConsumableItem(string productId, string payload)
-        {
-            var billing = CrossInAppBilling.Current;
-            try
-            {
-                var connected = await billing.ConnectAsync();
-                if (!connected)
-                {
-                    //we are offline or can't connect, don't try to purchase
-                    return false;
-                }
-                //check purchases
-                var purchase = await billing.PurchaseAsync(productId, ItemType.InAppPurchase, payload);
-
-                //possibility that a null came through.
-                if (purchase == null)
-                {
-                    //did not purchase
-                    return false;
-                }
-                else if (purchase.State == PurchaseState.Purchased)
-                {
-                    //If we are on iOS we are done, else try to consume the purchase
-                    //Device.RuntimePlatform comes from Xamarin.Forms, you can also use a conditional flag or the DeviceInfo plugin
-                    if (Xamarin.Forms.Device.RuntimePlatform == Device.iOS)
-                        return false;
-
-                    //purchased, we can now consume the item or do it later
-                    var consumedItem = await CrossInAppBilling.Current.ConsumePurchaseAsync(purchase.ProductId, purchase.PurchaseToken);
-
-                    if (consumedItem != null)
-                    {
-                        //Consumed!!
-                        //SavePurchasedItem(productId);
-                        return true;
-                    }
-                    return false;
-                }
-                else
-                    return false;
-            }
-            //catch (InAppBillingPurchaseException purchaseEx)
-            //{
-            //    //Billing Exception handle this based on the type
-            //    Debug.WriteLine("Error: " + purchaseEx);
-            //    //throw new InAppBillingPurchaseException(new PurchaseError());
-            //}
-            //catch (Exception ex)
-            //{
-            //    //Something else has gone wrong, log it
-            //    Debug.WriteLine("Issue connecting: " + ex);
-            //    //throw new Exception("Issue connecting", ex.InnerException);
-            //}
-            finally
-            {
-                await billing.DisconnectAsync();
-            }
-
+            return false;
         }
 
         public async Task<bool> IsItemPurchased(string productId)
@@ -120,11 +64,7 @@ namespace Calc4Life.Services.PurchasingServices
             {
                 var connected = await billing.ConnectAsync();
 
-                if (!connected)
-                {
-                    //Couldn't connect
-                    return false;
-                }
+                if (!connected) return false;//Couldn't connect
 
                 //check purchases
                 var purchases = await billing.GetPurchasesAsync(ItemType.InAppPurchase);
@@ -133,18 +73,22 @@ namespace Calc4Life.Services.PurchasingServices
                 if (purchases?.Any(p => p.ProductId == productId) ?? false)
                 {
                     //Purchase restored
+                    Settings.ConstProductPurchased = true;
                     return true;
                 }
                 else
                 {
                     //no purchases found
+                    Settings.ConstProductPurchased = false;
                     return false;
                 }
             }
             catch (InAppBillingPurchaseException purchaseEx)
             {
                 //Billing Exception handle this based on the type
+#if DEBUG
                 Debug.WriteLine("Error: " + purchaseEx);
+#endif
             }
             catch (Exception ex)
             {
@@ -154,28 +98,8 @@ namespace Calc4Life.Services.PurchasingServices
             {
                 await billing.DisconnectAsync();
             }
-
             return false;
         }
-
-        #endregion
-
-        #region App purchasing operations
-
-        public bool IsPurchasedItemSaved(string productId)
-        {
-            string str = (string)Application.Current.Properties[productId];
-            if (str == productId)
-                return true;
-            else
-                return false;
-        }
-
-        private void SaveConstantsPurchased()
-        {
-            Settings.ConstProductPurchased = true;
-        }
-        #endregion
     }
 }
 

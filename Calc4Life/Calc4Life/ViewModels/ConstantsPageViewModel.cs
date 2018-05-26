@@ -65,12 +65,20 @@ namespace Calc4Life.ViewModels
                     await NavigationService.NavigateAsync("EditConstPage", null, false, true);
                 else
                 {
-                    string title = "Purchasing";
-                    string message = $"Do You want to buy the item?\r\n Proceeding?";
-                    var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
+                    bool purchased =await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
 
-                    if (answer == true)
-                        Settings.ConstProductPurchased = true;
+                    string title, message;
+                    if (purchased)
+                    {
+                        title = "Congratulations!";
+                        message = " You succefully purchase the product";
+                    }
+                    else
+                    {
+                        title = "Something has gone wrong";
+                        message = "Please, try it later ";
+                    }
+                    await _dialogService.DisplayAlertAsync(title, message, "OK");
                 }
             }
         }

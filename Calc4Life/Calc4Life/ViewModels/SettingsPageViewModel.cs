@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Calc4Life.Helpers;
+using Calc4Life.Models;
 using Calc4Life.Services.FormatServices;
 using Calc4Life.Services.PurchasingServices;
 using Prism.Commands;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Forms;
 
 namespace Calc4Life.ViewModels
@@ -16,18 +18,25 @@ namespace Calc4Life.ViewModels
 
         private INavigationService _navigationService;
         private ConstantsPurchasingService _purchasingService;
+        IPageDialogService _dialogService;
 
         decimal sampleValue = 12345.6789m;
         FormatService _formatService;
+
+        List<Constant> Constants;
         #endregion
         #region Constructors
 
-        public SettingsPageViewModel(INavigationService navigationService, FormatService formatService, ConstantsPurchasingService purchasingService)
+        public SettingsPageViewModel(INavigationService navigationService,
+            FormatService formatService,
+            ConstantsPurchasingService purchasingService,
+            IPageDialogService dialogService)
             : base(navigationService)
         {
             _navigationService = navigationService;
             _formatService = formatService;
             _purchasingService = purchasingService;
+            _dialogService = dialogService;
 
             SetDefaultCommang = new DelegateCommand(SetDefaultExecute);
             SaveCommand = new DelegateCommand(SaveExecute);
@@ -121,31 +130,41 @@ namespace Calc4Life.ViewModels
         public DelegateCommand PurchaseCommand { get; }
         private async void PurchaseExecute()
         {
-            //await _purchasingService.PurchaseConsumableItem(AppConstants.KEY_CONSTANTS_PURSHASING, "payload");
-            //App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] = AppConstants.KEY_CONSTANTS_PURSHASING;
+            if (Settings.ConstProductPurchased)
+                await NavigationService.NavigateAsync("EditConstPage", null, false, true);
+            else
+            {
+                bool purchased = await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
+                //bool purchased = await _purchasingService.PurchaseNonConsumableItem("android.test.canceled", "payload");
+
+                string title, message;
+                if (purchased)
+                {
+                    title = "Congratulations!";
+                    message = " You succefully purchase the product";
+                }
+                else
+                {
+                    title = "Something has gone wrong";
+                    message = "Please, try it later ";
+                }
+                await _dialogService.DisplayAlertAsync(title, message, "OK");
+            }
         }
         public bool PurchaseCanExecute()
         {
-            bool result = true;
-            //if (App.Current.Properties.ContainsKey(AppConstants.KEY_CONSTANTS_PURSHASING))
-            //{
-            //    if ((string)App.Current.Properties[AppConstants.KEY_CONSTANTS_PURSHASING] == AppConstants.KEY_CONSTANTS_PURSHASING)
-            //        result = false;
-            //    else
-            //        result = true;
-            //    return result;
-            //}
-            return result;
+            return !Settings.ConstProductPurchased;
         }
 
         #endregion
         #region Navigation
 
-        public override void OnNavigatedTo(NavigationParameters parameters)
+        public async override void OnNavigatedTo(NavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
             this.PropertyChanged += SettingsPageViewModel_PropertyChanged;
+            Constants = await App.Database.GetItemsAsync();
         }
         /// <summary>
         ///  каждый раз когда меняется свойство привязки(настройки калькулятора) отправляем сообщение 

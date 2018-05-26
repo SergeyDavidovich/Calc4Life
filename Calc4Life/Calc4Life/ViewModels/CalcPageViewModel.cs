@@ -15,13 +15,14 @@ using Calc4Life.Helpers;
 using Calc4Life.Services.RepositoryServices;
 using Xamarin.Forms;
 using Plugin.Vibrate;
+using Calc4Life.Services.PurchasingServices;
 
 namespace Calc4Life.ViewModels
 {
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
-
+        List<Constant> Constants;
         const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
         const int VIBRATE_DURATION = 50;
         string decimalSeparator; // десятичный знак числа
@@ -41,20 +42,24 @@ namespace Calc4Life.ViewModels
         IBinaryOperationService _binaryOperation;
         FormatService _formatService;
         DedicationService _dedicationService;
-
+        ConstantsPurchasingService _purchasingService;
         #endregion
 
         #region Constructors
 
         public CalcPageViewModel(INavigationService navigationService,
             IPageDialogService dialogService,
-            IBinaryOperationService binaryOperationService, FormatService formatService, DedicationService dedicationService)
+            IBinaryOperationService binaryOperationService,
+            FormatService formatService,
+            DedicationService dedicationService,
+            ConstantsPurchasingService purchasingService)
             : base(navigationService)
         {
             _dialogService = dialogService;
             _binaryOperation = binaryOperationService;
             _formatService = formatService;
             _dedicationService = dedicationService;
+            _purchasingService = purchasingService;
 
             //defaults
             Title = "Calculator for Life";
@@ -149,18 +154,6 @@ namespace Calc4Life.ViewModels
         }
         #region EditDisplayCommands
 
-        public DelegateCommand AddConstantCommand { get; }
-        private async void AddConstExecute()
-        {
-            string message = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
-            var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
-            if (answer == true)
-            {
-                var par = new NavigationParameters();
-                par.Add("value", Display);
-                await NavigationService.NavigateAsync("EditConstPage", par, false, true);
-            }
-        }
 
         public DelegateCommand<string> EnterFiguresCommand { get; }
         private void EnterFiguresExecute(string par)
@@ -254,6 +247,43 @@ namespace Calc4Life.ViewModels
         }
 
         #endregion
+
+        public DelegateCommand AddConstantCommand { get; }
+        private async void AddConstExecute()
+        {
+            string wantMessage = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
+            var answer = await _dialogService.DisplayAlertAsync("", wantMessage, "Yes", "No");
+            if (answer == true)
+            {
+                var par = new NavigationParameters();
+                par.Add("value", Display);
+                if (Constants.Count < AppConstants.MAX_CONSTANTS_NUMBER)
+                    await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+                else
+                {
+                    if (Settings.ConstProductPurchased)
+                        await NavigationService.NavigateAsync("EditConstPage", null, false, true);
+                    else
+                    {
+                        bool purchased = await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
+
+                        string title, message;
+                        if (purchased)
+                        {
+                            title = "Congratulations!";
+                            message = " You succefully purchase the product";
+                            await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+                        }
+                        else
+                        {
+                            title = "Something has gone wrong";
+                            message = "Please, try it later ";
+                        }
+                        await _dialogService.DisplayAlertAsync(title, message, "OK");
+                    }
+                }
+            }
+        }
 
         public DelegateCommand<string> EnterOperatorCommand { get; }
         private void EnterOperatorExecute(string par) // Plus Minus Multiplication Division Discount
@@ -402,8 +432,9 @@ namespace Calc4Life.ViewModels
 
         #region Navigation
 
-        public override void OnNavigatedTo(NavigationParameters parameters)
+        public async override void OnNavigatedTo(NavigationParameters parameters)
         {
+            #region Work with constant
             if (parameters.Count != 0)
             {
                 //1. получаем параметр
@@ -415,7 +446,6 @@ namespace Calc4Life.ViewModels
 
                 //2. отражаем на дисплее
                 Display = _formatService.FormatInput(registerOperand.Value);
-                //Expression = _binaryOperation.GetOperationExpression();
 
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(new Operand(registerOperand.Value, curConstName));
@@ -425,6 +455,24 @@ namespace Calc4Life.ViewModels
                 canBackSpace = false;
                 mustClearDisplay = true;
             }
+            #endregion
+            #region Resore purchasing
+            Constants = await App.Database.GetItemsAsync();
+            {
+                if (Settings.ConstProductPurchased==false)
+                {
+                    bool purchased = await _purchasingService.IsItemPurchased(AppConstants.CONSTANTS_PPODUCT_ID);
+
+                    string title, message;
+                    if (purchased)
+                    {
+                        title = "Congratulations!";
+                        message = " You succefully restore your purchase";
+                        await _dialogService.DisplayAlertAsync(title, message, "OK");
+                    }
+                }
+            }
+            #endregion
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
@@ -434,7 +482,6 @@ namespace Calc4Life.ViewModels
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
-
             //base.OnNavigatedFrom(parameters);
         }
 
