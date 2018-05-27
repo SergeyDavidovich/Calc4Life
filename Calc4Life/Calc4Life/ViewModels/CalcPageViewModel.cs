@@ -267,19 +267,19 @@ namespace Calc4Life.ViewModels
                     {
                         bool purchased = await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
 
-                        string title, message;
-                        if (purchased)
-                        {
-                            title = "Congratulations!";
-                            message = " You succefully purchase the product";
-                            await NavigationService.NavigateAsync("EditConstPage", par, false, true);
-                        }
-                        else
-                        {
-                            title = "Something has gone wrong";
-                            message = "Please, try it later ";
-                        }
-                        await _dialogService.DisplayAlertAsync(title, message, "OK");
+                        //string title, message;
+                        //if (purchased)
+                        //{
+                        //    title = "Congratulations!";
+                        //    message = " You succefully purchase the product";
+                        //    await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+                        //}
+                        //else
+                        //{
+                        //    title = "Something has gone wrong";
+                        //    message = "Please, try it later ";
+                        //}
+                        //await _dialogService.DisplayAlertAsync(title, message, "OK");
                     }
                 }
             }

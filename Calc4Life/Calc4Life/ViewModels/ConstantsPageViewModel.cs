@@ -65,20 +65,20 @@ namespace Calc4Life.ViewModels
                     await NavigationService.NavigateAsync("EditConstPage", null, false, true);
                 else
                 {
-                    bool purchased =await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
+                    bool purchased = await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
 
-                    string title, message;
-                    if (purchased)
-                    {
-                        title = "Congratulations!";
-                        message = " You succefully purchase the product";
-                    }
-                    else
-                    {
-                        title = "Something has gone wrong";
-                        message = "Please, try it later ";
-                    }
-                    await _dialogService.DisplayAlertAsync(title, message, "OK");
+                    //string title, message;
+                    //if (purchased)
+                    //{
+                    //    title = "Congratulations!";
+                    //    message = " You succefully purchase the product";
+                    //}
+                    //else
+                    //{
+                    //    title = "Something has gone wrong";
+                    //    message = "Please, try it later ";
+                    //}
+                    //await _dialogService.DisplayAlertAsync(title, message, "OK");
                 }
             }
         }
