@@ -11,7 +11,7 @@ namespace Calc4Life.Helpers
 
         //constant purchasing 
         public const int MAX_CONSTANTS_NUMBER = 3; // количество констант, доступных без покупки
-        public const string CONSTANTS_PPODUCT_ID = "constants_unblocked"; // имя (id) продукта для продажи (зарегистрировано в Google Play)
+        public const string CONSTANTS_PPODUCT_ID = "constants"; // имя (id) продукта для продажи (зарегистрировано в Google Play)
 
         //common app constants
 
