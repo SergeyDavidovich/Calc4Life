@@ -25,7 +25,6 @@
             </TableView>-->
             <ScrollView>
                 <AbsoluteLayout HorizontalOptions="StartAndExpand" x:Name="chatLayout"></AbsoluteLayout>
-
             </ScrollView>
             <!--<Label Text="Staff:" VerticalOptions="Center" FontSize="Medium" HorizontalOptions="Start"/>
             <Label Text="Bekzod Masharipow" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"/>

@@ -12,11 +12,13 @@ namespace Calc4Life.Views
         {
             InitializeComponent();
         }
+
         public bool IsAlreadyAnimated { get; set; }
+
         public AboutPageViewModel Vm => this.BindingContext as AboutPageViewModel;
+
         protected async override void OnAppearing()
         {
-
             if (!IsAlreadyAnimated)
             {
                 double translationY = 0;
@@ -42,10 +44,8 @@ namespace Calc4Life.Views
                             break;
                     }
                 }
-
             }
             IsAlreadyAnimated = true;
-
             base.OnAppearing();
         }
     }

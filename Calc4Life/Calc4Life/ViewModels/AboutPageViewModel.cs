@@ -18,12 +18,12 @@ namespace Calc4Life.ViewModels
 
             NavigateCommand = new DelegateCommand(NavigateExecute);
             AboutMessages = new ObservableCollection<AboutMessage>();
-            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Что такое константа?" });
-            AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Константы это постоянные значения в виде цены на товар или услугу. Константы позволяют хранить все значения прямо в калькуляторе" });
-            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Как добавить константу?" });
-            AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Для этого нужно нажать ввести значения и нажать на кнопку +, дать имя константе и сохранить" });
-            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Как использовать константы при счёте?" });
-            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "Нажмите на кнопку CONST, выберите константу и нажмите на зеленую кнопку" });
+            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "What a constant is?"});
+            AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Constant is user data item has name and value. You may to store it directly in the calculator."});
+            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "How to add a constant?"});
+            AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Everywhere when you see the + button, click it, give the name and value. Then save this one."});
+            AboutMessages.Add(new AboutMessage() { IsAnswer = false, Text = "How to use constants?"});
+            AboutMessages.Add(new AboutMessage() { IsAnswer = true, Text = "Press the CONST button, select the constant and press the green button."});
 
         }
         public override void OnNavigatedTo(NavigationParameters parameters)

@@ -5,8 +5,7 @@
              x:Class="Calc4Life.Views.CustomCells.QuestionViewCell"
              x:Name="questionView">
     <ContentView.Content>
-        <Grid ColumnSpacing="2"
-              Padding="5">
+        <Grid ColumnSpacing="2" Padding="5" HorizontalOptions="CenterAndExpand">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -14,9 +13,9 @@
             </Grid.ColumnDefinitions>
             <roundImage:CircleImage
                 Grid.Column="0"
-                HeightRequest="35"
-                WidthRequest="35"
-                BorderThickness="2"
+                HeightRequest="56"
+                WidthRequest="56"
+                BorderThickness="1"
                 BorderColor="#03A9F4"
                 Aspect="AspectFill"
                 HorizontalOptions="Center"
