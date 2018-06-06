@@ -88,18 +88,22 @@ namespace Calc4Life.ViewModels
             var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged));
             var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
 
-            displayChangedObservale.ObserveOn(SynchronizationContext.Current)
-                .DistinctUntilChanged()
-                .Subscribe(async s =>
-               {
-                   if (!isConstantSuggestionsUpdated)
-                   {
-                       _constants = await _constantsRepository.GetItemsAsync();
-                       _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
-                       isConstantSuggestionsUpdated = true;
-                   }
-                   SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
-               });
+            var con = new ConstantSuggestionService();
+            var obs = con.SuggestionsObservable(displayChangedObservale);
+            obs.Subscribe(l => SuggestionConstants = new ObservableCollection<Constant>(l));
+          
+            //displayChangedObservale.ObserveOn(SynchronizationContext.Current)
+            //    .DistinctUntilChanged()
+            //    .Subscribe(async s =>
+            //   {
+            //       if (!isConstantSuggestionsUpdated)
+            //       {
+            //           _constants = await _constantsRepository.GetItemsAsync();
+            //           _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
+            //           isConstantSuggestionsUpdated = true;
+            //       }
+            //       SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
+            //   });
         }
         #endregion
 
