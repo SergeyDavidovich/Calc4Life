@@ -12,6 +12,7 @@ using Prism.Services;
 using System.Diagnostics;
 using Calc4Life.Services.PurchasingServices;
 using Plugin.InAppBilling.Abstractions;
+using Calc4Life.Helpers;
 
 namespace Calc4Life.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Calc4Life.ViewModels
 
         IConstantsRepositoryService _constantRepository;
         IPageDialogService _dialogService;
-        PurchasingService _purchasingService;
+        ConstantsPurchasingService _purchasingService;
         ObservableCollection<Constant> _constants;
         Constant _selectedConstant;
 
@@ -31,7 +32,7 @@ namespace Calc4Life.ViewModels
         public ConstantsPageViewModel(INavigationService navigationService,
             IConstantsRepositoryService constantsRepository,
             IPageDialogService dialogService,
-            PurchasingService purchasingService)
+            ConstantsPurchasingService purchasingService)
            : base(navigationService)
         {
             Title = "Constants";
@@ -56,33 +57,28 @@ namespace Calc4Life.ViewModels
         public DelegateCommand NavigateToAddCommand { get; }
         private async void NavigateToAddExecute()
         {
-            bool isPurchased = _purchasingService.IsPurchasedItemSaved("constants_unblocked");
-
-            if (Constants.Count < 3)
+            if (Constants.Count < AppConstants.MAX_CONSTANTS_NUMBER)
                 await NavigationService.NavigateAsync("EditConstPage", null, false, true);
             else
             {
-                if (isPurchased)
+                if (Settings.ConstProductPurchased)
                     await NavigationService.NavigateAsync("EditConstPage", null, false, true);
                 else
                 {
-                    //string title = "Purchasing";
-                    //string message = $"Do You want to buy the item?\r\n Proceeding?";
-                    //var answer = await _dialogService.DisplayAlertAsync(title, message, "Yes", "No");
+                    bool purchased = await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
 
-                    //if (answer == true)
-                    //    await NavigationService.NavigateAsync("OptionsPage?selectedTab=SettingsPage", null, false, true);
-                    bool success;
-                    try
-                    {
-                        success = await _purchasingService.PurchaseConsumableItem("constants_unblocked", "payload");
-                        if (success)
-                            App.Current.Properties["constants_unblocked"] = "constants_unblocked";
-                    }
-                    catch (InAppBillingPurchaseException)
-                    { }
-                    catch (Exception)
-                    {}
+                    //string title, message;
+                    //if (purchased)
+                    //{
+                    //    title = "Congratulations!";
+                    //    message = " You succefully purchase the product";
+                    //}
+                    //else
+                    //{
+                    //    title = "Something has gone wrong";
+                    //    message = "Please, try it later ";
+                    //}
+                    //await _dialogService.DisplayAlertAsync(title, message, "OK");
                 }
             }
         }

@@ -18,21 +18,24 @@ using System.Reactive.Linq;
 using System.ComponentModel;
 using System.Threading;
 using System.Collections.ObjectModel;
+using Plugin.Vibrate;
+using Calc4Life.Services.PurchasingServices;
+
 
 namespace Calc4Life.ViewModels
 {
     public class CalcPageViewModel : ViewModelBase
     {
         #region Declarations
-
+        List<Constant> Constants;
         const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
+        const int VIBRATE_DURATION = 50;
         string decimalSeparator; // десятичный знак числа
 
         //flags
         bool canBackSpace; // флаг - возможно ли редактирование дисплея кнопкой BackSpace
         bool canChangeSign; //флаг - возможно ли изменение знака числа
         bool mustClearDisplay; // флаг - необходимо ли очистить дисплей перед вводом
-        bool isConstantSuggestionsUpdated;
 
         //current values
         decimal? registerOperand; // текущий операнд
@@ -45,13 +48,18 @@ namespace Calc4Life.ViewModels
         FormatService _formatService;
         DedicationService _dedicationService;
         IConstantsRepositoryService _constantsRepository;
+        ConstantsPurchasingService _purchasingService;
+
         #endregion
 
         #region Constructors
 
         public CalcPageViewModel(INavigationService navigationService,
             IPageDialogService dialogService,
-            IBinaryOperationService binaryOperationService, FormatService formatService, DedicationService dedicationService)
+            IBinaryOperationService binaryOperationService,
+            FormatService formatService,
+            DedicationService dedicationService,
+            ConstantsPurchasingService purchasingService)
             : base(navigationService)
         {
             _dialogService = dialogService;
@@ -59,6 +67,7 @@ namespace Calc4Life.ViewModels
             _formatService = formatService;
             _dedicationService = dedicationService;
             _constantsRepository = App.Database;
+            _purchasingService = purchasingService;
 
             //defaults
             Title = "Calculator for Life";
@@ -83,23 +92,28 @@ namespace Calc4Life.ViewModels
 
             //подписываемся на событие изменения настроек калькулятора, для того чтобы отформатировать Display 
             //на основе новых настроек
-            MessagingCenter.Subscribe<SettingsPageViewModel>(this, Constants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
+            MessagingCenter.Subscribe<SettingsPageViewModel>(this, AppConstants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
+
 
             var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged));
             var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
 
-            displayChangedObservale.ObserveOn(SynchronizationContext.Current)
-                .DistinctUntilChanged()
-                .Subscribe(async s =>
-               {
-                   if (!isConstantSuggestionsUpdated)
-                   {
-                       _constants = await _constantsRepository.GetItemsAsync();
-                       _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
-                       isConstantSuggestionsUpdated = true;
-                   }
-                   SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
-               });
+            var con = new ConstantSuggestionService();
+            var obs = con.SuggestionsObservable(displayChangedObservale);
+            obs.Subscribe(l => SuggestionConstants = new ObservableCollection<Constant>(l));
+          
+            //displayChangedObservale.ObserveOn(SynchronizationContext.Current)
+            //    .DistinctUntilChanged()
+            //    .Subscribe(async s =>
+            //   {
+            //       if (!isConstantSuggestionsUpdated)
+            //       {
+            //           _constants = await _constantsRepository.GetItemsAsync();
+            //           _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
+            //           isConstantSuggestionsUpdated = true;
+            //       }
+            //       SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
+            //   });
         }
         #endregion
 
@@ -204,22 +218,11 @@ namespace Calc4Life.ViewModels
         }
         #region EditDisplayCommands
 
-        public DelegateCommand AddConstantCommand { get; }
-        private async void AddConstExecute()
-        {
-            string message = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
-            var answer = await _dialogService.DisplayAlertAsync("", message, "Yes", "No");
-            if (answer == true)
-            {
-                var par = new NavigationParameters();
-                par.Add("value", Display);
-                await NavigationService.NavigateAsync("EditConstPage", par, false, true);
-            }
-        }
 
         public DelegateCommand<string> EnterFiguresCommand { get; }
         private void EnterFiguresExecute(string par)
         {
+            VibrateButton();
             canChangeSign = true;
             //1 усли в операции определен оператор (значит идет ввод второго операнда), очищаем дисплей
             if (mustClearDisplay) Display = String.Empty;
@@ -250,7 +253,7 @@ namespace Calc4Life.ViewModels
             string currentDisplayText = Display;
 
             if (currentDisplayText == "0") return;
-
+            VibrateButton();
             int i = currentDisplayText.Length - 1;
             currentDisplayText = currentDisplayText.Remove(i);
 
@@ -273,7 +276,7 @@ namespace Calc4Life.ViewModels
         {
             if (canChangeSign == false) return;
             if (registerOperand == 0) return;
-
+            VibrateButton();
             string curDisplay = Display;
 
             if (Display.StartsWith("-"))
@@ -300,6 +303,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand ClearCommand { get; }
         private void ClearExecute()
         {
+            VibrateButton();
             registerOperand = null;
             Display = "0";
             _binaryOperation.Clear();
@@ -308,11 +312,48 @@ namespace Calc4Life.ViewModels
 
         #endregion
 
+        public DelegateCommand AddConstantCommand { get; }
+        private async void AddConstExecute()
+        {
+            string wantMessage = $"Do you want to save {(decimal.Parse(Display, CultureInfo.CurrentCulture)).ToString()} as constant";
+            var answer = await _dialogService.DisplayAlertAsync("", wantMessage, "Yes", "No");
+            if (answer == true)
+            {
+                var par = new NavigationParameters();
+                par.Add("value", Display);
+                if (Constants.Count < AppConstants.MAX_CONSTANTS_NUMBER)
+                    await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+                else
+                {
+                    if (Settings.ConstProductPurchased)
+                        await NavigationService.NavigateAsync("EditConstPage", null, false, true);
+                    else
+                    {
+                        bool purchased = await _purchasingService.PurchaseNonConsumableItem(AppConstants.CONSTANTS_PPODUCT_ID, "payload");
+
+                        //string title, message;
+                        //if (purchased)
+                        //{
+                        //    title = "Congratulations!";
+                        //    message = " You succefully purchase the product";
+                        //    await NavigationService.NavigateAsync("EditConstPage", par, false, true);
+                        //}
+                        //else
+                        //{
+                        //    title = "Something has gone wrong";
+                        //    message = "Please, try it later ";
+                        //}
+                        //await _dialogService.DisplayAlertAsync(title, message, "OK");
+                    }
+                }
+            }
+        }
+
         public DelegateCommand<string> EnterOperatorCommand { get; }
         private void EnterOperatorExecute(string par) // Plus Minus Multiplication Division Discount
         {
             if (_binaryOperation.Operand1 == null) return;
-
+            VibrateButton();
             //1. устанавливаем флаги
             mustClearDisplay = true;
             canBackSpace = false;
@@ -353,6 +394,7 @@ namespace Calc4Life.ViewModels
             //1. производим вычисление ИЛИ выходим
             if (_binaryOperation.IsReadyForCalc()) //операция готова к вычислению
             {
+                VibrateButton();
                 //1. произвести вычисление
                 try
                 {
@@ -407,6 +449,7 @@ namespace Calc4Life.ViewModels
         public DelegateCommand<string> MemoryCommand { get; }
         private void MemoryExecute(string par)
         {
+            VibrateButton();
             switch (par)
             {
                 case "Add":
@@ -453,8 +496,9 @@ namespace Calc4Life.ViewModels
 
         #region Navigation
 
-        public override void OnNavigatedTo(NavigationParameters parameters)
+        public async override void OnNavigatedTo(NavigationParameters parameters)
         {
+            #region Work with constant
             if (parameters.Count != 0)
             {
                 //1. получаем параметр
@@ -466,7 +510,6 @@ namespace Calc4Life.ViewModels
 
                 //2. отражаем на дисплее
                 Display = _formatService.FormatInput(registerOperand.Value);
-                //Expression = _binaryOperation.GetOperationExpression();
 
                 //3. назначаем операнд в операцию
                 _binaryOperation.SetOperand(new Operand(registerOperand.Value, curConstName));
@@ -476,7 +519,24 @@ namespace Calc4Life.ViewModels
                 canBackSpace = false;
                 mustClearDisplay = true;
             }
+            #endregion
+            #region Resore purchasing
+            Constants = await App.Database.GetItemsAsync();
+            {
+                if (Settings.ConstProductPurchased==false)
+                {
+                    bool purchased = await _purchasingService.IsItemPurchased(AppConstants.CONSTANTS_PPODUCT_ID);
 
+                    string title, message;
+                    if (purchased)
+                    {
+                        title = "Congratulations!";
+                        message = " You succefully restore your purchase";
+                        await _dialogService.DisplayAlertAsync(title, message, "OK");
+                    }
+                }
+            }
+            #endregion
         }
 
         public override void OnNavigatingTo(NavigationParameters parameters)
@@ -486,7 +546,6 @@ namespace Calc4Life.ViewModels
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
-            isConstantSuggestionsUpdated = false;
             base.OnNavigatedFrom(parameters);
         }
 
@@ -570,6 +629,12 @@ namespace Calc4Life.ViewModels
                 Display = _formatService.FormatInput(registerOperand.Value);
             else
                 Display = _formatService.FormatResult(registerOperand.Value);
+        }
+
+        private void VibrateButton()
+        {
+            if (Settings.Vibration)
+                CrossVibrate.Current.Vibration(TimeSpan.FromMilliseconds(VIBRATE_DURATION));
         }
         #endregion
     }

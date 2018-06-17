@@ -32,8 +32,6 @@ namespace Calc4Life
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-
-
         public static ConstItemDatabase Database
         {
             get
@@ -54,10 +52,7 @@ namespace Calc4Life
             Resources.Add("primaryBlue", Color.FromHex("0d47a1"));
             Resources.Add("colorTitle", Color.WhiteSmoke);
 
-            CreateProduct("constants_unblocked");
 #if DEBUG
-            App.Current.Properties["constants_unblocked"] = string.Empty; 
-
             Debug.WriteLine("OnInitialized");
 #endif
         }
@@ -79,8 +74,9 @@ namespace Calc4Life
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
             containerRegistry.RegisterInstance(typeof(DedicationService));
-            containerRegistry.RegisterInstance(typeof(PurchasingService));
+            containerRegistry.RegisterInstance(typeof(ConstantsPurchasingService));
 
+            
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
 #endif
@@ -97,7 +93,6 @@ namespace Calc4Life
             //navPage.BarTextColor = (Color)App.Current.Resources["colorTitle"];
 
             this.MainPage = navPage;
-
             await NavigationService.NavigateAsync("CalcPage");
 
 #if DEBUG
@@ -119,12 +114,6 @@ namespace Calc4Life
 #if DEBUG
             Debug.WriteLine("OnResume");
 #endif
-        }
-
-        public void CreateProduct(string productId) //constants_unblocked in app product
-        {
-            if (App.Current.Properties.ContainsKey(productId) == false)
-                App.Current.Properties.Add(productId, null);
         }
     }
 }

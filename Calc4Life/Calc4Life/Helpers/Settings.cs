@@ -10,7 +10,6 @@ namespace Calc4Life.Helpers
     // Settings Keys:
     // 
     // Разделитель групп разрядов                                        (Delimiter of the groups of digits) 
-    // Экспоненциальная (научная) нотация числа                          (Exponential (scientific) number notation) 
     // Точность вычисления (количество отражаемых знаков после запятой)  (Accuracy of calculations (number of decimal places displayed))
     // Точность округления                                               (Rounding accuracy)
     // Округлять результат (при указанной точности)                      (Round up the result (up to specified accuracy))
@@ -32,44 +31,20 @@ namespace Calc4Life.Helpers
             }
         }
 
-        #region Setting Constants
+        #region Calc result formatting settings
 
         // Разделитель групп разрядов
-
         private const string GrouppingDigitsKey = "GrouppingDigits";
         private static readonly bool GrouppingDigitsDefault = true;
-
-        // Экспоненциальная (научная) нотация числа  
-        //private const string ExponentialNotationKey = "ExponentialNotation";
-        //private static readonly bool ExponentialNotationDefault = true;
+        public static bool GrouppingDigits
+        {
+            get {return AppSettings.GetValueOrDefault(GrouppingDigitsKey, GrouppingDigitsDefault);}
+            set {AppSettings.AddOrUpdateValue(GrouppingDigitsKey, value);}
+        }
 
         // Точность вычисления (количество отражаемых знаков после запятой)
         private const string CalcAccuracyKey = "CalcAccuracy";
         private static readonly decimal CalcAccuracyDefault = 2;
-
-        // Точность округления 
-        private const string RoundAccuracyKey = "RoundAccuracy";
-        private static readonly decimal RoundAccuracyDefault = 2;
-
-
-        // Округлять результат (при указанной точности) 
-        private const string RoundingKey = "Rounding";
-        private static readonly bool RoundingDefault = false;
-
-        #endregion
-
-
-        public static bool GrouppingDigits
-        {
-            get
-            {
-                return AppSettings.GetValueOrDefault(GrouppingDigitsKey, GrouppingDigitsDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue(GrouppingDigitsKey, value);
-            }
-        }
         public static decimal CalcAccuracy
         {
             get
@@ -81,6 +56,10 @@ namespace Calc4Life.Helpers
                 AppSettings.AddOrUpdateValue(CalcAccuracyKey, value);
             }
         }
+
+        // Точность округления 
+        private const string RoundAccuracyKey = "RoundAccuracy";
+        private static readonly decimal RoundAccuracyDefault = 2;
         public static decimal RoundAccuracy
         {
             get
@@ -93,6 +72,9 @@ namespace Calc4Life.Helpers
             }
         }
 
+        // Округлять результат (при указанной точности) 
+        private const string RoundingKey = "Rounding";
+        private static readonly bool RoundingDefault = false;
         public static bool Rounding
         {
             get
@@ -104,5 +86,33 @@ namespace Calc4Life.Helpers
                 AppSettings.AddOrUpdateValue(RoundingKey, value);
             }
         }
+        
+        #endregion
+
+        #region Purchasing settings
+
+        //приобретен ли продукт "constants_unblocked"
+        private const string ConstProductPurchasedKey = "ConstProductPurchased";
+        private static readonly bool ConstProductPurchasedDefault = false;
+        public static bool ConstProductPurchased
+        {
+            get { return AppSettings.GetValueOrDefault(ConstProductPurchasedKey, ConstProductPurchasedDefault); }
+            set { AppSettings.AddOrUpdateValue(ConstProductPurchasedKey, value); }
+        }
+
+        #endregion
+
+        #region Common app settings
+        //установить вибрацию
+        private const string VibrationKey = "Vibration";
+        private static readonly bool VibrationDefault = true;
+        public static bool Vibration
+        {
+            get { return AppSettings.GetValueOrDefault(VibrationKey, VibrationDefault); }
+            set { AppSettings.AddOrUpdateValue(VibrationKey, value); }
+        }
+
+        #endregion
+
     }
 }
