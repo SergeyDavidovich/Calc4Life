@@ -29,7 +29,7 @@ namespace Calc4Life.ViewModels
         #region Declarations
         List<Constant> Constants;
         const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
-        const int VIBRATE_DURATION = 50;
+        const int VIBRATE_DURATION = 18;
         string decimalSeparator; // десятичный знак числа
 
         //flags
@@ -59,7 +59,7 @@ namespace Calc4Life.ViewModels
             IBinaryOperationService binaryOperationService,
             FormatService formatService,
             DedicationService dedicationService,
-            ConstantsPurchasingService purchasingService)
+            ConstantsPurchasingService purchasingService, ConstantSuggestionService constantSuggestionService)
             : base(navigationService)
         {
             _dialogService = dialogService;
@@ -97,11 +97,9 @@ namespace Calc4Life.ViewModels
 
             var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged));
             var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
-
-            var con = new ConstantSuggestionService();
-            var obs = con.SuggestionsObservable(displayChangedObservale);
+            var obs = constantSuggestionService .SuggestionsObservable(displayChangedObservale);
             obs.Subscribe(l => SuggestionConstants = new ObservableCollection<Constant>(l));
-          
+
             //displayChangedObservale.ObserveOn(SynchronizationContext.Current)
             //    .DistinctUntilChanged()
             //    .Subscribe(async s =>
@@ -523,7 +521,7 @@ namespace Calc4Life.ViewModels
             #region Resore purchasing
             Constants = await App.Database.GetItemsAsync();
             {
-                if (Settings.ConstProductPurchased==false)
+                if (Settings.ConstProductPurchased == false)
                 {
                     bool purchased = await _purchasingService.IsItemPurchased(AppConstants.CONSTANTS_PPODUCT_ID);
 

@@ -178,7 +178,7 @@
         <Grid Grid.Row="2" Grid.ColumnSpan="4">
             <sfListView:SfListView
                 Margin="4,0,4,0"
-                AutoFitMode="Height"
+                ItemSize="67"
                 IsScrollBarVisible="False"
                 ItemsSource="{Binding SuggestionConstants}"
                 Orientation="Horizontal"
@@ -187,7 +187,7 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="60" />
                                 <ColumnDefinition Width="1" />
                             </Grid.ColumnDefinitions>
                             <Label

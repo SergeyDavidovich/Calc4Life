@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Calc4Life.Helpers;
 using Calc4Life.Models;
 using SQLite;
+using Xamarin.Forms;
 
 namespace Calc4Life.Services.RepositoryServices
 {
@@ -43,21 +45,26 @@ namespace Calc4Life.Services.RepositoryServices
             return database.QueryAsync<Constant>("SELECT * FROM [Constant] WHERE [IsFavorite] = 0");
         }
 
-        public Task<int> DeleteAsync(Constant item)
+        public async Task<int> DeleteAsync(Constant item)
         {
-            return database.DeleteAsync(item);
+            var deletedConstId = await database.DeleteAsync(item);
+            MessagingCenter.Send(this, AppConstants.CONSTANTS_UPDATED_MESSAGE);
+            return deletedConstId;
         }
 
-        public Task<int> SaveAsync(Constant item)
+        public async Task<int> SaveAsync(Constant item)
         {
+            int savedConstId;
             if (item.Id != 0)
             {
-                return database.UpdateAsync(item);
+                savedConstId = await database.UpdateAsync(item);
             }
             else
             {
-                return database.InsertAsync(item);
+                savedConstId = await database.InsertAsync(item);
             }
+            MessagingCenter.Send(this, AppConstants.CONSTANTS_UPDATED_MESSAGE);
+            return savedConstId;
         }
     }
 }
