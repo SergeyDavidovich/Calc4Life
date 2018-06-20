@@ -97,19 +97,19 @@ namespace Calc4Life.ViewModels
 
             var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged));
             var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
-            var obs = constantSuggestionService .SuggestionsObservable(displayChangedObservale);
-            obs.Subscribe(l => SuggestionConstants = new ObservableCollection<Constant>(l));
+            var obs = constantSuggestionService.SuggestionsObservable(displayChangedObservale);
+            obs.Subscribe(l => SuggestionConstants = l);
 
             //displayChangedObservale.ObserveOn(SynchronizationContext.Current)
             //    .DistinctUntilChanged()
             //    .Subscribe(async s =>
             //   {
-            //       if (!isConstantSuggestionsUpdated)
-            //       {
+            //       //if (!isConstantSuggestionsUpdated)
+            //       //{
             //           _constants = await _constantsRepository.GetItemsAsync();
             //           _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
-            //           isConstantSuggestionsUpdated = true;
-            //       }
+            //           //isConstantSuggestionsUpdated = true;
+            //       //}
             //       SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
             //   });
         }
@@ -117,8 +117,8 @@ namespace Calc4Life.ViewModels
 
         #region Bindable Properties
         private List<Constant> _constants;
-        private ObservableCollection<Constant> _suggestionConstants;
-        public ObservableCollection<Constant> SuggestionConstants
+        private List<Constant> _suggestionConstants;
+        public List<Constant> SuggestionConstants
         {
             get => _suggestionConstants;
             set => SetProperty(ref _suggestionConstants, value);

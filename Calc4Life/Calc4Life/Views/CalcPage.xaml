@@ -3,7 +3,7 @@
     x:Class="Calc4Life.Views.CalcPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:horizontalList="clr-namespace:HorizontalList;assembly=HorizontalList"
+    xmlns:horizontalList="clr-namespace:Calc4Life.Controls"
     xmlns:local="clr-namespace:Calc4Life"
     xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
     xmlns:sfListView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
@@ -176,7 +176,7 @@
             <!--  end expression  -->
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="4">
-            <sfListView:SfListView
+            <!--<sfListView:SfListView
                 Margin="4,0,4,0"
                 ItemSize="67"
                 IsScrollBarVisible="False"
@@ -205,22 +205,37 @@
                         </Grid>
                     </DataTemplate>
                 </sfListView:SfListView.ItemTemplate>
-            </sfListView:SfListView>
-            <!--<horizontalList:HorizontalList  SelectedItem="{Binding SelectedSuggestionConstant, Mode=TwoWay}" ListOrientation="Horizontal" Margin="4,0,4,0" ItemsSource="{Binding SuggestionConstants}">
+            </sfListView:SfListView>-->
+            <horizontalList:HorizontalList
+                Margin="4,0,4,0"
+                IsScrollBarVisible="False"
+                ItemsSource="{Binding SuggestionConstants}"
+                ListOrientation="Horizontal"
+                SelectedItem="{Binding SelectedSuggestionConstant, Mode=TwoWay}">
                 <horizontalList:HorizontalList.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="99"/>
-                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="99" />
+                                <ColumnDefinition Width="6" />
                             </Grid.ColumnDefinitions>
-                            <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="CharacterWrap" VerticalTextAlignment="Center" FontSize="Micro"
-                                   TextColor="Black" Text="{Binding Name}"></Label>
-                            <BoxView Grid.Column="1" WidthRequest="1" Color="DarkGray"></BoxView>
+                            <Label
+                                FontSize="Micro"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="CharacterWrap"
+                                Text="{Binding Name}"
+                                TextColor="Black"
+                                VerticalTextAlignment="Center" />
+                            <BoxView
+                                Grid.Column="1"
+                                Margin="0,0,5,0"
+                                WidthRequest="1"
+                                Color="DarkGray" />
                         </Grid>
                     </DataTemplate>
                 </horizontalList:HorizontalList.ItemTemplate>
-            </horizontalList:HorizontalList>-->
+            </horizontalList:HorizontalList>
         </Grid>
         <Button
             Grid.Row="3"

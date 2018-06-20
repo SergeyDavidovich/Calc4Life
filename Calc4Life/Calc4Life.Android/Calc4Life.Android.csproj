@@ -93,6 +93,7 @@
     <PackageReference Include="Prism.Unity.Forms" Version="7.0.0.396" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomRenderers\CustomScrollViewRenderer.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="MainActivity.cs" />
