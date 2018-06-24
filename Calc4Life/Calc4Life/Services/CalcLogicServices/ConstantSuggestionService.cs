@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Calc4Life.Services.OperationServices
+namespace Calc4Life.Services.CalcLogicServices
 {
     public class ConstantSuggestionService
     {

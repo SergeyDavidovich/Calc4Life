@@ -20,7 +20,7 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using Plugin.Vibrate;
 using Calc4Life.Services.PurchasingServices;
-
+using Calc4Life.Services.CalcLogicServices;
 
 namespace Calc4Life.ViewModels
 {
