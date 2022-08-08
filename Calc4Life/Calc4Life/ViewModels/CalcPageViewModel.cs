@@ -14,8 +14,13 @@ using Calc4Life.Services.FormatServices;
 using Calc4Life.Helpers;
 using Calc4Life.Services.RepositoryServices;
 using Xamarin.Forms;
+using System.Reactive.Linq;
+using System.ComponentModel;
+using System.Threading;
+using System.Collections.ObjectModel;
 using Plugin.Vibrate;
 using Calc4Life.Services.PurchasingServices;
+using Calc4Life.Services.CalcLogicServices;
 
 namespace Calc4Life.ViewModels
 {
@@ -24,7 +29,7 @@ namespace Calc4Life.ViewModels
         #region Declarations
         List<Constant> Constants;
         const int maxFiguresNumber = 13; // максимальное число ВВОДИМЫХ ЦИФР С УЧЕТОМ ДЕСЯТИЧНОГО ЗНАКА (один знак зарезервирован под возможный МИНУС)
-        const int VIBRATE_DURATION = 50;
+        const int VIBRATE_DURATION = 18;
         string decimalSeparator; // десятичный знак числа
 
         //flags
@@ -42,7 +47,9 @@ namespace Calc4Life.ViewModels
         IBinaryOperationService _binaryOperation;
         FormatService _formatService;
         DedicationService _dedicationService;
+        IConstantsRepositoryService _constantsRepository;
         ConstantsPurchasingService _purchasingService;
+
         #endregion
 
         #region Constructors
@@ -52,13 +59,14 @@ namespace Calc4Life.ViewModels
             IBinaryOperationService binaryOperationService,
             FormatService formatService,
             DedicationService dedicationService,
-            ConstantsPurchasingService purchasingService)
+            ConstantsPurchasingService purchasingService, ConstantSuggestionService constantSuggestionService)
             : base(navigationService)
         {
             _dialogService = dialogService;
             _binaryOperation = binaryOperationService;
             _formatService = formatService;
             _dedicationService = dedicationService;
+            _constantsRepository = App.Database;
             _purchasingService = purchasingService;
 
             //defaults
@@ -85,11 +93,47 @@ namespace Calc4Life.ViewModels
             //подписываемся на событие изменения настроек калькулятора, для того чтобы отформатировать Display 
             //на основе новых настроек
             MessagingCenter.Subscribe<SettingsPageViewModel>(this, AppConstants.SETTINGS_CHANGED_MESSAGE, (settingsVm) => UpdateDisplayText());
-        }
 
+
+            var propertyChangedObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged));
+            var displayChangedObservale = propertyChangedObservable.Where(r => r.EventArgs.PropertyName == nameof(Display)).Select(d => Display);
+            var obs = constantSuggestionService.SuggestionsObservable(displayChangedObservale);
+            obs.Subscribe(l => SuggestionConstants = l);
+
+            //displayChangedObservale.ObserveOn(SynchronizationContext.Current)
+            //    .DistinctUntilChanged()
+            //    .Subscribe(async s =>
+            //   {
+            //       //if (!isConstantSuggestionsUpdated)
+            //       //{
+            //           _constants = await _constantsRepository.GetItemsAsync();
+            //           _constants.ForEach(c => { if (c.Name.Count() > 27) c.Name = c.Name.Substring(0, 27) + "..."; });
+            //           //isConstantSuggestionsUpdated = true;
+            //       //}
+            //       SuggestionConstants = new ObservableCollection<Constant>(_constants?.Where(c => c.Value.ToString().StartsWith(s)));
+            //   });
+        }
         #endregion
 
         #region Bindable Properties
+        private List<Constant> _constants;
+        private List<Constant> _suggestionConstants;
+        public List<Constant> SuggestionConstants
+        {
+            get => _suggestionConstants;
+            set => SetProperty(ref _suggestionConstants, value);
+        }
+        private Constant _selectedSuggestionConstant;
+        public Constant SelectedSuggestionConstant
+        {
+            get => _selectedSuggestionConstant;
+            set
+            {
+                if (SetProperty(ref _selectedSuggestionConstant, value))
+                    SetSuggestedConstant(value);
+
+            }
+        }
         string _Display;
         public string Display
         {
@@ -140,7 +184,25 @@ namespace Calc4Life.ViewModels
         #endregion
 
         #region Commands
+        private void SetSuggestedConstant(Constant selectedConstant)
+        {
+            if (selectedConstant == null) return;
+            //TODO вывести в отдельную процедуру, данный код повторяется в нескольких местах
+            //2 
+            registerOperand = selectedConstant.Value;
 
+            //2. отражаем на дисплее
+            Display = _formatService.FormatInput(registerOperand.Value);
+            //Expression = _binaryOperation.GetOperationExpression();
+
+            //3. назначаем операнд в операцию
+            _binaryOperation.SetOperand(new Operand(registerOperand.Value, selectedConstant.Name));
+            Expression = _binaryOperation.GetOperationExpression();
+
+            //4. Устанавливаем флаги
+            canBackSpace = false;
+            mustClearDisplay = true;
+        }
         public DelegateCommand ConstCommand { get; }
         private async void ConstCommandExecute()
         {
@@ -459,7 +521,7 @@ namespace Calc4Life.ViewModels
             #region Resore purchasing
             Constants = await App.Database.GetItemsAsync();
             {
-                if (Settings.ConstProductPurchased==false)
+                if (Settings.ConstProductPurchased == false)
                 {
                     bool purchased = await _purchasingService.IsItemPurchased(AppConstants.CONSTANTS_PPODUCT_ID);
 
@@ -482,7 +544,7 @@ namespace Calc4Life.ViewModels
         }
         public override void OnNavigatedFrom(NavigationParameters parameters)
         {
-            //base.OnNavigatedFrom(parameters);
+            base.OnNavigatedFrom(parameters);
         }
 
         #endregion
@@ -572,8 +634,6 @@ namespace Calc4Life.ViewModels
             if (Settings.Vibration)
                 CrossVibrate.Current.Vibration(TimeSpan.FromMilliseconds(VIBRATE_DURATION));
         }
-
         #endregion
-
     }
 }
