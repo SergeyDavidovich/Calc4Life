@@ -14,6 +14,7 @@ using Calc4Life.Services.OperationServices;
 using Calc4Life.Helpers;
 using Calc4Life.Services.FormatServices;
 using Calc4Life.Services.PurchasingServices;
+using Calc4Life.Services.CalcLogicServices;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Calc4Life
@@ -70,11 +71,13 @@ namespace Calc4Life
             containerRegistry.RegisterForNavigation<DedicationPage>();
 
             containerRegistry.RegisterSingleton(typeof(IConstantsRepositoryService), typeof(ConstantsRepositoryServiceFake));
+            containerRegistry.RegisterSingleton(typeof(ConstantSuggestionService));
 
             containerRegistry.RegisterSingleton(typeof(IBinaryOperationService), typeof(BinaryOperationService));
             containerRegistry.RegisterSingleton(typeof(FormatService));
             containerRegistry.RegisterInstance(typeof(DedicationService));
             containerRegistry.RegisterInstance(typeof(ConstantsPurchasingService));
+
 
 #if DEBUG
             Debug.WriteLine("RegisterTypes");
