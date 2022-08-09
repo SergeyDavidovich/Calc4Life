@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32428.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calc4Life", "Calc4Life\Calc4Life\Calc4Life.csproj", "{B25693FB-633D-4334-83D1-FCF46354F170}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc4Life.iOS", "Calc4Life\Calc4Life.iOS\Calc4Life.iOS.csproj", "{4F4ADACF-8497-4638-BE31-9C6ABA04C118}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc4Life.UWP", "Calc4Life\Calc4Life.UWP\Calc4Life.UWP.csproj", "{B625AC9F-8C70-45AA-96C1-7DB485A1AEBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F09092DE-02C1-4F7C-A840-882DDDD191CB}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Users\write\Desktop\calc.jpg = ..\..\Users\write\Desktop\calc.jpg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
