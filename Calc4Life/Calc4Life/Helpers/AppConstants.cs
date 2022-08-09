@@ -8,6 +8,7 @@ namespace Calc4Life.Helpers
     {
         //in app messages
         public const string SETTINGS_CHANGED_MESSAGE = "settings_changed";
+        public const string CONSTANTS_UPDATED_MESSAGE = "constants_updated";
 
         //constant purchasing 
         public const int MAX_CONSTANTS_NUMBER = 3; // количество констант, доступных без покупки
