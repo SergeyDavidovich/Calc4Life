@@ -11,11 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc4Life.iOS", "Calc4Life\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc4Life.UWP", "Calc4Life\Calc4Life.UWP\Calc4Life.UWP.csproj", "{B625AC9F-8C70-45AA-96C1-7DB485A1AEBD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F09092DE-02C1-4F7C-A840-882DDDD191CB}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Users\write\Desktop\calc.jpg = ..\..\Users\write\Desktop\calc.jpg
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
